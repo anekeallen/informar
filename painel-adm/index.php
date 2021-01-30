@@ -340,6 +340,12 @@ $menu6 = "menu6";
         <!-- Page level custom scripts -->
         <script src="../js/demo/datatables-demo.js"></script>
 
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+
+        <script src="../js/mascaras.js"></script>
+
+
     </body>
 
     </html>

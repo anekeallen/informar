@@ -32,58 +32,58 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                         <th>Telefone</th>
                         <th>CPF</th>
                         
-                       
+
                         <th>Ações</th>
                     </tr>
                 </thead>
 
                 <tbody>
 
-                   <?php 
+                 <?php 
 
-                   $query = $pdo->query("SELECT * FROM secretarios order by id desc ");
-                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                 $query = $pdo->query("SELECT * FROM secretarios order by id desc ");
+                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                   for ($i=0; $i < count($res); $i++) { 
-                      foreach ($res[$i] as $key => $value) {
-                      }
+                 for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
 
-                      $nome = $res[$i]['nome'];
-                      $email = $res[$i]['email'];
-                      $telefone = $res[$i]['telefone'];
-                      $cpf = $res[$i]['cpf'];
-                      $endereco = $res[$i]['endereco'];
-                      
-                      
-                      $id = $res[$i]['id'];
-
-                       
-                      ?>
+                  $nome = $res[$i]['nome'];
+                  $email = $res[$i]['email'];
+                  $telefone = $res[$i]['telefone'];
+                  $cpf = $res[$i]['cpf'];
+                  $endereco = $res[$i]['endereco'];
 
 
-                    <tr>
-                        <td><?php echo $nome ?></td>
-                        <td><?php echo $email ?></td>
-                        <td><?php echo $telefone ?></td>
-                        <td><?php echo $cpf ?></td>
-                        
-                       
+                  $id = $res[$i]['id'];
 
-                        <td>
-                             <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                        </td>
-                    </tr>
-<?php } ?>
+
+                  ?>
+
+
+                  <tr>
+                    <td><?php echo $nome ?></td>
+                    <td><?php echo $email ?></td>
+                    <td><?php echo $telefone ?></td>
+                    <td><?php echo $cpf ?></td>
 
 
 
+                    <td>
+                       <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
+                       <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                   </td>
+               </tr>
+           <?php } ?>
 
 
-                </tbody>
-            </table>
-        </div>
-    </div>
+
+
+
+       </tbody>
+   </table>
+</div>
+</div>
 </div>
 
 
@@ -104,7 +104,11 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
                     $nome2 = $res[0]['nome'];
-                                                            
+                    $email2 = $res[0]['email'];
+                    $telefone2 = $res[0]['telefone'];
+                    $endereco2 = $res[0]['endereco'];
+                    $cpf2 = $res[0]['cpf'];
+
 
                 } else {
                     $titulo = "Inserir Registro";
@@ -126,9 +130,26 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                         <label >Nome</label>
                         <input value="<?php echo @$nome2 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
                     </div>
+                    <div class="form-group">
+                        <label >Email</label>
+                        <input value="<?php echo @$email2 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
+                    </div>
 
-                  
-                   
+                    <dir class="row">
+                        <div class="form-group ml-0 col-6">
+                            <label >Telefone</label>
+                            <input value="<?php echo @$telefone2 ?>" type="text" class="form-control" id="telefone-cat" name="telefone-cat" placeholder="Telefone">
+                        </div>
+                        <div class="form-group col-6">
+                            <label >CPF</label>
+                            <input value="<?php echo @$cpf2 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
+                        </div>
+
+                    </dir>
+                    
+
+
+
 
                     <small>
                         <div id="mensagem">
@@ -144,8 +165,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
 
-                <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
-                <input value="<?php echo @$nome2 ?>" type="hidden" name="antigo" id="antigo">
+                    <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
+                    <input value="<?php echo @$nome2 ?>" type="hidden" name="antigo" id="antigo">
 
                     <button type="button" id="btn-fechar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" name="btn-salvar" id="btn-salvar" class="btn btn-primary">Salvar</button>
@@ -231,7 +252,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
                 $('#mensagem').removeClass()
 
                 if (mensagem.trim() == "Salvo com Sucesso!!") {
-                    
+
                     //$('#nome').val('');
                     //$('#cpf').val('');
                     $('#btn-fechar').click();
@@ -336,6 +357,11 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
 
     });
 </script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+
+<script src="../js/mascaras.js"></script>
 
 
 

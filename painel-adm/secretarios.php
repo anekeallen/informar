@@ -27,12 +27,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
+                        <th >Nome</th>
+                        <th class="d-none d-sm-block">Email</th>
+                        <th class="">Telefone</th>
                         <th>CPF</th>
-                        
-
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -63,8 +61,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                   <tr>
                     <td><?php echo $nome ?></td>
-                    <td><?php echo $email ?></td>
-                    <td><?php echo $telefone ?></td>
+                    <td class="d-none d-sm-block"><?php echo $email ?></td>
+                    <td class=""><?php echo $telefone ?></td>
                     <td><?php echo $cpf ?></td>
 
 
@@ -128,25 +126,29 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                     <div class="form-group">
                         <label >Nome</label>
-                        <input value="<?php echo @$nome2 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
+                        <input required value="<?php echo @$nome2 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
                     </div>
                     <div class="form-group">
                         <label >Email</label>
-                        <input value="<?php echo @$email2 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
+                        <input required value="<?php echo @$email2 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
                     </div>
 
-                    <dir class="row">
-                        <div class="form-group ml-0 col-6">
-                            <label >Telefone</label>
-                            <input value="<?php echo @$telefone2 ?>" type="text" class="form-control" id="telefone-cat" name="telefone-cat" placeholder="Telefone">
-                        </div>
+                    <div class="row">
                         <div class="form-group col-6">
-                            <label >CPF</label>
-                            <input value="<?php echo @$cpf2 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
+                            <label >Telefone</label>
+                            <input required value="<?php echo @$telefone2 ?>" type="text" class="form-control" id="telefone-cat" name="telefone-cat" placeholder="Telefone">
                         </div>
-
-                    </dir>
-                    
+                        <div class="form-group col-6 ">
+                            <label >CPF</label>
+                            <input required value="<?php echo @$cpf2 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
+                        </div>
+                    </div>
+                        
+                        
+                        <div class="form-group">
+                            <label >Endereço</label>
+                            <input value="<?php echo @$endereco2 ?>" type="text" class="form-control" id="endereco-cat" name="endereco-cat" placeholder="Endereço">
+                        </div>
 
 
 
@@ -166,7 +168,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
                     <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
-                    <input value="<?php echo @$nome2 ?>" type="hidden" name="antigo" id="antigo">
+                    <input value="<?php echo @$cpf2 ?>" type="hidden" name="antigo" id="antigo">
+                    <input value="<?php echo @$email2 ?>" type="hidden" name="antigo2" id="antigo2">
 
                     <button type="button" id="btn-fechar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" name="btn-salvar" id="btn-salvar" class="btn btn-primary">Salvar</button>
@@ -231,7 +234,6 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
 }
 
 ?>
-
 
 
 

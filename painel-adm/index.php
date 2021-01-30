@@ -1,131 +1,130 @@
 <?php 
 
     //variaveis para o menu
-    $pag = @$_GET["pag"];
-    $menu1 = "menu1";
-    $menu2 = "menu2";
-    $menu3 = "menu3";
-    $menu4 = "menu4";
-    $menu5 = "menu5";
-    $menu6 = "menu6";
-  
+$pag = @$_GET["pag"];
+$menu1 = "secretarios";
+$menu2 = "menu2";
+$menu3 = "menu3";
+$menu4 = "menu4";
+$menu5 = "menu5";
+$menu6 = "menu6";
 
- ?>
+
+?>
 
 
 
 <!DOCTYPE html>
 <html lang="pt-br">
 
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="Hugo Vasconcelos">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="DevAllen">
 
-        <title>Painel Administrativo</title>
+    <title>Painel Administrativo</title>
 
-        <!-- Custom fonts for this template-->
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-        <!-- Custom styles for this template-->
-        <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-        <link href="../css/style.css" rel="stylesheet">
-        
-        <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+
+    <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="../vendor/jquery/jquery.min.js"></script>
-        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        
-         <link rel="shortcut icon" href="../../img/favicon0.ico" type="image/x-icon">
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="shortcut icon" href="../../img/favicon0.ico" type="image/x-icon">
     <link rel="icon" href="../../img/favicon0.ico" type="image/x-icon">
 
-    </head>
+</head> 
 
-    <body id="page-top">
+<body id="page-top">
 
-        <!-- Page Wrapper -->
-        <div id="wrapper">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-            <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-                <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
 
-                    <div class="sidebar-brand-text mx-3">Administrador</div>
+                <div class="sidebar-brand-text mx-3">Administrador</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Cadastros
+            </div>
+
+
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-users"></i>
+                    <span>Pessoas</span>
                 </a>
-
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-
-
-
-                <!-- Divider -->
-                <hr class="sidebar-divider">
-
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Cadastros
-                </div>
-
-
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-users"></i>
-                        <span>Pessoas</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">PESSOAS:</h6>
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu1 ?>">Menu 1</a>
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu2 ?>">Menu 2</a>
-                        </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu1 ?>">Secrétarios</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu2 ?>">Menu 2</a>
                     </div>
-                </li>
-
-                <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-home"></i>
-                        <span>Opções XX</span>
-                    </a>
-                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Dados XX:</h6>
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Menu 3</a>
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu4 ?>">Menu 4</a>
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Menu 5</a>
-
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Divider -->
-                <hr class="sidebar-divider">
-
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Consultas
                 </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-home"></i>
+                    <span>Opções XX</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Dados XX:</h6>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Menu 3</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu4 ?>">Menu 4</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Menu 5</a>
+
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Consultas
+            </div>
 
 
 
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?pag=<?php echo $menu6 ?>">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Menu 6</span></a>
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.php?pag=<?php echo $menu6 ?>">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Menu 6</span></a>
                 </li>
 
                 <!-- Nav Item - Tables -->
-              
+
 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
@@ -191,30 +190,30 @@
                     <div class="container-fluid">
 
                         <?php if (@$pag == null) { 
-                        @include_once("home.php"); 
-                        
-                        } else if (@$pag==$menu1) {
-                        @include_once(@$menu1.".php");
-                        
-                        } else if (@$pag==$menu2) {
-                        @include_once(@$menu2.".php");
+                            @include_once("home.php"); 
 
-                         } else if (@$pag==$menu3) {
-                        include_once(@$menu3.".php");
+                        } else if (@$pag==$menu1) {
+                            @include_once(@$menu1.".php");
+
+                        } else if (@$pag==$menu2) {
+                            @include_once(@$menu2.".php");
+
+                        } else if (@$pag==$menu3) {
+                            include_once(@$menu3.".php");
 
                         } else if (@$pag==$menu4) {
-                        @include_once(@$menu4.".php");
+                            @include_once(@$menu4.".php");
 
                         } else if (@$pag==$menu5) {
-                        @include_once(@$menu5.".php");
+                            @include_once(@$menu5.".php");
 
                         } else if (@$pag==$menu6) {
-                        @include_once(@$menu6.".php");
+                            @include_once(@$menu6.".php");
 
-                       
-                        
+
+
                         } else {
-                        @include_once("home.php");
+                            @include_once("home.php");
                         }
                         ?>
                         
@@ -343,7 +342,7 @@
 
     </body>
 
-</html>
+    </html>
 
 
 

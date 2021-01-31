@@ -29,8 +29,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     <tr>
                         <th >Nome</th>
                         <th class="classe-nova">Email</th>
-                        <th class="classe-nova classe-nova-tel">Telefone</th>
-                        <th class="classe-nova">CPF</th>
+                        <th class="classe-nova ">Telefone</th>
+                        <th class="classe-nova classe-nova-tel">CPF</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -62,8 +62,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                   <tr>
                     <td><?php echo $nome ?></td>
                     <td class="classe-nova"><?php echo $email ?></td>
-                    <td class="classe-nova classe-nova-tel"><?php echo $telefone ?></td>
-                    <td class="classe-nova"><?php echo $cpf ?></td>
+                    <td class="classe-nova "><?php echo $telefone ?></td>
+                    <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
 
 
 

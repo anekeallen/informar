@@ -37,52 +37,52 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <tbody>
 
-                 <?php 
+                   <?php 
 
-                 $query = $pdo->query("SELECT * FROM secretarios order by id desc ");
-                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                   $query = $pdo->query("SELECT * FROM secretarios order by id desc ");
+                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                 for ($i=0; $i < count($res); $i++) { 
-                  foreach ($res[$i] as $key => $value) {
-                  }
+                   for ($i=0; $i < count($res); $i++) { 
+                      foreach ($res[$i] as $key => $value) {
+                      }
 
-                  $nome = $res[$i]['nome'];
-                  $email = $res[$i]['email'];
-                  $telefone = $res[$i]['telefone'];
-                  $cpf = $res[$i]['cpf'];
-                  $endereco = $res[$i]['endereco'];
-
-
-                  $id = $res[$i]['id'];
+                      $nome = $res[$i]['nome'];
+                      $email = $res[$i]['email'];
+                      $telefone = $res[$i]['telefone'];
+                      $cpf = $res[$i]['cpf'];
+                      $endereco = $res[$i]['endereco'];
 
 
-                  ?>
+                      $id = $res[$i]['id'];
 
 
-                  <tr>
-                    <td><?php echo $nome ?></td>
-                    <td class="classe-nova"><?php echo $email ?></td>
-                    <td class="classe-nova "><?php echo $telefone ?></td>
-                    <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
+                      ?>
 
 
-
-                    <td>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Secretário'><i class="fas fa-info-circle"></i></a>
-                       <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
-
-                       <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                   </td>
-               </tr>
-           <?php } ?>
+                      <tr>
+                        <td><?php echo $nome ?></td>
+                        <td class="classe-nova"><?php echo $email ?></td>
+                        <td class="classe-nova "><?php echo $telefone ?></td>
+                        <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
 
 
 
+                        <td>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Secretário'><i class="fas fa-info-circle"></i></a>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
+
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
 
 
-       </tbody>
-   </table>
-</div>
+
+
+
+            </tbody>
+        </table>
+    </div>
 </div>
 </div>
 
@@ -145,12 +145,12 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                             <input required value="<?php echo @$cpf2 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
                         </div>
                     </div>
-                        
-                        
-                        <div class="form-group">
-                            <label >Endereço</label>
-                            <input value="<?php echo @$endereco2 ?>" type="text" class="form-control" id="endereco-cat" name="endereco-cat" placeholder="Endereço">
-                        </div>
+
+
+                    <div class="form-group">
+                        <label >Endereço</label>
+                        <input value="<?php echo @$endereco2 ?>" type="text" class="form-control" id="endereco-cat" name="endereco-cat" placeholder="Endereço">
+                    </div>
 
 
 
@@ -231,7 +231,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <?php 
                 if (@$_GET['funcao'] == 'endereco') {
-                    
+
                     $id2 = $_GET['id'];
 
                     $query = $pdo->query("SELECT * FROM secretarios where id = '$id2' ");
@@ -247,12 +247,36 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 ?>
 
-                <span><b>Nome: </b> <i><?php echo $nome3 ?></i><br>
-                <span><b>Telefone: </b> <i><?php echo $telefone3 ?></i> <span class="ml-4"><b>CPF: </b> <i><?php echo $cpf3 ?></i><br>
-                <span><b>Email: </b> <i><?php echo $email3 ?><br>
-                <span><b>Endereço: </b> <i><?php echo $endereco3 ?><br>
+                   <div class="form-group">
+                    <label >Nome</label>
+                    <input disabled value="<?php echo @$nome3 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
+                </div>
+                <div class="form-group">
+                    <label >Email</label>
+                    <input disabled value="<?php echo @$email3 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
+                </div>
 
-            </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label >Telefone</label>
+                        <input disabled value="<?php echo @$telefone3 ?>" type="text" class="form-control" id="telefone-cat" name="telefone-cat" placeholder="Telefone">
+                    </div>
+                    <div class="form-group col-6 ">
+                        <label >CPF</label>
+                        <input disabled value="<?php echo @$cpf3 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label >Endereço</label>
+                    <input disabled value="<?php echo @$endereco3 ?>" type="text" class="form-control" id="endereco-cat" name="endereco-cat" placeholder="Endereço">
+                </div>
+
+
+
+
+            
             
         </div>
     </div>

@@ -66,34 +66,35 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     <td class="classe-nova"><?php echo $email ?></td>
                     <td class="classe-nova "><?php echo $telefone ?></td>
                     <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
-                    <td class="text-center"><img width="50" src="../img/professores/<?php echo $foto ?>"></td>
+                    <td class="text-center"><a href="index.php?pag=<?php echo $pag ?>&funcao=foto&id=<?php echo $id ?>"><img width="50" src="../img/professores/<?php echo $foto ?>"><a></td>
 
 
 
-                    <td>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Secretário'><i class="fas fa-info-circle"></i></a>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
+                        <td>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Secretário'><i class="fas fa-info-circle"></i></a>
 
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                    </td>
-                </tr>
-            <?php } ?>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
 
-
-
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
 
 
-        </tbody>
-    </table>
+
+
+
+            </tbody>
+        </table>
+    </div>
 </div>
 </div>
-</div>
 
 
 
 
 
-<!-- Modal -->
+<!-- Modal Mostrar Cadastrar dados-->
 <div class="modal fade" id="modalDados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -212,7 +213,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
 
-
+<!--MODAL PARA EXCLUIR REGISTRO -->
 <div class="modal" id="modal-deletar" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -244,9 +245,47 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     </div>
 </div>
 
-
-<div class="modal" id="modal-endereco" tabindex="-1" role="dialog">
+<!--MODAL PARA EXIBIR FOTO -->
+<div class="modal" id="modal-foto" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Foto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 <?php 
+                if (@$_GET['funcao'] == 'foto') {
+
+                    $id_foto = $_GET['id'];
+
+                    $query = $pdo->query("SELECT * FROM professores where id = '$id_foto' ");
+                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    
+                    $imagem4 = $res[0]['foto'];  
+                    
+                } 
+
+
+                ?>
+                <div id="divImgConta" >
+
+                    <img class="rounded mx-auto d-block align-content-center img-fluid" src="../img/professores/<?php echo $imagem4 ?>" width="300" height="300" id="target">     
+
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!--MODAL PARA MOSTRAR DADOS COMPLETOS -->
+<div class="modal" id="modal-endereco" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Dados do Professor</h5>
@@ -267,65 +306,103 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $cpf3 = $res[0]['cpf'];
                     $telefone3 = $res[0]['telefone'];
                     $email3 = $res[0]['email'];
-                    $endereco3 = $res[0]['endereco']; 
+                    $endereco3 = $res[0]['endereco'];
+                    $imagem3 = $res[0]['foto'];  
                     
                 } 
 
 
                 ?>
 
-                <span><b>Nome: </b> <i><?php echo $nome3 ?></i><br>
-                    <span><b>Telefone: </b> <i><?php echo $telefone3 ?></i> <span class="ml-4"><b>CPF: </b> <i><?php echo $cpf3 ?></i><br>
-                        <span><b>Email: </b> <i><?php echo $email3 ?><br>
-                            <span><b>Endereço: </b> <i><?php echo $endereco3 ?><br>
+                <div class="row">
+                    <div class="col-md-7">
+                     <div class="form-group">
+                        <label >Nome</label>
+                        <input disabled value="<?php echo @$nome3 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
+                    </div>
+                    <div class="form-group">
+                        <label >Email</label>
+                        <input disabled value="<?php echo @$email3 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
+                    </div>
 
-                            </div>
-
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label >Telefone</label>
+                            <input disabled value="<?php echo @$telefone3 ?>" type="text" class="form-control" id="telefone-cat" name="telefone-cat" placeholder="Telefone">
+                        </div>
+                        <div class="form-group col-6 ">
+                            <label >CPF</label>
+                            <input disabled value="<?php echo @$cpf3 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
                         </div>
                     </div>
+
+
+                    <div class="form-group">
+                        <label >Endereço</label>
+                        <input disabled value="<?php echo @$endereco3 ?>" type="text" class="form-control" id="endereco-cat" name="endereco-cat" placeholder="Endereço">
+                    </div>
+
                 </div>
 
+                <div class="col-md-5 p-0 mt-3 mb-3  d-flex justify-content-center align-items-center">
+
+                    <div id="divImgConta" >
+
+                        <img class="rounded mx-auto d-block align-content-center img-fluid" src="../img/professores/<?php echo $imagem3 ?>" width="250" height="250" id="target">     
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
 
 
 
-                <?php 
 
-                if (@$_GET["funcao"] != null && @$_GET["funcao"] == "novo") {
-                    echo "<script>$('#modalDados').modal('show');</script>";
-                }
+        <?php 
 
-                if (@$_GET["funcao"] != null && @$_GET["funcao"] == "editar") {
-                    echo "<script>$('#modalDados').modal('show');</script>";
-                }
+        if (@$_GET["funcao"] != null && @$_GET["funcao"] == "novo") {
+            echo "<script>$('#modalDados').modal('show');</script>";
+        }
 
-                if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
-                    echo "<script>$('#modal-deletar').modal('show');</script>";
-                }
-                if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
-                    echo "<script>$('#modal-endereco').modal('show');</script>";
-                }
+        if (@$_GET["funcao"] != null && @$_GET["funcao"] == "editar") {
+            echo "<script>$('#modalDados').modal('show');</script>";
+        }
 
-                ?>
+        if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
+            echo "<script>$('#modal-deletar').modal('show');</script>";
+        }
+        if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
+            echo "<script>$('#modal-endereco').modal('show');</script>";
+        }
+        if (@$_GET["funcao"] != null && @$_GET["funcao"] == "foto") {
+            echo "<script>$('#modal-foto').modal('show');</script>";
+        }
+
+        ?>
 
 
 
-                <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
-                <script type="text/javascript">
-                    $("#form").submit(function () {
-                        var pag = "<?=$pag?>";
-                        event.preventDefault();
-                        var formData = new FormData(this);
+        <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+        <script type="text/javascript">
+            $("#form").submit(function () {
+                var pag = "<?=$pag?>";
+                event.preventDefault();
+                var formData = new FormData(this);
 
-                        $.ajax({
-                            url: pag + "/inserir.php",
-                            type: 'POST',
-                            data: formData,
+                $.ajax({
+                    url: pag + "/inserir.php",
+                    type: 'POST',
+                    data: formData,
 
-                            success: function (mensagem) {
+                    success: function (mensagem) {
 
-                                $('#mensagem').removeClass()
+                        $('#mensagem').removeClass()
 
-                                if (mensagem.trim() == "Salvo com Sucesso!!") {
+                        if (mensagem.trim() == "Salvo com Sucesso!!") {
 
                     //$('#nome').val('');
                     //$('#cpf').val('');
@@ -354,88 +431,88 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 return myXhr;
             }
         });
-                    });
-                </script>
+            });
+        </script>
 
 
 
 
 
-                <!--AJAX PARA EXCLUSÃO DOS DADOS -->
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        var pag = "<?=$pag?>";
-                        $('#btn-deletar').click(function (event) {
-                            event.preventDefault();
+        <!--AJAX PARA EXCLUSÃO DOS DADOS -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var pag = "<?=$pag?>";
+                $('#btn-deletar').click(function (event) {
+                    event.preventDefault();
 
-                            $.ajax({
-                                url: pag + "/excluir.php",
-                                method: "post",
-                                data: $('form').serialize(),
-                                dataType: "text",
-                                success: function (mensagem) {
+                    $.ajax({
+                        url: pag + "/excluir.php",
+                        method: "post",
+                        data: $('form').serialize(),
+                        dataType: "text",
+                        success: function (mensagem) {
 
-                                    if (mensagem.trim() === 'Excluído com Sucesso!!') {
-
-
-                                        $('#btn-cancelar-excluir').click();
-                                        window.location = "index.php?pag=" + pag;
-                                    }
-
-                                    $('#mensagem_excluir').text(mensagem)
+                            if (mensagem.trim() === 'Excluído com Sucesso!!') {
 
 
+                                $('#btn-cancelar-excluir').click();
+                                window.location = "index.php?pag=" + pag;
+                            }
 
-                                },
+                            $('#mensagem_excluir').text(mensagem)
 
-                            })
-                        })
+
+
+                        },
+
                     })
-                </script>
+                })
+            })
+        </script>
 
 
 
-                <!--SCRIPT PARA CARREGAR IMAGEM -->
-                <script type="text/javascript">
+        <!--SCRIPT PARA CARREGAR IMAGEM -->
+        <script type="text/javascript">
 
-                    function carregarImg() {
+            function carregarImg() {
 
-                        var target = document.getElementById('target');
-                        var file = document.querySelector("input[type=file]").files[0];
-                        var reader = new FileReader();
+                var target = document.getElementById('target');
+                var file = document.querySelector("input[type=file]").files[0];
+                var reader = new FileReader();
 
-                        reader.onloadend = function () {
-                            target.src = reader.result;
-                        };
+                reader.onloadend = function () {
+                    target.src = reader.result;
+                };
 
-                        if (file) {
-                            reader.readAsDataURL(file);
-
-
-                        } else {
-                            target.src = "";
-                        }
-                    }
-
-                </script>
+                if (file) {
+                    reader.readAsDataURL(file);
 
 
+                } else {
+                    target.src = "";
+                }
+            }
+
+        </script>
 
 
 
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $('#dataTable').dataTable({
-                            "ordering": false
-                        })
-
-                    });
-                </script>
 
 
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#dataTable').dataTable({
+                    "ordering": false
+                })
 
-                <script src="../js/mascaras.js"></script>
+            });
+        </script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+
+        <script src="../js/mascaras.js"></script>
 
 
 

@@ -1,4 +1,23 @@
 <?php 
+@session_start();
+require_once("../conexao.php");
+
+//RECUPERAR DADOS USUARIO
+$query = $pdo->query("SELECT * FROM usuarios where id = '$_SESSION[id_usuario]'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+$nome_usu = @$res[0]['nome'];
+$email_usu = @$res[0]['email'];
+$senha_usu = @$res[0]['senha'];
+$cpf_usu = @$res[0]['cpf'];
+$id_usu = @$res[0]['id'];
+
+
+
+
+
 
     //variaveis para o menu
 $pag = @$_GET["pag"];
@@ -79,7 +98,7 @@ $menu6 = "menu6";
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-users"></i>
-                    <span>Pessoas</span>
+                    <span>Funcionários</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -159,196 +178,234 @@ $menu6 = "menu6";
 
 
 
-                            <!-- Nav Item - User Information -->
-                            <li class="nav-item dropdown no-arrow">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nome do usuario</span>
-                                    <img class="img-profile rounded-circle" src="../img/sem-foto.jpg">
 
+                          <!-- Nav Item - User Information -->
+                          <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $nome_usu ?></span>
+                                <img class="img-profile rounded-circle" src="../img/sem-foto.jpg">
+
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="" data-toggle="modal" data-target="#ModalPerfil">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-primary"></i>
+                                    Editar Perfil
                                 </a>
-                                <!-- Dropdown - User Information -->
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="" data-toggle="modal" data-target="#ModalPerfil">
-                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-primary"></i>
-                                        Editar Perfil
-                                    </a>
 
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="../logout.php">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-danger"></i>
-                                        Sair
-                                    </a>
-                                </div>
-                            </li>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="../logout.php">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-danger"></i>
+                                    Sair
+                                </a>
+                            </div>
+                        </li>
 
-                        </ul>
+                    </ul>
 
-                    </nav>
-                    <!-- End of Topbar -->
+                </nav>
+                <!-- End of Topbar -->
 
-                    <!-- Begin Page Content -->
-                    <div class="container-fluid">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
 
-                        <?php if (@$pag == null) { 
-                            @include_once("home.php"); 
+                    <?php if (@$pag == null) { 
+                        @include_once("home.php"); 
 
-                        } else if (@$pag==$menu1) {
-                            @include_once(@$menu1.".php");
+                    } else if (@$pag==$menu1) {
+                        @include_once(@$menu1.".php");
 
-                        } else if (@$pag==$menu2) {
-                            @include_once(@$menu2.".php");
+                    } else if (@$pag==$menu2) {
+                        @include_once(@$menu2.".php");
 
-                        } else if (@$pag==$menu3) {
-                            include_once(@$menu3.".php");
+                    } else if (@$pag==$menu3) {
+                        include_once(@$menu3.".php");
 
-                        } else if (@$pag==$menu4) {
-                            @include_once(@$menu4.".php");
+                    } else if (@$pag==$menu4) {
+                        @include_once(@$menu4.".php");
 
-                        } else if (@$pag==$menu5) {
-                            @include_once(@$menu5.".php");
+                    } else if (@$pag==$menu5) {
+                        @include_once(@$menu5.".php");
 
-                        } else if (@$pag==$menu6) {
-                            @include_once(@$menu6.".php");
+                    } else if (@$pag==$menu6) {
+                        @include_once(@$menu6.".php");
 
 
 
-                        } else {
-                            @include_once("home.php");
-                        }
-                        ?>
-                        
-                        
+                    } else {
+                        @include_once("home.php");
+                    }
+                    ?>
 
-                    </div>
-                    <!-- /.container-fluid -->
-
-                </div>
-                <!-- End of Main Content -->
-
-
-
-            </div>
-            <!-- End of Content Wrapper -->
-
-        </div>
-        <!-- End of Page Wrapper -->
-
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-
-
-
-
-        <!--  Modal Perfil-->
-        <div class="modal fade" id="ModalPerfil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar Perfil</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-
-
-
-                    <form id="form-perfil" method="POST" enctype="multipart/form-data">
-                        <div class="modal-body">
-
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group">
-                                        <label >Nome</label>
-                                        <input value="<?php echo $nome ?>" type="text" class="form-control" id="nome" name="nome" placeholder="Nome">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label >CPF</label>
-                                        <input value="<?php echo $cpf ?>" type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label >Email</label>
-                                        <input value="<?php echo $email ?>" type="email" class="form-control" id="email" name="email" placeholder="Email">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label >Senha</label>
-                                        <input value="" type="password" class="form-control" id="text" name="senha" placeholder="Senha">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="col-md-12 form-group">
-                                        <label>Foto</label>
-                                        <input value="<?php echo $img ?>" type="file" class="form-control-file" id="imagem" name="imagem" onchange="carregarImg();">
-
-                                    </div>
-                                    <div class="col-md-12 mb-2">
-                                        <img src="../img/profiles/<?php echo $img ?>" alt="Carregue sua Imagem" id="target" width="100%">
-                                    </div>
-                                </div>
-                            </div> 
-
-
-
-                            <small>
-                                <div id="mensagem" class="mr-4">
-
-                                </div>
-                            </small>
-
-
-
-                        </div>
-                        <div class="modal-footer">
-
-
-
-                            <input value="<?php echo $idUsuario ?>" type="hidden" name="txtid" id="txtid">
-                            <input value="<?php echo $cpf ?>" type="hidden" name="antigo" id="antigo">
-
-                            <button type="button" id="btn-fechar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" name="btn-salvar-perfil" id="btn-salvar-perfil" class="btn btn-primary">Salvar</button>
-                        </div>
-                    </form>
 
 
                 </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+
+
+    <!--  Modal Perfil-->
+    <div class="modal fade" id="ModalPerfil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Perfil</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+
+
+
+                <form id="form-perfil" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body"> 
+
+
+
+                        <div class="form-group">
+                            <label >Nome</label>
+                            <input value="<?php echo $nome_usu ?>" type="text" class="form-control" id="nome_usu" name="nome_usu" placeholder="Nome">
+                        </div>
+
+                        <div class="form-group">
+                            <label >CPF</label>
+                            <input value="<?php echo $cpf_usu ?>" type="text" class="form-control" id="cpf_usu" name="cpf_usu" placeholder="CPF">
+                        </div>
+
+                        <div class="form-group">
+                            <label >Email</label>
+                            <input value="<?php echo $email_usu ?>" type="email" class="form-control" id="email_usu" name="email_usu" placeholder="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label >Senha</label>
+                            <input value="<?php echo $senha_usu ?>" type="password" class="form-control" id="senha_usu" name="senha_usu" placeholder="Senha">
+                        </div>
+
+
+
+
+
+                        <small>
+                            <div id="mensagem-perfil" class="mr-4">
+
+                            </div>
+                        </small>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+
+
+
+                        <input value="<?php echo $id_usu ?>" type="hidden" name="id_usu" id="id_usu">
+                        <input value="<?php echo $cpf_usu ?>" type="hidden" name="antigo_usu" id="antigo_usu">
+
+                        <button type="button" id="btn-fechar-perfil" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" name="btn-salvar-perfil" id="btn-salvar-perfil" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+
+
             </div>
         </div>
+    </div>
 
 
-        <!-- Core plugin JavaScript-->
-        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="../js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="../js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="../vendor/chart.js/Chart.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="../vendor/chart.js/Chart.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="../js/demo/chart-area-demo.js"></script>
-        <script src="../js/demo/chart-pie-demo.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="../js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-pie-demo.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="../js/demo/datatables-demo.js"></script>
-
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
-
-        <script src="../js/mascaras.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="../js/demo/datatables-demo.js"></script>
 
 
-    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
 
-    </html>
+    <script src="../js/mascaras.js"></script>
+
+
+</body>
+
+</html>
 
 
 
+<!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+<script type="text/javascript">
+    $("#form-perfil").submit(function () {
+       
+        event.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: "editar-perfil.php",
+            type: 'POST',
+            data: formData,
+
+            success: function (mensagem) {
+
+                $('#mensagem-perfil').removeClass()
+
+                if (mensagem.trim() == "Salvo com Sucesso!!") {
+
+                    //$('#nome').val('');
+                    //$('#cpf').val('');
+                    $('#btn-fechar-perfil').click();
+                    window.location = "index.php";
+
+                } else {
+
+                    $('#mensagem-perfil').addClass('text-danger')
+                }
+
+                $('#mensagem-perfil').text(mensagem)
+
+            },
+
+            cache: false,
+            contentType: false,
+            processData: false,
+            xhr: function () {  // Custom XMLHttpRequest
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
+                    myXhr.upload.addEventListener('progress', function () {
+                        /* faz alguma coisa durante o progresso do upload */
+                    }, false);
+                }
+                return myXhr;
+            }
+        });
+    });
+</script>

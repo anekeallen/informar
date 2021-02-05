@@ -13,8 +13,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 ?>
 
 <div class="row mt-4 mb-4">
-    <a type="button" title="Cadastrar Novo Secretário" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=<?php echo $pag ?>&funcao=novo">Novo Tesoureiro</a>
-    <a type="button" title="Cadastrar Novo Secretário" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
+    <a type="button" title="Cadastrar Novo Tesoureiro" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=<?php echo $pag ?>&funcao=novo">Novo Tesoureiro</a>
+    <a type="button" title="Cadastrar Novo Tesoureiro" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
     
 </div>
 

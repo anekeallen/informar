@@ -1,5 +1,5 @@
 <?php 
-$pag = "funcionarios";
+$pag = "turmas";
 require_once("../conexao.php"); 
 
 @session_start();
@@ -13,8 +13,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 ?>
 
 <div class="row mt-4 mb-4">
-    <a type="button" title="Cadastrar Novo Funcionário" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=<?php echo $pag ?>&funcao=novo">Novo Funcionário</a>
-    <a type="button" title="Cadastrar Novo Funcionário" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
+    <a type="button" title="Cadastrar Nova Turma" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=<?php echo $pag ?>&funcao=novo">Nova Turma</a>
+    <a type="button" title="Cadastrar Nova Turma" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
     
 </div>
 
@@ -27,12 +27,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th >Nome</th>
-                        <th class="classe-nova">Email</th>
-                        <th class="classe-nova ">Telefone</th>
-                        <th class="classe-nova classe-nova-tel">CPF</th>
-                        <th class="classe-nova classe-nova-tel">Cargo</th>
-                        <th>Ações</th>
+                        <th >Turma</th>
+                        <th >Descrição</th>
+                        <th >Ações</th>
                     </tr>
                 </thead>
 
@@ -40,19 +37,15 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                  <?php 
 
-                 $query = $pdo->query("SELECT * FROM funcionarios order by id desc ");
+                 $query = $pdo->query("SELECT * FROM turmas order by id desc ");
                  $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
                  for ($i=0; $i < count($res); $i++) { 
                   foreach ($res[$i] as $key => $value) {
                   }
 
-                  $nome = $res[$i]['nome'];
-                  $email = $res[$i]['email'];
-                  $telefone = $res[$i]['telefone'];
-                  $cpf = $res[$i]['cpf'];
-                  $endereco = $res[$i]['endereco'];
-                  $cargo = $res[$i]['cargo'];
+                  $turma = $res[$i]['turma'];
+                  $descricao = $res[$i]['descricao'];
 
 
                   $id = $res[$i]['id'];
@@ -62,16 +55,14 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
                   <tr>
-                    <td><?php echo $nome ?></td>
-                    <td class="classe-nova"><?php echo $email ?></td>
-                    <td class="classe-nova "><?php echo $telefone ?></td>
-                    <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
-                    <td class="classe-nova classe-nova-tel"><?php echo $cargo ?></td>
+                    <td><?php echo $turma ?></td>
+                    <td><?php echo $descricao ?></td>
+
 
 
 
                     <td>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Secretário'><i class="fas fa-info-circle"></i></a>
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados da Turma'><i class="fas fa-info-circle"></i></a>
                         <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
 
                         <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
@@ -103,15 +94,12 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $titulo = "Editar Registro";
                     $id2 = $_GET['id'];
 
-                    $query = $pdo->query("SELECT * FROM funcionarios where id = '" . $id2 . "' ");
+                    $query = $pdo->query("SELECT * FROM turmas where id = '" . $id2 . "' ");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                    $nome2 = $res[0]['nome'];
-                    $email2 = $res[0]['email'];
-                    $telefone2 = $res[0]['telefone'];
-                    $endereco2 = $res[0]['endereco'];
-                    $cpf2 = $res[0]['cpf'];
-                     $cargo2 = $res[0]['cargo'];
+                    $turma2 = $res[0]['turma'];
+                    $descricao2 = $res[0]['descricao'];
+
 
                 } else {
                     $titulo = "Inserir Registro";
@@ -130,34 +118,14 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label >Nome</label>
-                        <input required value="<?php echo @$nome2 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
+                        <label >Turma</label>
+                        <input required value="<?php echo @$turma2 ?>" type="text" class="form-control" id="turma-cat" name="turma-cat" placeholder="Nome">
                     </div>
                     <div class="form-group">
-                        <label >Email</label>
-                        <input required value="<?php echo @$email2 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
+                        <label >Descrição</label>
+                        <input value="<?php echo @$descricao2 ?>" type="text" class="form-control" id="descricao-cat" name="descricao-cat" placeholder="Descrição">
                     </div>
 
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <label >Telefone</label>
-                            <input required value="<?php echo @$telefone2 ?>" type="text" class="form-control" id="telefone-cat" name="telefone-cat" placeholder="Telefone">
-                        </div>
-                        <div class="form-group col-6 ">
-                            <label >CPF</label>
-                            <input required value="<?php echo @$cpf2 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label >Cargo</label>
-                        <input required value="<?php echo @$cargo2 ?>" type="text" class="form-control" id="cargo-cat" name="cargo-cat" placeholder="Cargo">
-                    </div>
-
-
-                    <div class="form-group">
-                        <label >Endereço</label>
-                        <input value="<?php echo @$endereco2 ?>" type="text" class="form-control" id="endereco-cat" name="endereco-cat" placeholder="Endereço">
-                    </div>
 
 
 
@@ -177,8 +145,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
                     <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
-                    <input value="<?php echo @$cpf2 ?>" type="hidden" name="antigo" id="antigo">
-                    <input value="<?php echo @$email2 ?>" type="hidden" name="antigo2" id="antigo2">
+                    <input value="<?php echo @$turma2 ?>" type="hidden" name="antigo" id="antigo">
+
 
                     <button type="button" id="btn-fechar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" name="btn-salvar" id="btn-salvar" class="btn btn-primary">Salvar</button>
@@ -229,7 +197,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Dados do Funcionário</h5>
+                <h5 class="modal-title">Dados da Disciplina</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -241,14 +209,11 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                     $id2 = $_GET['id'];
 
-                    $query = $pdo->query("SELECT * FROM funcionarios where id = '$id2' ");
+                    $query = $pdo->query("SELECT * FROM turmas where id = '$id2' ");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                    $nome3 = $res[0]['nome'];
-                    $cpf3 = $res[0]['cpf'];
-                    $telefone3 = $res[0]['telefone'];
-                    $email3 = $res[0]['email'];
-                    $endereco3 = $res[0]['endereco']; 
-                    $cargo3 = $res[0]['cargo']; 
+                    $turma3 = $res[0]['turma'];
+                    $descricao3 = $res[0]['descricao'];
+                    
                     
                 } 
 
@@ -256,34 +221,14 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 ?>
 
                 <div class="form-group">
-                    <label >Nome</label>
-                    <input disabled value="<?php echo @$nome3 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
+                    <label >Turma</label>
+                    <input disabled value="<?php echo @$turma3 ?>" type="text" class="form-control" id="turma-cat" name="turma-cat" placeholder="Nome">
                 </div>
                 <div class="form-group">
-                    <label >Email</label>
-                    <input disabled value="<?php echo @$email3 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
+                    <label >Descrição</label>
+                    <input disabled value="<?php echo @$descricao3 ?>" type="text" class="form-control" id="descricao-cat" name="descricao-cat" placeholder="Descrição">
                 </div>
-
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label >Telefone</label>
-                        <input disabled value="<?php echo @$telefone3 ?>" type="text" class="form-control" id="telefone-cat" name="telefone-cat" placeholder="Telefone">
-                    </div>
-                    <div class="form-group col-6 ">
-                        <label >CPF</label>
-                        <input disabled value="<?php echo @$cpf3 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
-                    </div>
-                </div>
-                 <div class="form-group">
-                    <label >Cargo</label>
-                    <input disabled value="<?php echo @$cargo3 ?>" type="text" class="form-control" id="cargo-cat" name="cargo-cat" placeholder="Cargo">
-                </div>
-
-
-                <div class="form-group">
-                    <label >Endereço</label>
-                    <input disabled value="<?php echo @$endereco3 ?>" type="text" class="form-control" id="endereco-cat" name="endereco-cat" placeholder="Endereço">
-                </div>
+                
 
 
 

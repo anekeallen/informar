@@ -26,7 +26,8 @@ $menu2 = "professores";
 $menu3 = "tesoureiros";
 $menu4 = "funcionarios";
 $menu5 = "disciplinas";
-$menu6 = "turmas";
+$menu6 = "salas";
+$menu7 = "turmas";
 
 
 ?>
@@ -118,10 +119,10 @@ $menu6 = "turmas";
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        
+
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Disciplinas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu6 ?>">Turmas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Menu 5</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu6 ?>">Salas</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu7 ?>">Turmas</a>
 
                     </div>
                 </div>
@@ -171,7 +172,9 @@ $menu6 = "turmas";
                         <button id="sidebarToggleTop" class="btn btn-link d-lg-none rounded-circle mr-3">
                             <i class="fa fa-bars"></i>
                         </button>
-                        <img class="mt-2" src="../img/logo.png" width="150">
+                        <a href="index.php"> 
+                            <img class="mt-3 mb-2" src="../img/logo.png" width="190">
+                        </a>
 
 
 
@@ -367,7 +370,7 @@ $menu6 = "turmas";
 <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
 <script type="text/javascript">
     $("#form-perfil").submit(function () {
-       
+
         event.preventDefault();
         var formData = new FormData(this);
 

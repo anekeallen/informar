@@ -15,14 +15,10 @@ $cpf_usu = @$res[0]['cpf'];
 $id_usu = @$res[0]['id'];
 
 
-
-
-
-
     //variaveis para o menu
 $pag = @$_GET["pag"];
-$menu1 = "secretarios";
-$menu2 = "professores";
+$menu1 = "alunos";
+$menu2 = "responsaveis";
 $menu3 = "tesoureiros";
 $menu4 = "funcionarios";
 $menu5 = "disciplinas";
@@ -45,7 +41,7 @@ $menu7 = "turmas";
     <meta name="description" content="">
     <meta name="author" content="DevAllen">
 
-    <title>Painel Administrativo</title>
+    <title>Painel Secretaria</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -78,7 +74,7 @@ $menu7 = "turmas";
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
 
-                <div class="sidebar-brand-text mx-3">Administrador</div>
+                <div class="sidebar-brand-text mx-3">Secretaria</div>
             </a>
 
             <!-- Divider -->
@@ -99,14 +95,13 @@ $menu7 = "turmas";
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-users"></i>
-                    <span>Funcionários</span>
+                    <span>Pessoas</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu1 ?>">Secretários</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu2 ?>">Professores</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Tesoureiros</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu4 ?>">Outros Funcionários</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu1 ?>">Alunos</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu2 ?>">Responsáveis</a>
+                        
                     </div>
                 </div>
             </li>

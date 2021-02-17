@@ -551,6 +551,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                     $res_r3 = $query->fetchAll(PDO::FETCH_ASSOC);
 
                     $cpf_responsavel3 = $res_r3[0]['CPFCNPJ'];
+                    $nome_responsavel3 = $res_r3[0]['NomeResponsavel'];
+                    $telefone_responsavel3 = $res_r3[0]['Celular'];
 
                     $query = $pdo->query("SELECT * FROM tbendereco where IdEndereco = '$id_endereco3' ");
                     $res_end = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -610,17 +612,30 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                     <div class="row">
 
-                        <div class="form-group col-md-4 ">
+                        <div class="form-group col-md-6 ">
                             <label for="cpf-cat" >CPF</label>
                             <input disabled value="<?php echo @$cpf3 ?>" type="text" class="form-control" >
                         </div>
-                        <div class="form-group col-md-4 ">
+                        <div class="form-group col-md-6 ">
                             <label >RG</label>
                             <input disabled value="<?php echo @$rg3 ?>" type="text" class="form-control">
                         </div>
-                        <div class="form-group col-md-4 ">
+                        
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6 ">
+                            <label >Nome do Responsável</label>
+                            <input disabled value="<?php echo @$nome_responsavel3 ?>" type="text" class="form-control"  >
+
+                    
+                        </div>
+                        <div class="form-group col-md-3 ">
                             <label >CPF do Responsável</label>
                             <input disabled value="<?php echo @$cpf_responsavel3 ?>" type="text" class="form-control"  >
+                        </div>
+                        <div class="form-group col-md-3 ">
+                            <label >Tel. do Responsável</label>
+                            <input disabled value="<?php echo @$telefone_responsavel3 ?>" type="text" class="form-control"  >
                         </div>
                     </div>
                     <div class="row">
@@ -685,7 +700,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                         </div>
                         <div class="row ml-1">
-                            <div class="form-group col-md-3 ">
+                            <div class="form-group col-md-5 ">
                                 <label >Cidade</label>
                                 <input disabled value="<?php echo @$cidade3 ?>" type="text" class="form-control" >
                             </div>
@@ -700,7 +715,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-3 ">
+                            <div class="form-group col-md-5 ">
                                 <label >CEP</label>
                                 <input value="<?php echo @$cep3 ?>" type="text" class="form-control"  disabled >
                             </div>

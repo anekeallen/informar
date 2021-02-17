@@ -17,7 +17,8 @@ $folha = $_POST['folha-cat'];
 $dataRegistro = $_POST['dataRegistro-cat'];
 $nacionalidade = $_POST['nacionalidade-cat'];
 $naturalidade = $_POST['naturalidade-cat'];
-$naturalidadeUF = $_POST['UF-cat'];
+$naturalidadeUF = $_POST['UF-cat']; 
+$cpf_responsavel = $_POST['cpf_responsavel-cat']; 
 //$foto = $_POST['imagem'];
 
 
@@ -27,8 +28,24 @@ $antigo = $_POST['antigo'];
 
 $id = $_POST['txtid2'];
 
+//Recuperar A DATA PARA VERIFICAR SE O ALUNO É MENOR DE IDADE
+
+$data_18 = date("Y-m-d",strtotime(date("Y-m-d")."-18 year"));
+if ($cpf_responsavel == "") {
+	if ($data > $data_18) {
+		echo "O Aluno é menor de Idade, Preencha o CPF do Responsável!";
+		exit();
+	}
+	
+}
+
+
 if($nome == ""){
 	echo 'O Nome é Obrigatório!';
+	exit();
+}
+if($registro == ""){
+	echo 'O Registro é Obrigatório!';
 	exit();
 }
 
@@ -36,8 +53,8 @@ if($mae == ""){
 	echo 'O Campo é Obrigatório!';
 	exit();
 }
-if($registro == ""){
-	echo 'O Campo é Obrigatório!';
+if($data == ""){
+	echo 'A Data é Obrigatória!';
 	exit();
 }
 
@@ -51,6 +68,23 @@ if($antigo != $registro){
 	if($total_reg > 0){
 		echo 'O Registro já está Cadastrado!';
 		exit();
+	}
+}
+
+//VERIFICAR SE O RESPONSAVEL ESTA CADASTRADO
+
+if($cpf_responsavel != ""){
+	$query = $pdo->query("SELECT * FROM tbresponsavel where CPFCNPJ = '$cpf_responsavel' ");
+	$res_respo = $query->fetchAll(PDO::FETCH_ASSOC);
+	$total_reg_respo = @count($res_respo);
+	if($total_reg_respo == 0){
+		echo 'O CPF do Responsável não foi encontrado, faça o cadastro do responsável!!';
+		exit();
+	}else{
+
+		$id_responsavel = $res_respo[0]['IdResponsavel'];
+		$id_endereco = $res_respo[0]['IdEndereco'];
+
 	}
 }
 
@@ -74,18 +108,31 @@ if($ext == 'png' or $ext == 'jpg' or $ext == 'jpeg' or $ext == 'gif'){
 	exit();
 }
 
+//VERIFICAR O ID DO ENDEREÇO PELO CPF DO RESPONSAVEL
+
+
 
 
 if($id == ""){
-	$res = $pdo->prepare("INSERT INTO tbaluno SET NomeAluno = :nome, CPF = :cpf, Email = :email,  Celular = :telefone, Sexo = :sexo, foto = '$imagem', NomeMae = :mae , NomePai = :pai, DataNascimento = :data, RG = :rg, RegistroNascimentoData = :registroData, RegistroNascimentoCartorio = :registroCartorio, RegistroNascimentoFolha =:registroFolha, RegistroNascimentoLivro = :registroLivro, RegistroNascimentoNumero = :registroNumero, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade");	
+	$res = $pdo->prepare("INSERT INTO tbaluno SET NomeAluno = :nome, CPF = :cpf, Email = :email,  Celular = :telefone, Sexo = :sexo, foto = '$imagem', NomeMae = :mae , NomePai = :pai, DataNascimento = :data, RG = :rg, RegistroNascimentoData = :registroData, RegistroNascimentoCartorio = :registroCartorio, RegistroNascimentoFolha =:registroFolha, RegistroNascimentoLivro = :registroLivro, RegistroNascimentoNumero = :registroNumero, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade, dataCadastro = curDate(), IdResponsavel = '$id_responsavel', IdEndereco = '$id_endereco'");
+	$res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha, nivel = :nivel");
+	$res2->bindValue(":senha", "123");
+	$res2->bindValue(":nivel", "aluno");
+
 
 
 }else{
 	if ($imagem == "sem-foto.jpg") {
-		$res = $pdo->prepare("UPDATE tbaluno SET NomeAluno = :nome, CPF = :cpf, Email = :email,  Celular = :telefone, Sexo = :sexo, NomeMae = :mae , NomePai = :pai, DataNascimento = :data, RG = :rg, RegistroNascimentoData = :registroData, RegistroNascimentoCartorio =:registroCartorio, RegistroNascimentoFolha = :registroFolha, RegistroNascimentoLivro = :registroLivro, RegistroNascimentoNumero = :registroNumero, NaturalidadeUF = :naturalidadeUF, 	NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade WHERE IdAluno = '$id'");
+		$res = $pdo->prepare("UPDATE tbaluno SET NomeAluno = :nome, CPF = :cpf, Email = :email,  Celular = :telefone, Sexo = :sexo, NomeMae = :mae , NomePai = :pai, DataNascimento = :data, RG = :rg, RegistroNascimentoData = :registroData, RegistroNascimentoCartorio =:registroCartorio, RegistroNascimentoFolha = :registroFolha, RegistroNascimentoLivro = :registroLivro, RegistroNascimentoNumero = :registroNumero, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade WHERE IdAluno = '$id'");
+
+		$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha where cpf = '$registro'");
+		$res2->bindValue(":senha", "123");
 
 	}else{
 		$res = $pdo->prepare("UPDATE tbaluno SET NomeAluno = :nome, CPF = :cpf, Email = :email,  Celular = :telefone, Sexo = :sexo, foto = '$imagem', NomeMae = :mae , NomePai = :pai, DataNascimento = :data, RG = :rg, RegistroNascimentoData = :registroData, RegistroNascimentoCartorio = :registroCartorio, RegistroNascimentoFolha =:registroFolha, RegistroNascimentoLivro = :registroLivro, RegistroNascimentoNumero = :registroNumero, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade WHERE IdAluno = '$id'");
+
+		$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha where cpf = '$registro'");
+		$res2->bindValue(":senha", "123");
 
 
 	}
@@ -112,7 +159,14 @@ $res->bindValue(":naturalidadeCidade", $naturalidade);
 $res->bindValue(":nacionalidade", $nacionalidade);
 $res->bindValue(":sexo", $sexo);
 
+$res2->bindValue(":nome", $nome);
+$res2->bindValue(":cpf", $registro);
+$res2->bindValue(":email", $email);
+
+
+
 $res->execute();
+$res2->execute();
 
 
 echo 'Salvo com Sucesso!!';

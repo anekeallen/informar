@@ -11,5 +11,6 @@ $(document).ready(function () {
     $('#cnpj').mask('00.000.000/0000-00');
     $('#rg').mask('99.999.999-9'); 
     $('#rg-cat').mask('99.999.999-9'); 
+    $('#horario').mask('00:00 às 00:00');
 
 });

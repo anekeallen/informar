@@ -19,7 +19,7 @@ $id_usu = @$res[0]['id'];
 $pag = @$_GET["pag"];
 $menu1 = "alunos";
 $menu2 = "responsaveis";
-$menu3 = "tesoureiros";
+$menu3 = "turmas";
 $menu4 = "funcionarios";
 $menu5 = "disciplinas";
 $menu6 = "salas";
@@ -110,14 +110,14 @@ $menu7 = "turmas";
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-home"></i>
-                    <span>Turmas / Disciplinas</span>
+                    <span>Turmas / Matrículas</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
 
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Disciplinas</a>
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu6 ?>">Salas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu7 ?>">Turmas</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Turmas</a>
 
                     </div>
                 </div>
@@ -230,7 +230,8 @@ $menu7 = "turmas";
                     } else if (@$pag==$menu6) {
                         @include_once(@$menu6.".php");
 
-
+                    } else if (@$pag==$menu7) {
+                        @include_once(@$menu7.".php");
 
                     } else {
                         @include_once("home.php");

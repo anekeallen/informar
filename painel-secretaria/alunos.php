@@ -38,65 +38,65 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                 <tbody>
 
-                 <?php 
+                   <?php 
 
-                 $query = $pdo->query("SELECT * FROM tbaluno order by IdAluno desc ");
-                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                   $query = $pdo->query("SELECT * FROM tbaluno order by IdAluno desc ");
+                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                 for ($i=0; $i < count($res); $i++) { 
-                  foreach ($res[$i] as $key => $value) {
-                  }
+                   for ($i=0; $i < count($res); $i++) { 
+                      foreach ($res[$i] as $key => $value) {
+                      }
 
-                  $nome = $res[$i]['NomeAluno'];
-                  $foto = $res[$i]['foto'];
-
-
-                  $dataNascimento = date('d/m/Y',  strtotime($res[$i]['DataNascimento'])); 
+                      $nome = $res[$i]['NomeAluno'];
+                      $foto = $res[$i]['foto'];
 
 
-
-                  $id = $res[$i]['IdAluno'];
-                  $id_responsavel = $res[$i]['IdResponsavel'];
-
-                  $query = $pdo->query("SELECT * FROM tbresponsavel where IdResponsavel = '$id_responsavel' ");
-                  $res_r = $query->fetchAll(PDO::FETCH_ASSOC);
-
-                  $nome_responsavel = $res_r[0]['NomeResponsavel'];
-                  $celular = $res_r[0]['Celular'];
-
-
-                  ?>
-
-
-                  <tr>
-                    <td><?php echo @$nome ?></td>
-                    <td class="classe-nova"><?php echo @$dataNascimento ?></td>
-                    <td class="classe-nova "><?php echo @$nome_responsavel ?></td>
-                    <td class="classe-nova classe-nova-tel"><?php echo $celular ?></td>
-                    <td class="text-center"><a href="index.php?pag=<?php echo $pag ?>&funcao=foto&id=<?php echo $id ?>"><img width="30" src="../img/alunos/<?php echo $foto ?>"><a></td>
+                      $dataNascimento = date('d/m/Y',  strtotime($res[$i]['DataNascimento'])); 
 
 
 
-                        <td>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Aluno'><i class="fas fa-info-circle"></i></a>
+                      $id = $res[$i]['IdAluno'];
+                      $id_responsavel = $res[$i]['IdResponsavel'];
+
+                      $query = $pdo->query("SELECT * FROM tbresponsavel where IdResponsavel = '$id_responsavel' ");
+                      $res_r = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                      $nome_responsavel = $res_r[0]['NomeResponsavel'];
+                      $celular = $res_r[0]['Celular'];
 
 
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
-
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-
-                        </td>
-                    </tr>
-                <?php } ?>
+                      ?>
 
 
+                      <tr>
+                        <td><a title="Ver Matrículas" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=matriculas&id=<?php echo $id ?>"><?php echo @$nome ?></a></td>
+                        <td class="classe-nova"><?php echo @$dataNascimento ?></td>
+                        <td class="classe-nova "><?php echo @$nome_responsavel ?></td>
+                        <td class="classe-nova classe-nova-tel"><?php echo $celular ?></td>
+                        <td class="text-center"><a href="index.php?pag=<?php echo $pag ?>&funcao=foto&id=<?php echo $id ?>"><img width="30" src="../img/alunos/<?php echo $foto ?>"><a></td>
 
 
 
-            </tbody>
-        </table>
+                            <td>
+                                <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Aluno'><i class="fas fa-info-circle"></i></a>
+
+
+                                <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
+
+                                <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+
+                            </td>
+                        </tr>
+                    <?php } ?>
+
+
+
+
+
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </div>
 
 
@@ -143,92 +143,92 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
 
                     switch ($naturalidadeUF2) {
-                     case 'AC':
-                     $selectedAC = 'Selected';
-                     break;
-                     case 'AL':
-                     $selectedAL = 'Selected';
-                     break;
-                     case 'AP':
-                     $selectedAP = 'Selected';
-                     break;
-                     case 'AM':
-                     $selectedAM = 'Selected';
-                     break;
-                     case 'BA':
-                     $selectedBA = 'Selected';
-                     break;
-                     case 'CE':
-                     $selectedCE = 'Selected';
-                     break;
-                     case 'DF':
-                     $selectedDF = 'Selected';
-                     break;
-                     case 'ES':
-                     $selectedES = 'Selected';
-                     break;
-                     case 'GO':
-                     $selectedGO = 'Selected';
-                     break;
-                     case 'MA':
-                     $selectedMA = 'Selected';
-                     break;
-                     case 'MT':
-                     $selectedMT = 'Selected';
-                     break;
-                     case 'MS':
-                     $selectedMS = 'Selected';
-                     break;
-                     case 'MG':
-                     $selectedMG = 'Selected';
-                     break;
-                     case 'PA':
-                     $selectedPA = 'Selected';
-                     break;
-                     case 'PB':
-                     $selectedPB = 'Selected';
-                     break;
-                     case 'PR':
-                     $selectedPR = 'Selected';
-                     break;
-                     case 'PE':
-                     $selectedPE = 'Selected';
-                     break;
-                     case 'PI':
-                     $selectedPI = 'Selected';
-                     break;
-                     case 'RJ':
-                     $selectedRJ = 'Selected';
-                     break;
-                     case 'RN':
-                     $selectedRN = 'Selected';
-                     break;
-                     case 'RS':
-                     $selectedRS = 'Selected';
-                     break;
-                     case 'RO':
-                     $selectedRO = 'Selected';
-                     break;
-                     case 'RR':
-                     $selectedRR = 'Selected';
-                     break;
-                     case 'SC':
-                     $selectedSC = 'Selected';
-                     break;
-                     case 'SP':
-                     $selectedSP = 'Selected';
-                     break;
-                     case 'SE':
-                     $selectedSE = 'Selected';
-                     break;
-                     case 'TO':
-                     $selectedTO = 'Selected';
-                     break;
-                 }
+                       case 'AC':
+                       $selectedAC = 'Selected';
+                       break;
+                       case 'AL':
+                       $selectedAL = 'Selected';
+                       break;
+                       case 'AP':
+                       $selectedAP = 'Selected';
+                       break;
+                       case 'AM':
+                       $selectedAM = 'Selected';
+                       break;
+                       case 'BA':
+                       $selectedBA = 'Selected';
+                       break;
+                       case 'CE':
+                       $selectedCE = 'Selected';
+                       break;
+                       case 'DF':
+                       $selectedDF = 'Selected';
+                       break;
+                       case 'ES':
+                       $selectedES = 'Selected';
+                       break;
+                       case 'GO':
+                       $selectedGO = 'Selected';
+                       break;
+                       case 'MA':
+                       $selectedMA = 'Selected';
+                       break;
+                       case 'MT':
+                       $selectedMT = 'Selected';
+                       break;
+                       case 'MS':
+                       $selectedMS = 'Selected';
+                       break;
+                       case 'MG':
+                       $selectedMG = 'Selected';
+                       break;
+                       case 'PA':
+                       $selectedPA = 'Selected';
+                       break;
+                       case 'PB':
+                       $selectedPB = 'Selected';
+                       break;
+                       case 'PR':
+                       $selectedPR = 'Selected';
+                       break;
+                       case 'PE':
+                       $selectedPE = 'Selected';
+                       break;
+                       case 'PI':
+                       $selectedPI = 'Selected';
+                       break;
+                       case 'RJ':
+                       $selectedRJ = 'Selected';
+                       break;
+                       case 'RN':
+                       $selectedRN = 'Selected';
+                       break;
+                       case 'RS':
+                       $selectedRS = 'Selected';
+                       break;
+                       case 'RO':
+                       $selectedRO = 'Selected';
+                       break;
+                       case 'RR':
+                       $selectedRR = 'Selected';
+                       break;
+                       case 'SC':
+                       $selectedSC = 'Selected';
+                       break;
+                       case 'SP':
+                       $selectedSP = 'Selected';
+                       break;
+                       case 'SE':
+                       $selectedSE = 'Selected';
+                       break;
+                       case 'TO':
+                       $selectedTO = 'Selected';
+                       break;
+                   }
 
 
 
-             } else {
+               } else {
                 $titulo = "Inserir Registro";
 
             }
@@ -246,7 +246,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                 <div class="row">
                     <div class="col-md-9">
-                     <div class="row">
+                       <div class="row">
                         <div class="form-group col-md-6">
                             <label >Nome do Aluno</label>
                             <input onkeyup="maiuscula(this)" required value="<?php echo @$nome2 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
@@ -260,17 +260,17 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                             <select class="form-control" required value="<?php echo @$sexo2 ?>" id="sexo-cat" name="sexo-cat">
                                 <option <?php if (@$sexo2 =='M') {
 
-                                   ?> selected <?php } ?> value="M">Masculino</option>
-                                   <option <?php if (@$sexo2 =='F') {
+                                 ?> selected <?php } ?> value="M">Masculino</option>
+                                 <option <?php if (@$sexo2 =='F') {
 
-                                       ?> selected <?php } ?> value="F">Feminino</option>
+                                     ?> selected <?php } ?> value="F">Feminino</option>
 
-                                   </select>
+                                 </select>
 
-                               </div>
-                           </div>
+                             </div>
+                         </div>
 
-                           <div class="row">
+                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label >Mãe</label>
                                 <input onkeyup="maiuscula(this)" required value="<?php echo @$mae2 ?>" type="text" class="form-control" id="mae-cat" name="mae-cat" placeholder="Nome da Mãe">
@@ -478,8 +478,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                 </button>
             </div>
             <div class="modal-body">
-             <?php 
-             if (@$_GET['funcao'] == 'foto') {
+               <?php 
+               if (@$_GET['funcao'] == 'foto') {
 
                 $id_foto = $_GET['id'];
 
@@ -571,7 +571,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                 <div class="row">
                     <div class="col-md-8">
-                     <div class="row">
+                       <div class="row">
                         <div class="form-group col-md-6">
                             <label >Nome do Aluno</label>
                             <input onkeyup="maiuscula(this)" disabled value="<?php echo @$nome3 ?>" type="text" class="form-control">
@@ -627,7 +627,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                             <label >Nome do Responsável</label>
                             <input disabled value="<?php echo @$nome_responsavel3 ?>" type="text" class="form-control"  >
 
-                    
+
                         </div>
                         <div class="form-group col-md-3 ">
                             <label >CPF do Responsável</label>
@@ -728,67 +728,131 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
 
 
-                    </div>
-                    <div class="col-md-4 p-0 mt-3 mb-3 d-flex justify-content-center align-items-center">
+                </div>
+                <div class="col-md-4 p-0 mt-3 mb-3 d-flex justify-content-center align-items-center">
 
-                        <div id="divImgConta" >
+                    <div id="divImgConta" >
 
-                            <img class="rounded mx-auto d-block align-content-center img-fluid" src="../img/alunos/<?php echo $imagem3 ?>" width="150" height="150" id="target">     
-
-                        </div>
+                        <img class="rounded mx-auto d-block align-content-center img-fluid" src="../img/alunos/<?php echo $imagem3 ?>" width="150" height="150" id="target">     
 
                     </div>
 
                 </div>
 
-
             </div>
 
 
+        </div>
+    </div>
+</div>
+</div>
+
+<!--MODAL MOSTRAR MATRICULAS -->
+<div class="modal" id="modal-matriculas" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Matrículas do Aluno</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <?php 
+                $query = $pdo->query("SELECT * FROM matriculas where aluno = '$_GET[id]' order by id desc ");
+                $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
+
+                  $aluno = $res[$i]['aluno'];
+                  $turma = $res[$i]['turma'];
+                  $data = $res[$i]['data'];
+                  $dataF = implode('/', array_reverse(explode('-', $data)));
+                  $id_m = $res[$i]['id'];
+
+                  $query_r1 = $pdo->query("SELECT * FROM turmas where id = '".$turma."' ");
+                  $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
+
+                  $id_disciplina = $res_r1[0]['disciplina'];
+
+                  $query_r2 = $pdo->query("SELECT * FROM disciplinas where id = '".$id_disciplina."' ");
+                  $res_r2 = $query_r2->fetchAll(PDO::FETCH_ASSOC);
+
+                  $nome_disciplina = $res_r2[0]['nome'];
 
 
-            <?php 
+                  ?>
 
-            if (@$_GET["funcao"] != null && @$_GET["funcao"] == "novo") {
-                echo "<script>$('#modalDados').modal('show');</script>";
-            }
 
-            if (@$_GET["funcao"] != null && @$_GET["funcao"] == "editar") {
-                echo "<script>$('#modalDados').modal('show');</script>";
-            }
+                  <span><?php echo @$nome_disciplina ?>
 
-            if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
-                echo "<script>$('#modal-deletar').modal('show');</script>";
-            }
-            if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
-                echo "<script>$('#modal-endereco').modal('show');</script>";
-            }
-            if (@$_GET["funcao"] != null && @$_GET["funcao"] == "foto") {
-                echo "<script>$('#modal-foto').modal('show');</script>";
-            }
-            
+                  <a target="_blank" title="Gerar Contrato" href="../rel/contrato_matricula.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-primary ml-3"></i></span></a>
 
-            ?>
+                  <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-secondary ml-2"></i></span></a>
+
+                  <hr style="margin: 4px">
+
+              <?php } ?>
 
 
 
-            <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
-            <script type="text/javascript">
-                $("#form").submit(function () {
-                    var pag = "<?=$pag?>";
-                    event.preventDefault();
-                    var formData = new FormData(this);
+          </div>
 
-                    $.ajax({
-                        url: pag + "/inserir.php",
-                        type: 'POST',
-                        data: formData,
+      </div>
+  </div>
+</div>
 
-                        success: function (mensagem) {
 
-                            $('#mensagem').removeClass()
 
-                            if (mensagem.trim() == "Salvo com Sucesso!!") {
+
+<?php 
+
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "novo") {
+    echo "<script>$('#modalDados').modal('show');</script>";
+}
+
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "editar") {
+    echo "<script>$('#modalDados').modal('show');</script>";
+}
+
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
+    echo "<script>$('#modal-deletar').modal('show');</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
+    echo "<script>$('#modal-endereco').modal('show');</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "foto") {
+    echo "<script>$('#modal-foto').modal('show');</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculas") {
+    echo "<script>$('#modal-matriculas').modal('show');</script>";
+}
+
+
+?>
+
+
+
+<!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+<script type="text/javascript">
+    $("#form").submit(function () {
+        var pag = "<?=$pag?>";
+        event.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: pag + "/inserir.php",
+            type: 'POST',
+            data: formData,
+
+            success: function (mensagem) {
+
+                $('#mensagem').removeClass()
+
+                if (mensagem.trim() == "Salvo com Sucesso!!") {
 
                     //$('#nome').val('');
                     //$('#cpf').val('');
@@ -817,96 +881,96 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                 return myXhr;
             }
         });
-                });
-            </script>
+    });
+</script>
 
 
 
 
 
-            <!--AJAX PARA EXCLUSÃO DOS DADOS -->
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    var pag = "<?=$pag?>";
-                    $('#btn-deletar').click(function (event) {
-                        event.preventDefault();
+<!--AJAX PARA EXCLUSÃO DOS DADOS -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        var pag = "<?=$pag?>";
+        $('#btn-deletar').click(function (event) {
+            event.preventDefault();
 
-                        $.ajax({
-                            url: pag + "/excluir.php",
-                            method: "post",
-                            data: $('form').serialize(),
-                            dataType: "text",
-                            success: function (mensagem) {
+            $.ajax({
+                url: pag + "/excluir.php",
+                method: "post",
+                data: $('form').serialize(),
+                dataType: "text",
+                success: function (mensagem) {
 
-                                if (mensagem.trim() === 'Excluído com Sucesso!!') {
-
-
-                                    $('#btn-cancelar-excluir').click();
-                                    window.location = "index.php?pag=" + pag;
-                                }
-
-                                $('#mensagem_excluir').text(mensagem)
+                    if (mensagem.trim() === 'Excluído com Sucesso!!') {
 
 
-
-                            },
-
-                        })
-                    })
-                })
-            </script>
-
-
-
-            <!--SCRIPT PARA CARREGAR IMAGEM -->
-            <script type="text/javascript">
-
-                function carregarImg() {
-
-                    var target = document.getElementById('target');
-                    var file = document.querySelector("input[type=file]").files[0];
-                    var reader = new FileReader();
-
-                    reader.onloadend = function () {
-                        target.src = reader.result;
-                    };
-
-                    if (file) {
-                        reader.readAsDataURL(file);
-
-
-                    } else {
-                        target.src = "";
+                        $('#btn-cancelar-excluir').click();
+                        window.location = "index.php?pag=" + pag;
                     }
-                }
 
-            </script>
-
+                    $('#mensagem_excluir').text(mensagem)
 
 
 
+                },
 
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('#dataTable').dataTable({
-                        "ordering": false
-                    })
-
-                });
-            </script>
+            })
+        })
+    })
+</script>
 
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
 
-            <script src="../js/mascaras.js"></script>
+<!--SCRIPT PARA CARREGAR IMAGEM -->
+<script type="text/javascript">
 
-            <script>
-                function maiuscula(string){
-                    res = string.value.toUpperCase();
+    function carregarImg() {
 
-                    string.value=res;
-                }
-            </script>
+        var target = document.getElementById('target');
+        var file = document.querySelector("input[type=file]").files[0];
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            target.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+
+
+        } else {
+            target.src = "";
+        }
+    }
+
+</script>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dataTable').dataTable({
+            "ordering": false
+        })
+
+    });
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+
+<script src="../js/mascaras.js"></script>
+
+<script>
+    function maiuscula(string){
+        res = string.value.toUpperCase();
+
+        string.value=res;
+    }
+</script>
 
 
 

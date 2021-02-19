@@ -237,6 +237,11 @@ $menu7 = "turmas";
 
 
 
+                    } else if (@$pag==$menu7) {
+                        @include_once(@$menu7.".php");
+
+
+
                     } else {
                         @include_once("home.php");
                     }

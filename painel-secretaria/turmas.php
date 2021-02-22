@@ -675,22 +675,22 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
 
           ?>
-        
 
-         <span><small><?php echo @$nome_aluno ?><a title="Excluir Matrícula" href="index.php?pag=<?php echo $pag ?>&funcao=excluir_matricula&id_m=<?php echo $id_m ?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-user-times text-danger ml-3"></i></small></span></a>
 
-         <hr style="margin: 4px">
+          <span><small><?php echo @$nome_aluno ?><a title="Excluir Matrícula" href="index.php?pag=<?php echo $pag ?>&funcao=excluir_matricula&id_m=<?php echo $id_m ?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-user-times text-danger ml-3"></i></small></span></a>
 
-       <?php } ?>
+          <hr style="margin: 4px">
 
-       <div align="center" id="mensagem" class="">
+        <?php } ?>
 
-       </div>
+        <div align="center" id="mensagem" class="">
 
-     </div>
+        </div>
 
-   </div>
- </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 
@@ -716,19 +716,49 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matricula") {
   echo "<script>$('#modal-matricula').modal('show');</script>";
 }
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "confirmar") {
-  $id_turma = $_GET['id_turma'];
+
   $id_aluno = $_GET['id_aluno'];
+  $id_turma = $_GET['id_turma'];
 
   $query_r = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma ' and aluno = '$id_aluno' ");
   $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
   if (@count($res_r) == 0) {
     $res = $pdo->query("INSERT INTO matriculas SET turma = '$id_turma', aluno = '$id_aluno', data = curDate()");
-    
-  }
-  
-  echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
-  
+
+    $id_matricula =  $pdo->lastInsertId();
+
+    //GERAR PARCELAS DE PAGAMENTO MATRICULA
+    $query_r = $pdo->query("SELECT * FROM turmas where id = '$id_turma' ");
+    $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
+    $data_ini = $res_r[0]['data_inicio'];
+    $data_fin = $res_r[0]['data_final'];
+    $valor_turma = $res_r[0]['valor_mensalidade'];
+
+    //RECUPERAR O TOTAL DE MESES ENTRE DATAS
+    $d1 = new DateTime($data_ini);
+    $d2 = new DateTime($data_fin);
+    $intervalo = $d1->diff( $d2 );
+    $anos = $intervalo->y;
+    $meses = $intervalo->m + ($anos * 12);
+
+    for ($i=0; $i < $meses; $i++) {  
+      //INCREMENTAR 1 MÊS NA DATA INICIAL
+
+      $data_nova = date('Y/m/d', strtotime("+$i month",strtotime($data_ini))); 
+
+     $res = $pdo->query("INSERT INTO pgto_matriculas SET matricula = '$id_matricula', valor = '$valor_turma', data_vencimento = '$data_nova', pago = 'Não'");
+
+
+
+   }
+
+ }
+
+
+
+ echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
+
 }
 
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
@@ -740,6 +770,8 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
   $id_turma2 = $_GET['id_turma'];
 
   $res = $pdo->query("DELETE FROM matriculas WHERE id = '$id_matricula'");
+
+  $res = $pdo->query("DELETE FROM pgto_matriculas WHERE matricula = '$id_matricula'");
 
 
   echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma2&id_aluno=$id_aluno&funcao=matriculados';</script>";

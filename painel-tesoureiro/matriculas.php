@@ -322,9 +322,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'tesoureir
         </div>
         <div class="col-md-4 p-0 mt-3 mb-3 d-flex justify-content-center align-items-center">
 
-          <div id="divImgConta" >
+          <div>
 
-            <img class="rounded mx-auto d-block align-content-center img-fluid" src="../img/alunos/<?php echo $imagem3 ?>" width="150" height="150" id="target">     
+            <img class="rounded mx-auto d-block align-content-center img-fluid" src="../img/alunos/<?php echo $imagem3 ?>" width="150" height="150">     
 
           </div>
 
@@ -507,10 +507,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'tesoureir
           $id_responsavel = $res[0]['IdResponsavel'];
 
           $query = $pdo->query("SELECT * FROM tbresponsavel where IdResponsavel = '$id_responsavel' ");
-                      $res_r = $query->fetchAll(PDO::FETCH_ASSOC);
+          $res_r = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                      $nome_responsavel = $res_r[0]['NomeResponsavel'];
-                      $celular = $res_r[0]['Celular'];
+          $nome_responsavel = $res_r[0]['NomeResponsavel'];
+          $celular = $res_r[0]['Celular'];
 
           $query = $pdo->query("SELECT * FROM turmas where id = '$id_turma' ");
           $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -638,6 +638,56 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'tesoureir
 </div>
 
 
+<div class="modal" id="modal-upload" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Carregar Arquivo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="form" method="POST">
+        <div class="modal-body">
+
+         <div class="form-group">
+          <label >Arquivo</label>
+          <input type="file" class="form-control-file" id="imagem" name="imagem" onChange="carregarImg();">
+        </div>
+
+        <div id="divImgConta">
+
+          <img src="../img/arquivos/sem-foto.jpg" width="200" height="200" id="target">
+          
+        </div>
+
+        <small>
+          <div id="mensagem-upload">
+
+          </div>
+        </small> 
+
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
+        <button type="button" id="btn-fechar-upload" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" name="btn-salvar-upload" id="btn-salvar-upload" class="btn btn-primary">Salvar</button>
+      </div>
+    </form>
+
+
+  </div>
+
+</div>
+</div>
+
+
+
+
 
 
 
@@ -661,11 +711,14 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "pagamentos") {
 
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "baixa") {
 
-    $id_pgto = $_GET['id'];
+  $id_pgto = $_GET['id'];
 
-    require_once("baixar-mensalidade.php"); 
+  require_once("baixar-mensalidade.php"); 
 
-    echo "<script>window.location='index.php?pag=$pag&id=$id_mat&funcao=pagamentos';</script>";
+  echo "<script>window.location='index.php?pag=$pag&id=$id_mat&funcao=pagamentos';</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "upload") {
+  echo "<script>$('#modal-upload').modal('show');</script>";
 }
 
 ?>
@@ -676,11 +729,12 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "baixa") {
 <script type="text/javascript">
   $("#form").submit(function () {
     var pag = "<?=$pag?>";
+    var id_mat = "<?=$_GET['id_m']?>";
     event.preventDefault();
     var formData = new FormData(this);
 
     $.ajax({
-      url: pag + "/inserir.php",
+      url: pag + "/upload.php",
       type: 'POST',
       data: formData,
 
@@ -688,19 +742,19 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "baixa") {
 
         $('#mensagem').removeClass()
 
-        if (mensagem.trim() == "Salvo com Sucesso!!") {
+        if (mensagem.trim() == "Salvo com Sucesso!") {
 
                     //$('#nome').val('');
                     //$('#cpf').val('');
-                    $('#btn-fechar').click();
-                    window.location = "index.php?pag="+pag;
+                    $('#btn-fechar-upload').click();
+                    window.location = "index.php?pag="+pag+"&id="+id_mat+"&funcao=pagamentos";
 
                   } else {
 
-                    $('#mensagem').addClass('text-danger')
+                    $('#mensagem-upload').addClass('text-danger')
                   }
 
-                  $('#mensagem').text(mensagem)
+                  $('#mensagem-upload').text(mensagem)
 
                 },
 
@@ -765,24 +819,33 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "baixa") {
 
     var target = document.getElementById('target');
     var file = document.querySelector("input[type=file]").files[0];
-    var reader = new FileReader();
-
-    reader.onloadend = function () {
-      target.src = reader.result;
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
 
 
-    } else {
-      target.src = "";
-    }
-  }
+    var arquivo = file['name'];
+    resultado = arquivo.split(".", 2);
+        //console.log(resultado[1]);
 
-</script>
+        if(resultado[1] === 'pdf'){
+          $('#target').attr('src', "../img/arquivos/pdf.png");
+          return;
+        }
+
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+          target.src = reader.result;
+        };
+
+        if (file) {
+          reader.readAsDataURL(file);
 
 
+        } else {
+          target.src = "";
+        }
+      }
+
+    </script>
 
 
 

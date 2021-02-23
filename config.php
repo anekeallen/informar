@@ -16,5 +16,9 @@ $senha = '';
 $banco = 'informar';
 
 
+//VARIAVEIS GLOBAIS
+$pgto_boleto = 'Sim'; //DEIXAR 'Sim' para pagamentos com boleto, para deixar a possibilidade do Tesoureiro Carregar arquivos
+
+
 
 ?>

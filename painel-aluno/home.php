@@ -97,13 +97,18 @@ $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 
 
 
+
 <div class="row">
 
 <?php 
 
-$query = $pdo->query("SELECT * FROM tbaluno where cpf = '$cpf_aluno' ");
+$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_aluno' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
-$id_aluno = $res[0]['id'];
+$id_aluno = $res[0]['IdAluno'];
+
+
+
+
 
 $query = $pdo->query("SELECT * FROM matriculas where aluno = '$id_aluno' order by id desc ");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);

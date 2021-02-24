@@ -35,8 +35,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'tesoureir
         <tbody>
 
          <?php 
+         
 
-         $query = $pdo->query("SELECT * FROM tbaluno order by IdAluno desc ");
+         $query = $pdo->query("SELECT DISTINCT tbaluno.NomeAluno, tbaluno.IdAluno, tbaluno.DataNascimento, tbaluno.IdResponsavel, tbaluno.foto FROM tbaluno, matriculas where tbaluno.IdAluno = matriculas.aluno");
          $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
 

@@ -20,8 +20,8 @@ $pag = @$_GET["pag"];
 $menu1 = "matriculas";
 $menu2 = "mensalidades";
 $menu3 = "pagar";
-$menu4 = "funcionarios";
-$menu5 = "disciplinas";
+$menu4 = "vencidas";
+$menu5 = "vencendo-hoje";
 $menu6 = "salas";
 $menu7 = "turmas";
 
@@ -107,22 +107,7 @@ $menu7 = "turmas";
                 </div>
             </li>
 
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-home"></i>
-                    <span>Turmas / Matrículas</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Disciplinas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu6 ?>">Salas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Turmas</a>
-
-                    </div>
-                </div>
-            </li>
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -134,12 +119,22 @@ $menu7 = "turmas";
 
 
 
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="index.php?pag=<?php echo $menu6 ?>">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Menu 6</span></a>
-                </li>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-calendar"></i>
+                    <span>Mensalidades</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu4 ?>">Vencidas</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Vencendo Hoje</a>
+                        
+
+                    </div>
+                </div>
+            </li>
 
                 <!-- Nav Item - Tables -->
 

@@ -24,7 +24,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'tesoureir
         <thead>
           <tr>
             <th>Aluno</th>
-            <th>CPF</th>
+            
             <th>Disciplina</th>
             <th>Valor</th>
             <th>Vencimento</th>
@@ -91,7 +91,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'tesoureir
               <i class="fas fa-square <?php echo $classe_square ?> mr-1"></i>
               <?php echo $nome_aluno ?></a>
             </td>
-            <td><?php echo $cpf_aluno ?></td>
+            
             <td><?php echo $nome_disciplina ?></td>
             <td>R$ <?php echo $valor ?></td>
             <td><span class="<?php echo $classe_venc ?>"><?php echo $data_venc ?></span></td>

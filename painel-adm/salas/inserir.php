@@ -3,6 +3,7 @@ require_once("../../conexao.php");
 
 $sala = $_POST['sala-cat'];
 $descricao = $_POST['descricao-cat'];
+$capacidade = $_POST['total_vagas-cat'];
 
 $antigo = $_POST['antigo'];
 
@@ -10,6 +11,11 @@ $id = $_POST['txtid2'];
 
 if($sala == ""){
 	echo 'A Sala é Obrigatória!';
+	exit();
+}
+
+if($capacidade == ""){
+	echo 'A Capacidade é Obrigatória!';
 	exit();
 }
 
@@ -30,11 +36,11 @@ if($antigo != $sala){
 
 
 if($id == ""){
-	$res = $pdo->prepare("INSERT INTO salas SET sala = :sala, descricao = :descricao");	
+	$res = $pdo->prepare("INSERT INTO salas SET sala = :sala, descricao = :descricao, total_vagas = :capacidade");	
 
 
 }else{
-	$res = $pdo->prepare("UPDATE salas SET sala = :sala, descricao = :descricao WHERE id = '$id'");
+	$res = $pdo->prepare("UPDATE salas SET sala = :sala, descricao = :descricao, total_vagas = :capacidade WHERE id = '$id'");
 
 	
 	
@@ -42,6 +48,7 @@ if($id == ""){
 
 $res->bindValue(":sala", $sala);
 $res->bindValue(":descricao", $descricao);
+$res->bindValue(":capacidade", $capacidade);
 
 
 

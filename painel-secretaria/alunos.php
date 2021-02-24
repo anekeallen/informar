@@ -282,8 +282,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label >Email</label>
-                                <input value="<?php echo @$email2 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
+                                <label >Email (email do responsável)</label>
+                                <input required value="<?php echo @$email2 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
                             </div>
                             <div class="form-group col-md-6">
                                 <label >Telefone</label>
@@ -421,6 +421,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                 <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
                 <input value="<?php echo @$registro2 ?>" type="hidden" name="antigo" id="antigo">
+                <input value="<?php echo @$email2 ?>" type="hidden" name="antigo1" id="antigo1">
 
 
                 <button type="button" id="btn-fechar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

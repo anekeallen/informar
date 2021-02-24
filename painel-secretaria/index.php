@@ -9,7 +9,7 @@ $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
 $nome_usu = @$res[0]['nome'];
-$email_usu = @$res[0]['email'];
+$login_usu = @$res[0]['email'];
 $senha_usu = @$res[0]['senha'];
 $cpf_usu = @$res[0]['cpf'];
 $id_usu = @$res[0]['id'];
@@ -291,8 +291,8 @@ $menu7 = "turmas";
                         </div>
 
                         <div class="form-group">
-                            <label >Email</label>
-                            <input value="<?php echo $email_usu ?>" type="email" class="form-control" id="email_usu" name="email_usu" placeholder="Email">
+                            <label >Login</label>
+                            <input value="<?php echo $login_usu ?>" type="text" class="form-control" id="login_usu" name="login_usu" placeholder="Login">
                         </div>
 
                         <div class="form-group">

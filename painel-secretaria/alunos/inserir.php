@@ -25,6 +25,7 @@ $cpf_responsavel = $_POST['cpf_responsavel-cat'];
 
 
 $antigo = $_POST['antigo'];
+$antigo1 = $_POST['antigo1'];
 
 $id = $_POST['txtid2'];
 
@@ -48,6 +49,10 @@ if($registro == ""){
 	echo 'O Registro é Obrigatório!';
 	exit();
 }
+if($email == ""){
+	echo 'O Email é Obrigatório!';
+	exit();
+}
 
 if($mae == ""){
 	echo 'O Campo é Obrigatório!';
@@ -67,6 +72,17 @@ if($antigo != $registro){
 	$total_reg = @count($res);
 	if($total_reg > 0){
 		echo 'O Registro já está Cadastrado!';
+		exit();
+	}
+}
+
+//VERIFICAR SE O Email JÁ EXISTE NO BANCO
+if($antigo1 != $email){
+	$query = $pdo->query("SELECT * FROM tbaluno where Email = '$email' ");
+	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+	$total_reg = @count($res);
+	if($total_reg > 0){
+		echo 'O Email já está Cadastrado!';
 		exit();
 	}
 }
@@ -110,6 +126,9 @@ if($ext == 'png' or $ext == 'jpg' or $ext == 'jpeg' or $ext == 'gif'){
 
 //VERIFICAR O ID DO ENDEREÇO PELO CPF DO RESPONSAVEL
 
+$query = $pdo->query("SELECT * FROM usuarios where cpf = '$registro' ");
+$res_usu = $query->fetchAll(PDO::FETCH_ASSOC);
+
 
 
 
@@ -125,14 +144,40 @@ if($id == ""){
 	if ($imagem == "sem-foto.jpg") {
 		$res = $pdo->prepare("UPDATE tbaluno SET NomeAluno = :nome, CPF = :cpf, Email = :email,  Celular = :telefone, Sexo = :sexo, NomeMae = :mae , NomePai = :pai, DataNascimento = :data, RG = :rg, RegistroNascimentoData = :registroData, RegistroNascimentoCartorio =:registroCartorio, RegistroNascimentoFolha = :registroFolha, RegistroNascimentoLivro = :registroLivro, RegistroNascimentoNumero = :registroNumero, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade WHERE IdAluno = '$id'");
 
-		$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha where cpf = '$registro'");
-		$res2->bindValue(":senha", "123");
+		if(@count($res_usu) == 0){
+			$res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha, nivel = :nivel");
+			$res2->bindValue(":senha", "123");
+			$res2->bindValue(":nivel", "aluno");
+
+
+		}else {
+			$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha where cpf = '$registro'");
+			$res2->bindValue(":senha", "123");
+
+
+		}
+
+
+
+		
+		
 
 	}else{
 		$res = $pdo->prepare("UPDATE tbaluno SET NomeAluno = :nome, CPF = :cpf, Email = :email,  Celular = :telefone, Sexo = :sexo, foto = '$imagem', NomeMae = :mae , NomePai = :pai, DataNascimento = :data, RG = :rg, RegistroNascimentoData = :registroData, RegistroNascimentoCartorio = :registroCartorio, RegistroNascimentoFolha =:registroFolha, RegistroNascimentoLivro = :registroLivro, RegistroNascimentoNumero = :registroNumero, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade WHERE IdAluno = '$id'");
 
-		$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha where cpf = '$registro'");
-		$res2->bindValue(":senha", "123");
+		if(@count($res_usu) == 0){
+			$res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha, nivel = :nivel");
+			$res2->bindValue(":senha", "123");
+			$res2->bindValue(":nivel", "aluno");
+
+
+		}else {
+			$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha where cpf = '$registro'");
+			$res2->bindValue(":senha", "123");
+
+
+		}
+		
 
 
 	}

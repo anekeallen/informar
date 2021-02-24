@@ -3,7 +3,7 @@ require_once("../conexao.php");
 
 $nome = $_POST['nome_usu'];
 $cpf = $_POST['cpf_usu'];
-$email = $_POST['email_usu'];
+$login = $_POST['login_usu'];
 $senha = $_POST['senha_usu'];
 
 $antigo = $_POST['antigo_usu'];
@@ -14,8 +14,8 @@ if($nome == ""){
 	exit();
 }
 
-if($email == ""){
-	echo 'O email é Obrigatório!';
+if($login == ""){
+	echo 'O Login é Obrigatório!';
 	exit();
 }
 
@@ -37,10 +37,10 @@ if($antigo != $cpf){
 }
 
 
-$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email = :email, senha = :senha WHERE id = '$id'");	
+$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email = :login, senha = :senha WHERE id = '$id'");	
 $res2->bindValue(":nome", $nome);
 $res2->bindValue(":cpf", $cpf);
-$res2->bindValue(":email", $email);
+$res2->bindValue(":login", $login);
 $res2->bindValue(":senha", $senha);
 $res2->execute();
 

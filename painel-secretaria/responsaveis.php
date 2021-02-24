@@ -70,8 +70,6 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
             <td>
               <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Aluno'><i class="fas fa-info-circle"></i></a>
 
-              <a href="index.php?pag=<?php echo $pag ?>&funcao=responsavel&id=<?php echo $id ?>" class='text-success' title='Cadastrar Aluno'><i class="fas fa-user-plus"></i></a>
-
               <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
 
               <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
@@ -602,9 +600,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
         <p>Deseja realmente Excluir este Registro?</p>
 
-        <div align="center" id="mensagem_excluir" class="">
+        <small><div align="center" id="mensagem_excluir" class="">
 
-        </div>
+        </div></small>
 
       </div>
       <div class="modal-footer">
@@ -620,43 +618,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
   </div>
 </div>
 
-<!--MODAL PARA EXIBIR FOTO -->
-<div class="modal" id="modal-foto" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Foto</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       <?php 
-       if (@$_GET['funcao'] == 'foto') {
 
-        $id_foto = $_GET['id'];
-
-        $query = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$id_foto' ");
-        $res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-
-        $imagem4 = $res[0]['foto'];  
-
-      } 
-
-
-      ?>
-      <div id="divImgConta" >
-
-        <img class="rounded mx-auto d-block align-content-center img-fluid" src="../img/alunos  /<?php echo $imagem4 ?>" width="300" height="300" id="target">     
-
-      </div>
-
-    </div>
-
-  </div>
-</div>
-</div>
 
 <!--MODAL PARA MOSTRAR DADOS COMPLETOS -->
 <div class="modal" id="modal-endereco" tabindex="-1" role="dialog">
@@ -865,9 +827,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
       if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
         echo "<script>$('#modal-endereco').modal('show');</script>";
       }
-      if (@$_GET["funcao"] != null && @$_GET["funcao"] == "foto") {
-        echo "<script>$('#modal-foto').modal('show');</script>";
-      }
+     
       if (@$_GET["funcao"] != null && @$_GET["funcao"] == "responsavel") {
         echo "<script>$('#modal-responsavel').modal('show');</script>";
       }
@@ -948,6 +908,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                   $('#btn-cancelar-excluir').click();
                   window.location = "index.php?pag=" + pag;
                 }
+                $('#mensagem_excluir').addClass('text-danger')
 
                 $('#mensagem_excluir').text(mensagem)
 

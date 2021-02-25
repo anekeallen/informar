@@ -2,6 +2,7 @@
 @session_start();
 if(@$_SESSION['nivel_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretaria'){
 	echo "<script language='javascript'> window.location='../index.php' </script>";
+	exit();
 }
 
 require_once("../conexao.php"); 

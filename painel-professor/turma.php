@@ -44,12 +44,16 @@ $query_resp2 = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma' "
 $res_resp2 = $query_resp2->fetchAll(PDO::FETCH_ASSOC);                    
 $total_alunos = count(@$res_resp2);
 
-$query_resp = $pdo->query("SELECT * FROM aulas where turma = '$id_turma'");
+$id_get_periodo = @$_GET['id_periodo'];
+
+$query_resp = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_get_periodo'");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                 
 $total_aulas = @count($res_resp);
 
-
-
+$query_resp = $pdo->query("SELECT * FROM periodos where id = '$id_get_periodo' ");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                 
+$nome_periodo = $res_resp[0]['nome'];
+$maximo_nota = $res_resp[0]['total_pontos'];
 
 
 
@@ -126,7 +130,7 @@ if($data_final < date('Y-m-d')){
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-	<a class="text-dark" href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_turma ?>" title="Lançar Aulas">
+	<a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>" title="Lançar Aulas">
    <div class="card text-info shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -232,12 +236,114 @@ if($data_final < date('Y-m-d')){
 
 
 
+<div class="modal" id="modal-periodos" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><?php echo $nome_disc ?> </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <?php 
+        $query = $pdo->query("SELECT * FROM periodos where turma = '$id_turma' order by id asc ");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        for ($i=0; $i < count($res); $i++) { 
+          foreach ($res[$i] as $key => $value) {
+          }
+
+          $nome = $res[$i]['nome'];
+          $id_periodo = $res[$i]['id'];
+          ?>
+
+
+          <a href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-secondary text-light"><?php echo $nome ?></a>
+
+
+          <?php if(@$_GET['notas'] != ""){ ?>
+            <a href="index.php?pag=turma&funcao=notas&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-secondary text-light"><?php echo $nome ?></a>
+          <?php } ?>
+
+
+          <?php if(@$_GET['chamada'] != ""){ ?>
+            <a href="index.php?pag=turma&funcao=chamada&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-secondary text-light"><?php echo $nome ?></a>
+          <?php } ?>
+
+
+        <?php } ?>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="modal-upload" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Carregar Arquivo </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="form2" method="POST">
+        <div class="modal-body">
+
+         <div class="form-group">
+          <label >Imagem</label>
+          <input type="file" value="<?php echo @$foto2 ?>"  class="form-control-file" id="imagem" name="imagem" onChange="carregarImg();">
+        </div>
+
+        <div id="divImgConta">
+          <?php if(@$foto2 != ""){ ?>
+            <img src="../img/arquivos-aula/<?php echo $foto2 ?>" width="200" height="200" id="target">
+          <?php  }else{ ?>
+            <img src="../img/arquivos-aula/sem-foto.jpg" width="200" height="200" id="target">
+          <?php } ?>
+        </div>
+
+        <small>
+          <div id="mensagem-upload">
+
+          </div>
+        </small> 
+        
+
+      </div>
+
+      <div class="modal-footer">
+
+
+
+        <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtidaula" id="txtidaula">
+        
+
+        <button type="button" id="btn-cancelar-upload" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" name="btn-salvar-upload" id="btn-salvar-upload" class="btn btn-primary">Salvar</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+</div>
+
+
+
+
 
 
 
 <?php  
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
   echo "<script>$('#modal-aulas').modal('show');</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "periodos") {
+  echo "<script>$('#modal-periodos').modal('show');</script>";
 }
 
 
@@ -259,7 +365,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
     var pag = "<?=$pag?>";
     var turma = "<?=$id_turma?>";
     var periodo = "<?=$id_per?>";
-    console.log(periodo)
+    
     $.ajax({
      url: pag + "/listar-aulas.php",
      method: "post",
@@ -323,4 +429,42 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
               }
             });
   });
+</script>
+
+<script type="text/javascript">
+  function deletarAula(idaula) {
+    event.preventDefault();
+    var pag = "<?=$pag?>";
+    
+    $.ajax({
+      url: pag + "/excluir-aula.php",
+      method: "post",
+      data: {idaula},
+      dataType: "text",
+      success: function (mensagem) {
+
+        if (mensagem.trim() === 'Excluído com Sucesso!') {
+
+
+          listarDados();
+        }
+
+
+
+      },
+
+    })
+  }
+  
+</script>
+
+
+<script type="text/javascript">
+  function upload(idaula) {
+    event.preventDefault();
+    var pag = "<?=$pag?>";
+    document.getElementById('txtidaula').value = idaula;
+    $('#modal-upload').modal('show');
+  }
+  
 </script>

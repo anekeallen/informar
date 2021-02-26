@@ -108,7 +108,7 @@ if($data_final < date('Y-m-d')){
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-	<a class="text-dark" href="index.php?pag=turma&id=<?php echo $id_mat ?>" title="Informações da Turma">
+	<a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&notas=sim" title="Informações da Turma">
    <div class="card text-primary shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -130,7 +130,7 @@ if($data_final < date('Y-m-d')){
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-	<a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>" title="Lançar Aulas">
+	<a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&aulas=sim" title="Lançar Aulas">
    <div class="card text-info shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -259,8 +259,9 @@ if($data_final < date('Y-m-d')){
           $id_periodo = $res[$i]['id'];
           ?>
 
-
-          <a href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-secondary text-light"><?php echo $nome ?></a>
+          <?php if(@$_GET['aulas'] != ""){ ?>
+            <a href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-secondary text-light"><?php echo $nome ?></a>
+          <?php } ?>
 
 
           <?php if(@$_GET['notas'] != ""){ ?>
@@ -333,6 +334,166 @@ if($data_final < date('Y-m-d')){
 </div>
 
 
+<div class="modal" id="modal-notas" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Lançar Notas </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="form2" method="POST">
+        <div class="modal-body">
+
+         <!-- DataTales Example -->
+         <div class="card shadow mb-4">
+
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+
+                    <th>Email</th>
+
+                    <th>Foto</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                 <?php 
+
+                 $query = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma' order by id desc ");
+                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                 for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
+
+                  $aluno = $res[$i]['aluno'];
+
+                  $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' ");
+                  $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
+
+                  $nome = $res_r[0]['NomeAluno'];
+                  //$telefone = $res_r[0]['telefone'];
+                  $email = $res_r[0]['Email'];
+                  $id_endereco = $res_r[0]['IdEndereco'];
+                  $cpf = $res_r[0]['CPF'];
+                  $foto = $res_r[0]['foto'];
+                  $id_aluno = $res_r[0]['IdAluno'];
+
+
+                  ?>
+
+
+                  <tr>
+                    <td>
+                      <?php echo $nome ?>
+                    </td>
+
+                    <td><?php echo $email ?></td>
+
+                    <td><img src="../img/alunos/<?php echo $foto ?>" width="50"></td>
+
+
+                    <td>
+                      <a onclick="lancarNotas(<?php echo $id_aluno ?>, '<?php echo $nome ?>', <?php echo $maximo_nota ?>)" href="" class='text-info mr-1' title='Lançar Notas'><i class='fas fa-sticky-note fa-1x'></i></a>
+                    </td>
+                  </tr>
+                <?php } ?>
+
+
+
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+  </form>
+
+</div>
+</div>
+</div>
+
+
+<div class="modal" id="modal-lancar-notas" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_periodo ?> - <span id="txtnomealuno"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-md-7">
+
+            <span class=""><b>Notas do Aluno </b></span>
+            - <span id="total_notas">  </span> de <span id="maximonota"> <?php echo $maximo_nota ?></span> Pontos
+            <small><div id="listar-notas" class="mt-2">
+
+            </div></small>
+
+          </div>
+          <div class="col-md-5">
+
+            <span class="mb-2"><b>Inserir nova Nota</b></span>
+
+
+            <form id="form-notas" method="POST" class="mt-2">
+
+              <div class="form-group">
+               <input type="text" class="form-control" id="descricao-nota" name="descricao" placeholder="Trabalho, Prova, Participação, etc">
+             </div>
+
+             
+                 <div class="form-group">
+               <input type="text" class="form-control" id="nota" name="nota" placeholder="Valor da Nota do Aluno">
+             </div>
+            
+                 <div class="form-group">
+               <input type="text" class="form-control" id="nota-max" name="nota-max" placeholder="Nota Máxima Possível">
+             </div>
+            
+             
+
+             <div align="right">
+              <button type="submit" name="btn-salvar-nota" id="btn-salvar-nota" class="btn btn-primary mb-4">Salvar</button>
+            </div>
+
+            <input type="hidden" name="turma" value="<?php echo $_GET['id'] ?>">
+            <input type="hidden" name="periodo" value="<?php echo $_GET['id_periodo'] ?>">
+            <input type="hidden" id="txtidaluno" name="aluno">
+
+           
+
+          </form>
+        </div>
+      </div>
+
+      <small> <div align="center" id="mensagem-notas" class=""></div></small>
+
+    </div>
+
+  </div>
+</div>
+</div>
+
 
 
 
@@ -344,6 +505,9 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
 }
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "periodos") {
   echo "<script>$('#modal-periodos').modal('show');</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "notas") {
+  echo "<script>$('#modal-notas').modal('show');</script>";
 }
 
 
@@ -468,3 +632,116 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "periodos") {
   }
   
 </script>
+
+<!--SCRIPT PARA CARREGAR IMAGEM -->
+<script type="text/javascript">
+
+  function carregarImg() {
+
+    var target = document.getElementById('target');
+    var file = document.querySelector("input[type=file]").files[0];
+
+
+    var arquivo = file['name'];
+    resultado = arquivo.split(".", 2);
+        //console.log(resultado[1]);
+
+        if(resultado[1] === 'pdf'){
+          $('#target').attr('src', "../img/arquivos-aula/pdf.png");
+          return;
+        }
+
+        if(resultado[1] === 'rar'){
+          $('#target').attr('src', "../img/arquivos-aula/zip.png");
+          return;
+        }
+
+
+        if(resultado[1] === 'zip'){
+          $('#target').attr('src', "../img/arquivos-aula/zip.png");
+          return;
+        }
+
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+          target.src = reader.result;
+        };
+
+        if (file) {
+          reader.readAsDataURL(file);
+
+
+        } else {
+          target.src = "";
+        }
+      }
+
+    </script>
+
+
+    <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+    <script type="text/javascript">
+      $("#form2").submit(function () {
+        var pag = "<?=$pag?>";
+        event.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+          url: pag + "/upload.php",
+          type: 'POST',
+          data: formData,
+
+          success: function (mensagem) {
+
+            $('#mensagem').removeClass()
+
+            if (mensagem.trim() == "Salvo com Sucesso!") {
+
+              $('#nome').val('');
+              $('#descricao').val('');
+              listarDados();
+              $('#btn-cancelar-upload').click();
+
+            } else {
+
+              $('#mensagem-upload').addClass('text-danger')
+            }
+
+            $('#mensagem-upload').text(mensagem)
+
+          },
+
+          cache: false,
+          contentType: false,
+          processData: false,
+            xhr: function () {  // Custom XMLHttpRequest
+              var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
+                  myXhr.upload.addEventListener('progress', function () {
+                    /* faz alguma coisa durante o progresso do upload */
+                  }, false);
+                }
+                return myXhr;
+              }
+            });
+      });
+    </script>
+
+
+    <script type="text/javascript">
+      function lancarNotas(idaluno, nomealuno, maximonota) {
+        event.preventDefault();
+
+        var pag = "<?=$pag?>";
+        document.getElementById('txtidaluno').value = idaluno;
+
+        $("#txtnomealuno").text(nomealuno);
+        $("#maximonota").text(maximonota);
+
+        //listarDadosNotas(idaluno);
+
+        $('#modal-lancar-notas').modal('show');
+      }
+
+    </script>

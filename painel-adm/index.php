@@ -28,6 +28,7 @@ $menu4 = "funcionarios";
 $menu5 = "disciplinas";
 $menu6 = "salas";
 $menu7 = "turmas";
+$menu8 = "cursos";
 
 
 ?>
@@ -115,14 +116,17 @@ $menu7 = "turmas";
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-home"></i>
-                    <span>Turmas / Disciplinas</span>
+                    <span> <small>Cursos / Turmas / Disciplinas</small></span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
 
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu8 ?>">Cursos</a>
+
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Disciplinas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu6 ?>">Salas</a>
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu7 ?>">Turmas</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu6 ?>">Salas</a>
+                        
 
                     </div>
                 </div>
@@ -239,6 +243,9 @@ $menu7 = "turmas";
 
                     } else if (@$pag==$menu7) {
                         @include_once(@$menu7.".php");
+
+                    } else if (@$pag==$menu8) {
+                        @include_once(@$menu8.".php");
 
 
 

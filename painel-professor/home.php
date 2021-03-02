@@ -15,6 +15,41 @@ $mes_atual = Date('m');
 $ano_atual = Date('Y');
 $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 
+$query = $pdo->query("SELECT * FROM professores where cpf = '$cpf_usuario' ");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$id_prof = $res[0]['id'];
+
+$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$totalDisc = @count($res);
+
+$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' and data_final >= curDate()");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$totalAndamento = @count($res);
+
+$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' and data_final < curDate()");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$totalConcluidas = @count($res);
+
+
+
+
+$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' and data_final >= curDate()");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$totalAlunos = 0;
+for ($i=0; $i < count($res); $i++) { 
+	foreach ($res[$i] as $key => $value) {
+	}
+	
+	$id_turma = $res[$i]['id'];
+
+	$query2 = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma'");
+	$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+	$total_mat = @count($res2);
+	$totalAlunos = $totalAlunos + $total_mat;
+}
+
 ?>
 
 
@@ -31,11 +66,11 @@ $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 			<div class="card-body">
 				<div class="row no-gutters align-items-center">
 					<div class="col mr-2">
-						<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Cursos Matriculados</div>
-						<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo @$totalAlunos ?></div>
+						<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Disciplinas Ministradas</div>
+						<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo @$totalDisc ?></div>
 					</div>
 					<div class="col-auto">
-						<i class="fas fa-users fa-2x text-info"></i>
+						<i class="fas fa-clipboard-list fa-2x text-info"></i>
 					</div>
 				</div>
 			</div>
@@ -43,15 +78,15 @@ $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 	</div>
 	<!-- Earnings (Monthly) Card Example -->
 	<div class="col-xl-3 col-md-6 mb-4">
-		<div class="card border-left-success shadow h-100 py-2">
+		<div class="card border-left-secondary shadow h-100 py-2">
 			<div class="card-body">
 				<div class="row no-gutters align-items-center">
 					<div class="col mr-2">
-						<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Disciplinas Concluídas</div>
-						<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo @$totalProf ?> </div>
+						<div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Total de Alunos</div>
+						<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo @$totalAlunos ?> </div>
 					</div>
 					<div class="col-auto">
-						<i class="fas fa-users fa-2x text-success"></i>
+						<i class="fas fa-users fa-2x text-secondary"></i>
 					</div>
 				</div>
 			</div>
@@ -64,8 +99,8 @@ $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 			<div class="card-body">
 				<div class="row no-gutters align-items-center">
 					<div class="col mr-2">
-						<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Disciplinas Pendentes</div>
-						<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo @$totalDisc ?> </div>
+						<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Turmas em Andamentos</div>
+						<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo @$totalAndamento ?> </div>
 					</div>
 					<div class="col-auto" align="center">
 						<i class="fas fa-clipboard-list fa-2x text-danger"></i>
@@ -78,15 +113,15 @@ $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 
 	<!-- Pending Requests Card Example -->
 	<div class="col-xl-3 col-md-6 mb-4">
-		<div class="card border-left-secondary shadow h-100 py-2">
+		<div class="card border-left-success shadow h-100 py-2">
 			<div class="card-body">
 				<div class="row no-gutters align-items-center">
 					<div class="col mr-2">
-						<div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">% Frequência</div>
-						<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo @$totalTurmas ?></div>
+						<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Turmas Concluídas</div>
+						<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo @$totalConcluidas ?></div>
 					</div>
 					<div class="col-auto">
-						<i class="fas fa-clipboard-list fa-2x text-secondary"></i>
+						<i class="fas fa-clipboard-list fa-2x text-success"></i>
 					</div>
 				</div>
 			</div>
@@ -94,7 +129,6 @@ $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 	</div>
 
 </div>
-
 
 
 
@@ -112,7 +146,7 @@ $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 
 
 
-	$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' ");
+	$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' order by data_final desc ");
 	$res_2 = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	for ($i=0; $i < count($res_2); $i++) { 

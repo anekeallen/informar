@@ -83,69 +83,52 @@ $senha_usu = @$res[0]['senha'];
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Contas e Pagamentos
+                TURMAS EM ANDAMENTO
             </div>
 
+            <?php 
 
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-dollar-sign"></i>
-                    <span>Contas</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu1 ?>">Matrículas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu2 ?>">Mensalidades</a>
-
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Contas à Pagar</a>
-
-
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-home"></i>
-                    <span>Turmas / Matrículas</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Turmas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu6 ?>">Salas</a>
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu7 ?>">Turmas</a>
-
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Consultas
-            </div>
+            $query = $pdo->query("SELECT * FROM professores where cpf = '$cpf_usu' ");
+            $res = $query->fetchAll(PDO::FETCH_ASSOC);
+            $id_prof = $res[0]['id'];
 
 
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?pag=<?php echo $menu6 ?>">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Menu 6</span></a>
+            $query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' and data_final > curDate() order by data_final desc");
+            $res = $query->fetchAll(PDO::FETCH_ASSOC);
+            for ($i=0; $i < count($res); $i++) { 
+              foreach ($res[$i] as $key => $value) {
+              }
+              $disciplina = $res[$i]['disciplina'];
+              
+              $id_turma = $res[$i]['id'];
+
+              
+              $query_resp = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
+              $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);
+              
+              $nome_disc = $res_resp[0]['nome'];
+
+
+              
+              ?> 
+
+
+
+              <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?pag=turma&id=<?php echo $id_turma ?>">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span><?php echo $nome_disc ?></span></a>
                 </li>
 
                 <!-- Nav Item - Tables -->
-
+              
 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
 
+            <?php } ?>
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>

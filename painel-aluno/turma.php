@@ -3,7 +3,14 @@
 @session_start();
 require_once("../conexao.php"); 
 
+$cpf_usuario = @$_SESSION['cpf_usuario'];
+
+$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usuario'  order by IdAluno asc ");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$id_aluno = $res[0]['IdAluno'];
+
 $id_mat = $_GET['id'];
+$id_per = @$_GET['id_periodo'];
 
 $query = $pdo->query("SELECT * FROM matriculas where id = '$id_mat' order by id desc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -45,6 +52,85 @@ if($data_final < date('Y-m-d')){
  $concluido = 'Sim';
 }else{
  $concluido = 'Não';
+}
+
+$query_resp = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma' ");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
+$total_alunos = @count($res_resp);
+
+$id_get_periodo = @$_GET['id_periodo'];
+
+$query_resp = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_get_periodo'");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                 
+$total_aulas = @count($res_resp);
+
+
+
+$query_resp = $pdo->query("SELECT * FROM periodos where id = '$id_get_periodo' ");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                 
+$nome_periodo = $res_resp[0]['nome'];
+$maximo_nota = $res_resp[0]['total_pontos'];  
+
+
+
+//RECUPERAR A % DE FREQUENCIA DO ALUNO
+$contador = 0;
+$query = $pdo->query("SELECT * FROM periodos where turma = '$id_turma' order by id asc ");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$totalPorcentagemSoma = 0;
+$totalPorcentagemSomaF = 0;
+for ($i=0; $i < count($res); $i++) { 
+  foreach ($res[$i] as $key => $value) {
+  }
+
+  $nome = $res[$i]['nome'];
+  $id_periodo = $res[$i]['id'];
+
+
+  
+  $query_p = $pdo->query("SELECT * FROM aulas where periodo = '$id_periodo' ");
+  $res_p = $query_p->fetchAll(PDO::FETCH_ASSOC);
+  if(@count($res_p) > 0){
+    $contador = $contador + 1;
+
+
+          //CALCULAR FREQUÊNCIA
+    $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and periodo = '$id_periodo'");
+    $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+    $total_presencas2 = 0;
+    $total_chamadas2 = 0;
+    $porcentagem2 = 0;
+    $totalPorcentagem = 0;
+    
+    $totalPorcentagemF = 0;
+    for ($i2=0; $i2 < count($res2); $i2++) { 
+      foreach ($res2[$i2] as $key => $value) {
+      }
+      $total_chamadas2 = count($res2);
+      $presenca = @$res2[$i2]['presenca'];
+
+      if($presenca == 'P'){
+        $total_presencas2 = $total_presencas2 + 1;
+      }
+
+      $porcentagem2 = ($total_presencas2 * 100) / $total_chamadas2;
+      
+    }
+
+
+    $totalPorcentagem = $totalPorcentagem + $porcentagem2;
+    $totalPorcentagemSoma = $totalPorcentagem + $totalPorcentagemSoma;
+
+  }
+}
+
+$totalPorcentagemSoma = $totalPorcentagemSoma / $contador . ' ' ;
+$totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
+
+if($totalPorcentagemSoma < $media_porcentagem_presenca){
+  $cor_presenca2 = 'text-danger';
+}else{
+  $cor_presenca2 = 'text-success';
 }
 
 ?>
@@ -101,13 +187,13 @@ if($data_final < date('Y-m-d')){
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-	<a class="text-dark" href="index.php?pag=turma&id=<?php echo $id_mat ?>" title="Informações da Turma">
+  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&frequencia=sim" title="Informações da Turma">
    <div class="card text-dark shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
       <div class="col mr-2">
        <div class="text-xs font-weight-bold  text-dark text-uppercase">FREQUÊNCIA</div>
-       <div class="text-xs text-secondary"> 85% DE FREQUÊNCIA</div>
+       <div class="text-xs text-secondary"> <span class="<?php echo $cor_presenca2 ?>"><?php echo $totalPorcentagemSomaF ?>% </span> DE FREQUÊNCIA</div>
      </div>
      <div class="col-auto" align="center">
        <i class="fas fa-calendar-day fa-2x  text-dark"></i><br>
@@ -297,4 +383,179 @@ if($data_final < date('Y-m-d')){
 </div>
 
 
+<div class="modal" id="modal-periodos" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><?php echo $nome_disc ?>
+        <?php if(@$_GET['boletim'] != ""){ ?>
+         - <small><small>Mínimo para Aprovação <?php echo $media_pontos_minimo_aprovacao ?> Pontos</small></small>
+       <?php } ?>
+     </h5>
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
 
+    <?php 
+    $query = $pdo->query("SELECT * FROM periodos where turma = '$id_turma' order by id asc ");
+    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+    $total_notas_curso = 0;
+    for ($i=0; $i < count($res); $i++) { 
+      foreach ($res[$i] as $key => $value) {
+      }
+
+      $nome = $res[$i]['nome'];
+      $id_periodo = $res[$i]['id'];
+      $minimo_media = $res[$i]['minimo_media'];
+
+      $query_p = $pdo->query("SELECT * FROM aulas where periodo = '$id_periodo' ");
+      $res_p = $query_p->fetchAll(PDO::FETCH_ASSOC);
+
+      if(@count($res_p) > 0){
+
+
+          //CALCULAR FREQUÊNCIA
+        $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and periodo = '$id_periodo'");
+        $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+        $total_presencas = 0;
+        $total_chamadas = 0;
+        $porcentagem = 0;
+        $porcentagemF = 0;
+        for ($i2=0; $i2 < count($res2); $i2++) { 
+          foreach ($res2[$i2] as $key => $value) {
+          }
+          $total_chamadas = count($res2);
+          $presenca = @$res2[$i2]['presenca'];
+
+          if($presenca == 'P'){
+            $total_presencas = $total_presencas + 1;
+          }
+
+          $porcentagem = ($total_presencas * 100) / $total_chamadas;
+          $porcentagemF = number_format($porcentagem, 2, ',', '.');
+          
+
+          if($porcentagem < $media_porcentagem_presenca){
+            $cor_presenca = 'text-danger';
+          }else{
+            $cor_presenca = 'text-success';
+          }
+
+        }
+
+
+
+
+      ?>
+
+      <?php if(@$_GET['frequencia'] != ""){ ?>
+        <a title="Clique para Ver as Frequências" href="index.php?pag=turma&funcao=frequencias&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="text-dark"><?php echo $nome ?> - <span class="<?php echo $cor_presenca ?>"><?php echo $porcentagemF ?></span> % de Frequência. </a>
+        <hr>
+      <?php } ?>
+
+
+
+
+
+    <?php } }?>
+
+    <?php if(@$_GET['boletim'] != ""){ ?>
+      <div class="row">
+        <div class="col-md-6">
+          <a href="../rel/boletim_geral.php?id_turma=<?php echo $id_turma ?>" target="_blank" title="Gerar Boletim">
+            <i class='fas fa-clipboard text-primary mr-1'></i>Boletim Geral </a>
+          </div>
+
+          <div class="col-md-6" align="right">
+            <span class="<?php echo $classe_media_nota ?>" ><?php echo $total_notas_curso ?> Pontos no Total</span>
+          </div>
+        </div>
+      <?php } ?>
+
+    </div>
+
+
+
+
+  </div>
+</div>
+</div>
+
+<div class="modal" id="modal-aulas" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_periodo ?> - <?php echo $total_aulas ?> Aulas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+
+        <span class=""><b>Aulas do Curso</b></span>
+        <small><div id="listar-aulas" class="mt-2">
+
+        </div></small>
+
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+
+
+<?php  
+
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "periodos") {
+  echo "<script>$('#modal-periodos').modal('show');</script>";
+}
+
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "frequencias") {
+  echo "<script>$('#modal-aulas').modal('show');</script>";
+}
+
+
+?>
+
+
+
+<!--AJAX PARA LISTAR OS DADOS -->
+<script type="text/javascript">
+  $(document).ready(function(){
+   listarDados();
+   
+ })
+</script>
+
+
+<script type="text/javascript">
+  function listarDados(){
+    var pag = "<?=$pag?>";
+    var turma = "<?=$id_turma?>";
+    var periodo = "<?=$id_per?>";
+
+    $.ajax({
+     url: pag + "/listar-aulas.php",
+     method: "post",
+     data: {turma, periodo},
+     dataType: "html",
+     success: function(result){
+      $('#listar-aulas').html(result)
+
+    },
+
+
+  })
+  }
+</script>s

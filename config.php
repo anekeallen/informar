@@ -20,6 +20,6 @@ $banco = 'informar';
 $pgto_boleto = 'Sim'; //DEIXAR 'Sim' para pagamentos com boleto, para deixar a possibilidade do Tesoureiro Carregar arquivos
 
 
-
+$media_porcentagem_presenca = 70; //70% define que a média limite para presença é de 70%;
 
 ?>

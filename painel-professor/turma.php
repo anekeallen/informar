@@ -694,7 +694,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "presenca") {
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'P' where id = '$id_chamada'");
   }else{
-      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate()");
+      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate(), periodo = '$id_periodo_chamada'");
   }
 
    echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
@@ -717,7 +717,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'F' where id = '$id_chamada'");
   }else{
-      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'F', data = curDate()");
+      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'F', data = curDate(), periodo = '$id_periodo_chamada'");
   }
 
    echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
@@ -740,7 +740,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'J' where id = '$id_chamada'");
   }else{
-      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'J', data = curDate()");
+      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'J', data = curDate(), periodo = '$id_periodo_chamada'");
   }
 
    echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";

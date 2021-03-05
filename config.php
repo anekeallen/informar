@@ -22,4 +22,11 @@ $pgto_boleto = 'Sim'; //DEIXAR 'Sim' para pagamentos com boleto, para deixar a p
 
 $media_porcentagem_presenca = 70; //70% define que a média limite para presença é de 70%;
 
+$media_pontos_minimo_aprovacao = 60; //O aluno vai precisar de no minimo 60 pontos para aprovação no curso
+
+$maximo_pontos_disciplina = 100; //Maximo de pontos possiveis para distribuir em cada disciplina
+
+
+$carga_horaria_cert = 250; //carga horaria em horas
+
 ?>

@@ -44,6 +44,8 @@ $res2->bindValue(":login", $login);
 $res2->bindValue(":senha", $senha);
 $res2->execute();
 
+
+
 echo 'Salvo com Sucesso!';
 
 ?>

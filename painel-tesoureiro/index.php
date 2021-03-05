@@ -22,8 +22,8 @@ $menu2 = "mensalidades";
 $menu3 = "pagar";
 $menu4 = "vencidas";
 $menu5 = "vencendo-hoje";
-$menu6 = "salas";
-$menu7 = "turmas";
+$menu6 = "movimentacoes";
+
 
 
 ?>
@@ -142,6 +142,35 @@ $menu7 = "turmas";
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
 
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?pag=<?php echo $menu6 ?>">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Movimentações</span></a>
+                </li>
+
+                <hr class="sidebar-divider d-none d-md-block">
+
+
+
+                 <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-calendar"></i>
+                        <span>Relatórios</span>
+                    </a>
+                    <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                           
+                            <a class="collapse-item" href="" data-toggle="modal" data-target="#ModalRelMov">Movimentações</a>
+                            <a class="collapse-item" href="" data-toggle="modal" data-target="#ModalRelPagar">Contas à Pagar</a>
+                           <a class="collapse-item" href="" data-toggle="modal" data-target="#ModalRelInad">Inadimplência</a>
+                           
+                        </div>
+                    </div>
+                </li>
+
+
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -226,8 +255,6 @@ $menu7 = "turmas";
                     } else if (@$pag==$menu6) {
                         @include_once(@$menu6.".php");
 
-                    } else if (@$pag==$menu7) {
-                        @include_once(@$menu7.".php");
 
                     } else {
                         @include_once("home.php");
@@ -406,3 +433,193 @@ $menu7 = "turmas";
         });
     });
 </script>
+
+
+
+<!--  Modal Rel Mov-->
+<div class="modal fade" id="ModalRelMov" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Relatório de Movimentações</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+
+
+            <form action="../rel/rel_mov.php" method="POST" target="_blank">
+                <div class="modal-body">
+
+                 <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label >Data Inicial</label>
+                            <input value="<?php echo date('Y-m-d') ?>" type="date" class="form-control"  name="dataInicial" >
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <label >Data Final</label>
+                            <input value="<?php echo date('Y-m-d') ?>" type="date" class="form-control"  name="dataFinal" >
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <label >Status</label>
+                            <select class="form-control" name="status" >
+                                <option value="">Todos</option>
+                                <option value="Entrada">Entrada</option>
+                                <option value="Saída">Saída</option>
+                               
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                </div>     
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+<!--  Modal Rel Pagar-->
+<div class="modal fade" id="ModalRelPagar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Contas à Pagar</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+
+
+            <form action="../rel/rel_pagar.php" method="POST" target="_blank">
+                <div class="modal-body">
+
+                 <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label >Data Inicial</label>
+                            <input value="<?php echo date('Y-m-d') ?>" type="date" class="form-control"  name="dataInicial" >
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <label >Data Final</label>
+                            <input value="<?php echo date('Y-m-d') ?>" type="date" class="form-control"  name="dataFinal" >
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <label >Pago</label>
+                            <select class="form-control" name="status" >
+                                <option value="">Todas</option>
+                                <option value="Sim">Sim</option>
+                                <option value="Não">Não</option>
+                               
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                </div>     
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+<!--  Modal Rel Inadimplencia-->
+<div class="modal fade" id="ModalRelInad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Inadimplências</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+
+
+            <form action="../rel/rel_inad.php" method="POST" target="_blank">
+                <div class="modal-body">
+
+                 <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label >Data Inicial</label>
+                            <input value="<?php echo date('Y-m-d') ?>" type="date" class="form-control"  name="dataInicial" >
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <label >Data Final</label>
+                            <input value="<?php echo date('Y-m-d') ?>" type="date" class="form-control"  name="dataFinal" >
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                      
+
+                    </div>
+
+                </div>     
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+</div>

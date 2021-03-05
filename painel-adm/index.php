@@ -16,9 +16,6 @@ $id_usu = @$res[0]['id'];
 
 
 
-
-
-
     //variaveis para o menu
 $pag = @$_GET["pag"];
 $menu1 = "secretarios";

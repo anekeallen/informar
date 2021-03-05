@@ -83,68 +83,64 @@ $senha_usu = @$res[0]['senha'];
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Contas e Pagamentos
+                    TURMAS EM ANDAMENTO
                 </div>
 
 
 
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-dollar-sign"></i>
-                        <span>Contas</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu1 ?>">Matrículas</a>
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu2 ?>">Mensalidades</a>
+                <?php 
 
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Contas à Pagar</a>
+            $query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usu' ");
+            $res = $query->fetchAll(PDO::FETCH_ASSOC);
+            $id_aluno = $res[0]['IdAluno'];
 
-                             
-                        </div>
-                    </div>
-                </li>
+            $query = $pdo->query("SELECT * FROM matriculas where aluno = '$id_aluno' order by id desc ");
+            $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-home"></i>
-                        <span>Turmas / Matrículas</span>
-                    </a>
-                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                           
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu3 ?>">Turmas</a>
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu6 ?>">Salas</a>
-                            <a class="collapse-item" href="index.php?pag=<?php echo $menu7 ?>">Turmas</a>
 
-                        </div>
-                    </div>
-                </li>
+            for ($i=0; $i < count($res); $i++) { 
+              foreach ($res[$i] as $key => $value) {
+              }
 
-                <!-- Divider -->
-                <hr class="sidebar-divider">
+              $id_turma = $res[$i]['turma'];
+              $id_mat = $res[$i]['id'];
 
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Consultas
-                </div>
+
+              $query_2 = $pdo->query("SELECT * FROM turmas where id = '$id_turma' and data_final > curDate() order by data_final desc ");
+              $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
+              
+              if(@count($res_2)>0){
+              $disciplina = @$res_2[0]['disciplina'];
+              $horario = @$res_2[0]['horario'];
+              $dia = @$res_2[0]['dia'];
+              $ano = @$res_2[0]['ano'];
+              $data_final = @$res_2[0]['data_final'];
+
+              $data_finalF = implode('/', array_reverse(explode('-', $data_final)));
+
+              $query_resp = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
+              $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);
+
+              $nome_disc = @$res_resp[0]['nome'];
 
 
 
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?pag=<?php echo $menu6 ?>">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Menu 6</span></a>
+              ?> 
+
+              <!-- Nav Item - Charts -->
+              <li class="nav-item">
+                <a class="nav-link" href="index.php?pag=turma&id=<?php echo $id_mat ?>">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span><?php echo $nome_disc ?></span></a>
                 </li>
 
                 <!-- Nav Item - Tables -->
-              
+
 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
+
+            <?php } } ?>
 
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">

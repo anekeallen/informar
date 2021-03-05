@@ -133,14 +133,55 @@ if($totalPorcentagemSoma < $media_porcentagem_presenca){
   $cor_presenca2 = 'text-success';
 }
 
+//RECUPERAR AS NOTAS POR PERIODO
+$query = $pdo->query("SELECT * FROM periodos where turma = '$id_turma' order by id asc ");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_notas_curso = 0;
+for ($i=0; $i < count($res); $i++) { 
+  foreach ($res[$i] as $key => $value) {
+  }
+
+  $nome = $res[$i]['nome'];
+  $id_periodo = $res[$i]['id'];
+  $minimo_media = $res[$i]['minimo_media'];
+
+
+  
+  $query_n = $pdo->query("SELECT * FROM notas where periodo = '$id_periodo' and aluno = '$id_aluno'");
+  $res_n = $query_n->fetchAll(PDO::FETCH_ASSOC);
+  $total_notas_periodo = 0;
+
+  for ($in=0; $in < count($res_n); $in++) { 
+    foreach ($res_n[$in] as $key => $value) {
+    }
+
+    $total_notas_periodo = $total_notas_periodo + $res_n[$in]['nota'];
+
+
+  }
+
+  $total_notas_curso = $total_notas_curso + $total_notas_periodo;
+  
+}
+
 ?>
 
-<h6><?php echo strtoupper($nome_disc) ?></h6>
+<h6><?php echo strtoupper($nome_disc) ?>
+<?php if($total_pontos_curso >= $media_pontos_minimo_aprovacao){
+
+  ?>
+  <a title="Retirar Certificado" href="../rel/certificado.php?id_turma=<?php echo $id_turma ?>&id_aluno=<?php echo $id_aluno ?>" target="_blank"> 
+    <img src="../img/ico-certificado.png" width="30px">
+  </a>
+  
+<?php } ?>
+
+</h6>
 <hr>
 
 <small>
   <div class="mb-3">
-   <span class="mr-3"><i><b>Aulas Concluídas:</b> 10 Aulas</i></span>
+   
    <span class="mr-3"><i><b>Disciplina Concluída </b> <?php echo $concluido ?></i></span>
    <span class="mr-3"><i><b>Dias de Aula </b> <?php echo $dia ?></i></span>
    <span class="mr-3"><i><b>Horário Aula </b> <?php echo $horario ?></i></span>
@@ -209,7 +250,7 @@ if($totalPorcentagemSoma < $media_porcentagem_presenca){
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-	<a class="text-dark" href="index.php?pag=turma&id=<?php echo $id_mat ?>" title="Informações da Turma">
+  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&boletim=sim" title="Informações da Turma">
    <div class="card text-primary shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -231,7 +272,7 @@ if($totalPorcentagemSoma < $media_porcentagem_presenca){
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-	<a class="text-dark" href="index.php?pag=turma&id=<?php echo $id_mat ?>" title="Informações da Turma">
+  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&aulas=sim" title="Aulas do Curso">
    <div class="card text-info shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -410,6 +451,37 @@ if($totalPorcentagemSoma < $media_porcentagem_presenca){
       $id_periodo = $res[$i]['id'];
       $minimo_media = $res[$i]['minimo_media'];
 
+      //RECUPERAR AS NOTAS POR PERIODO
+      $query_n = $pdo->query("SELECT * FROM notas where periodo = '$id_periodo' and aluno = '$id_aluno'");
+      $res_n = $query_n->fetchAll(PDO::FETCH_ASSOC);
+      $total_notas_periodo = 0;
+
+      for ($in=0; $in < count($res_n); $in++) { 
+        foreach ($res_n[$in] as $key => $value) {
+        }
+
+        $total_notas_periodo = $total_notas_periodo + $res_n[$in]['nota'];
+
+
+
+        if($total_notas_periodo < $minimo_media){
+          $cor_nota = 'text-danger';
+        }else{
+          $cor_nota = 'text-primary';
+        }
+
+
+      }
+
+      $total_notas_curso = $total_notas_curso + $total_notas_periodo;
+
+      if($total_notas_curso < $media_pontos_minimo_aprovacao){
+        $classe_media_nota = 'text-danger';
+      }else{
+        $classe_media_nota = 'text-primary';
+      }
+
+
       $query_p = $pdo->query("SELECT * FROM aulas where periodo = '$id_periodo' ");
       $res_p = $query_p->fetchAll(PDO::FETCH_ASSOC);
 
@@ -448,39 +520,49 @@ if($totalPorcentagemSoma < $media_porcentagem_presenca){
 
 
 
-      ?>
+        ?>
 
-      <?php if(@$_GET['frequencia'] != ""){ ?>
-        <a title="Clique para Ver as Frequências" href="index.php?pag=turma&funcao=frequencias&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="text-dark"><?php echo $nome ?> - <span class="<?php echo $cor_presenca ?>"><?php echo $porcentagemF ?></span> % de Frequência. </a>
-        <hr>
-      <?php } ?>
+        <?php if(@$_GET['frequencia'] != ""){ ?>
+          <a title="Clique para Ver as Frequências" href="index.php?pag=turma&funcao=frequencias&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="text-dark"><?php echo $nome ?> - <span class="<?php echo $cor_presenca ?>"><?php echo $porcentagemF ?></span> % de Frequência. </a>
+          <hr>
+        <?php } ?>
+
+        <?php if(@$_GET['boletim'] != ""){ ?>
+          <a title="Gerar Boletim do Período" href="../rel/boletim_periodo.php?id_turma=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" target="_blank" class="text-dark"><?php echo $nome ?> - <span class="<?php echo $cor_nota ?>"><?php echo $total_notas_periodo ?></span> pontos. </a>
+          <hr>
+        <?php } ?>
+
+        <?php if(@$_GET['aulas'] != ""){ ?>
+          <a title="Ver Grade do Curso" href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" class="text-dark"><?php echo $nome ?> - <?php echo @count($res_p) ?> Aulas </a>
+          <hr>
+        <?php } ?>
 
 
 
 
 
-    <?php } }?>
+      <?php } }?>
 
-    <?php if(@$_GET['boletim'] != ""){ ?>
-      <div class="row">
-        <div class="col-md-6">
-          <a href="../rel/boletim_geral.php?id_turma=<?php echo $id_turma ?>" target="_blank" title="Gerar Boletim">
-            <i class='fas fa-clipboard text-primary mr-1'></i>Boletim Geral </a>
+      <?php if(@$_GET['boletim'] != ""){ ?>
+        <div class="row">
+          <div class="col-md-6">
+            <a href="../rel/boletim_geral.php?id_turma=<?php echo $id_turma ?>" target="_blank" title="Gerar Boletim">
+              <i class='fas fa-clipboard text-primary mr-1'></i>Boletim Geral </a>
+            </div>
+
+            <div class="col-md-6" align="right">
+              <span class="<?php echo $classe_media_nota ?>" ><?php echo $total_notas_curso ?> Pontos no Total</span>
+            </div>
           </div>
+        <?php } ?>
 
-          <div class="col-md-6" align="right">
-            <span class="<?php echo $classe_media_nota ?>" ><?php echo $total_notas_curso ?> Pontos no Total</span>
-          </div>
-        </div>
-      <?php } ?>
+      </div>
+
+
+
 
     </div>
-
-
-
-
   </div>
-</div>
 </div>
 
 <div class="modal" id="modal-aulas" tabindex="-1" role="dialog">
@@ -512,6 +594,57 @@ if($totalPorcentagemSoma < $media_porcentagem_presenca){
 </div>
 </div>
 
+<div class="modal" id="modal-aulas-grade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_periodo ?> - <?php echo $total_aulas ?> Aulas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+
+        <span class=""><b>Aulas do Curso</b></span> <br><br>
+
+        <?php 
+
+        $query = $pdo->query("SELECT * FROM aulas where turma = '$_GET[id_turma]' and periodo = '$_GET[id_periodo]' order by id asc ");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        for ($i=0; $i < count($res); $i++) { 
+          foreach ($res[$i] as $key => $value) {
+          }
+
+          $nome = $res[$i]['nome'];
+          $descricao = $res[$i]['descricao'];
+          $arquivo = $res[$i]['arquivo'];
+          $id_aula = $res[$i]['id'];
+
+          echo 'Aula '. ($i+1) . ' - '. $nome;
+
+          if($arquivo != ""){
+            echo '<span class="ml-1" ><a href="../img/arquivos-aula/'.$arquivo.'" target="_blank" class="text-primary"> Ver Arquivo </a> <br></span>';
+          }else{ 
+            echo '<br>';
+          }
+
+        }
+
+        ?>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+</div>
+
 
 
 
@@ -523,6 +656,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "periodos") {
 
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "frequencias") {
   echo "<script>$('#modal-aulas').modal('show');</script>";
+}
+
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
+  echo "<script>$('#modal-aulas-grade').modal('show');</script>";
 }
 
 

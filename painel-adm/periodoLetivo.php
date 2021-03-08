@@ -1,5 +1,5 @@
 <?php 
-$pag = "cursos";
+$pag = "periodoLetivo";
 require_once("../conexao.php"); 
 
 @session_start();
@@ -13,8 +13,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 ?>
 
 <div class="row mt-4 mb-4">
-    <a type="button" title="Cadastrar Novo Curso" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=<?php echo $pag ?>&funcao=novo">Novo Curso</a>
-    <a type="button" title="Cadastrar Novo Curso" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
+    <a type="button" title="Cadastrar Novo Período Letivo" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=<?php echo $pag ?>&funcao=novo">Novo Período Letivo</a>
+    <a type="button" title="Cadastrar Novo Período Letivo" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
     
 </div>
 
@@ -27,9 +27,12 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th >Curso</th>
-                        <th >Descrição</th>
-                        <th >Portaria de Autorização</th>
+                        <th >Período</th>
+                        <th >Data Ínicio</th>
+                        <th >Data Final</th>
+                        <th >Dias Letivos</th>
+                        <th >Semanas Letivas</th>
+                        <th >Ano Conclusão</th>
                         
                         
                         <th >Ações</th>
@@ -40,36 +43,43 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                    <?php 
 
-                   $query = $pdo->query("SELECT * FROM tbcurso order by IdCurso desc ");
+                   $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
                    for ($i=0; $i < count($res); $i++) { 
                       foreach ($res[$i] as $key => $value) {
                       }
 
-                      $curso = $res[$i]['NomeCurso'];
-                      $portaria = $res[$i]['PortariaAutorizacao'];
-                      $descricao = $res[$i]['descricao'];
+                      $periodo = $res[$i]['NomePeriodo'];
+                      $dataInicial = $res[$i]['DataInicial'];
+                      $dataFinal = $res[$i]['DataFinal'];
+                      $dias_letivos = $res[$i]['DiasLetivos'];
+                      $semanas_letivas = $res[$i]['SemanasLetivas'];
+                      $ano_conclusao = $res[$i]['AnoConclusao'];
 
+                      $dataInicialF = implode('/', array_reverse(explode('-', $dataInicial)));
+                      $dataFinalF = implode('/', array_reverse(explode('-', $dataFinal)));
 
-
-                      $id = $res[$i]['IdCurso'];
+                      $id = $res[$i]['IdPeriodo'];
 
 
                       ?>
 
 
                       <tr>
-                        <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&id=<?php echo $id ?>"><?php echo $curso ?></a></td>
-                        <td><?php echo $descricao ?></td>
+                        <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&id=<?php echo $id ?>"><?php echo $periodo ?></a></td>
+                        <td><?php echo $dataInicialF ?></td>
 
-                        <td><?php echo $portaria ?></td>
+                        <td><?php echo $dataFinalF ?></td>
+                        <td><?php echo $dias_letivos ?></td>
+                        <td><?php echo $semanas_letivas ?></td>
+                        <td><?php echo $ano_conclusao ?></td>
 
 
 
 
                         <td>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados da Sala'><i class="fas fa-info-circle"></i></a>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Ano Letivo'><i class="fas fa-info-circle"></i></a>
                             <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
 
                             <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
@@ -101,12 +111,23 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $titulo = "Editar Registro";
                     $id2 = $_GET['id'];
 
-                    $query = $pdo->query("SELECT * FROM tbcurso where IdCurso = '" . $id2 . "' ");
+                    $query = $pdo->query("SELECT * FROM tbperiodo where IdPeriodo = '" .$id2."' ");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                    $curso2 = $res[0]['NomeCurso'];
-                    $portaria2 = $res[0]['PortariaAutorizacao'];
-                    $descricao2 = $res[0]['descricao'];
+
+
+                    $periodo2 = $res[0]['NomePeriodo'];
+                    $sigla2 = $res[0]['SiglaPeriodo'];
+                    $dataInicial2 = $res[0]['DataInicial'];
+                    $dataFinal2 = $res[0]['DataFinal'];
+                    $dias_letivos2 = $res[0]['DiasLetivos'];
+                    $semanas_letivas2 = $res[0]['SemanasLetivas'];
+                    $ano_conclusao2 = $res[0]['AnoConclusao'];
+
+                    $dataInicialF2 = implode('/', array_reverse(explode('-', $dataInicial2)));
+                    $dataFinalF2 = implode('/', array_reverse(explode('-', $dataFinal2)));
+
+                
 
 
                 } else {
@@ -124,22 +145,41 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             </div>
             <form id="form" method="POST">
                 <div class="modal-body">
-
-                    <div class="form-group">
-                        <label >Curso</label>
-                        <input required value="<?php echo @$curso2 ?>" type="text" class="form-control" id="curso-cat" name="curso-cat" placeholder="Nome do Curso">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label >Período</label>
+                            <input required value="<?php echo @$periodo2 ?>" type="text" class="form-control" id="periodoLetivo-cat" name="periodoLetivo-cat" placeholder="Nome do Período Letivo">
+                        </div>
+                        <div class="form-group col-6">
+                            <label >Sigla</label>
+                            <input required value="<?php echo @$sigla2 ?>" type="text" class="form-control" id="sigla-cat" name="sigla-cat" placeholder="Sigla do Período (ex: 2021)">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label >Descrição</label>
-                        <input value="<?php echo @$descricao2 ?>" type="text" class="form-control" id="descricao-cat" name="descricao-cat" placeholder="Descrição">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label >Data Inicial</label>
+                            <input required value="<?php echo @$dataInicial2 ?>" type="date" class="form-control" id="dataInicial-cat" name="dataInicial-cat">
+                        </div>
+                        <div class="form-group col-6">
+                            <label >Data Final</label>
+                            <input required value="<?php echo @$dataFinal2 ?>" type="date" class="form-control" id="dataFinal-cat" name="dataFinal-cat">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label >Portaria</label>
-                        <input value="<?php echo @$portaria2 ?>" type="text" class="form-control" id="portaria-cat" name="portaria-cat" placeholder="Portaria de Autorização">
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label >Dias Letivos</label>
+                            <input required value="<?php echo @$dias_letivos2 ?>" type="number" class="form-control" id="dias_letivos-cat" name="dias_letivos-cat">
+                        </div>
+                        <div class="form-group col-4">
+                            <label >Semanas Letivas</label>
+                            <input required value="<?php echo @$semanas_letivas2 ?>" type="number" class="form-control" id="semanas_letivas-cat" name="semanas_letivas-cat">
+                        </div>
+                        <div class="form-group col-4">
+                            <label >Ano de Conclusão</label>
+                            <input  value="<?php echo @$ano_conclusao2 ?>" type="number" class="form-control" id="ano_conclusao-cat" name="ano_conclusao-cat">
+                        </div>
                     </div>
-
-
-
+                    
 
 
                     <small>
@@ -157,7 +197,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
                     <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
-                    <input value="<?php echo @$curso2 ?>" type="hidden" name="antigo" id="antigo">
+                    <input value="<?php echo @$sigla2 ?>" type="hidden" name="antigo" id="antigo">
 
 
                     <button type="button" id="btn-fechar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -167,9 +207,6 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
         </div>
     </div>
 </div>
-
-
-
 
 
 
@@ -209,7 +246,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Dados do Curso</h5>
+                <h5 class="modal-title">Dados do Período Letivo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -221,12 +258,21 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                     $id2 = $_GET['id'];
 
-                    $query = $pdo->query("SELECT * FROM tbcurso where IdCurso = '$id2' ");
+                    $query = $pdo->query("SELECT * FROM tbperiodo where IdPeriodo = '" .$id2."' ");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                    
-                    $curso3 = $res[0]['NomeCurso'];
-                    $portaria3 = $res[0]['PortariaAutorizacao'];
-                    $descricao3 = $res[0]['descricao'];
+
+
+
+                    $periodo3 = $res[0]['NomePeriodo'];
+                    $sigla3 = $res[0]['SiglaPeriodo'];
+                    $dataInicial3 = $res[0]['DataInicial'];
+                    $dataFinal3 = $res[0]['DataFinal'];
+                    $dias_letivos3 = $res[0]['DiasLetivos'];
+                    $semanas_letivas3 = $res[0]['SemanasLetivas'];
+                    $ano_conclusao3 = $res[0]['AnoConclusao'];
+
+                    $dataInicialF3 = implode('/', array_reverse(explode('-', $dataInicial3)));
+                    $dataFinalF3 = implode('/', array_reverse(explode('-', $dataFinal3)));
 
                     
                     
@@ -235,18 +281,40 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 ?>
 
-                <div class="form-group">
-                    <label >Curso</label>
-                    <input disabled value="<?php echo @$curso3 ?>" type="text" class="form-control" >
-                </div>
-                <div class="form-group">
-                    <label >Descrição</label>
-                    <input disabled value="<?php echo @$descricao3 ?>" type="text" class="form-control" >
-                </div>
-                <div class="form-group">
-                    <label >Portaria</label>
-                    <input disabled value="<?php echo @$portaria3 ?>" type="text" class="form-control">
-                </div>
+                <div class="row">
+                        <div class="form-group col-6">
+                            <label >Período</label>
+                            <input required value="<?php echo @$periodo3 ?>" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-6">
+                            <label >Sigla</label>
+                            <input value="<?php echo @$sigla3 ?>" type="text" class="form-control" disabled >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label >Data Inicial</label>
+                            <input value="<?php echo @$dataInicial3 ?>" type="date" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-6">
+                            <label >Data Final</label>
+                            <input value="<?php echo @$dataFinal3 ?>" type="date" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label >Dias Letivos</label>
+                            <input value="<?php echo @$dias_letivos3 ?>" type="number" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-4">
+                            <label >Semanas Letivas</label>
+                            <input value="<?php echo @$semanas_letivas3 ?>" type="number" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-4">
+                            <label >Ano de Conclusão</label>
+                            <input value="<?php echo @$ano_conclusao3 ?>" type="number" class="form-control" disabled>
+                        </div>
+                    </div>
 
 
             </div>
@@ -305,28 +373,28 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                             <td> <?php if(@$prox_serie != ""){ ?>
                                 <?php echo $prox_serie ?>
-                                 
-                                 <?php }else{ echo "-"; } ?>
 
-                               
-                                </td>
-
-                            <td><?php echo $codigo_serie ?> </td>
+                            <?php }else{ echo "-"; } ?>
 
 
+                        </td>
+
+                        <td><?php echo $codigo_serie ?> </td>
 
 
 
-                        </tr>
-
-                    <?php  }  ?>
-
-                </tbody>
-            </table>
-        </small>
 
 
-    </div>
+                    </tr>
+
+                <?php  }  ?>
+
+            </tbody>
+        </table>
+    </small>
+
+
+</div>
 </div>
 </div>
 </div>

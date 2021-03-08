@@ -20,7 +20,7 @@ if(@count($dados) > 0){
     $mensagem = utf8_decode('O login é '.$login . ' Sua senha é ' .$senha);
     $cabecalhos = "From: ".$email_adm;
     @mail($destinatario, $assunto, $mensagem, $cabecalhos);
-    echo 'Seu login e senha foi enviados para seu Email!';
+    echo 'Seu login e senha foram enviados para seu Email!';
 
 }else{
 	echo 'Email não Cadastrado!';

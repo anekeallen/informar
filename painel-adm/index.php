@@ -26,6 +26,8 @@ $menu5 = "disciplinas";
 $menu6 = "salas";
 $menu7 = "turmas";
 $menu8 = "cursos";
+$menu9 = "series";
+$menu10 = "periodoLetivo";
 
 
 ?>
@@ -111,14 +113,32 @@ $menu8 = "cursos";
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2">
+                    <i class="fas fa-home"></i>
+                    <span> <small>Período Letivo / Cursos / Séries</small></span>
+                </a>
+                <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu10 ?>">Período Letivo</a>
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu8 ?>">Cursos</a>
+
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu9 ?>">Séries</a>
+                        
+                        
+
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-home"></i>
-                    <span> <small>Cursos / Turmas / Disciplinas</small></span>
+                    <span> <small>Disciplinas / Turmas / Salas</small></span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
 
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu8 ?>">Cursos</a>
 
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu5 ?>">Disciplinas</a>
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu7 ?>">Turmas</a>
@@ -236,6 +256,8 @@ $menu8 = "cursos";
                     } else if (@$pag==$menu6) {
                         @include_once(@$menu6.".php");
 
+                    } else if (@$pag==$menu10) {
+                        @include_once(@$menu10.".php");
 
 
                     } else if (@$pag==$menu7) {
@@ -243,6 +265,9 @@ $menu8 = "cursos";
 
                     } else if (@$pag==$menu8) {
                         @include_once(@$menu8.".php");
+
+                    } else if (@$pag==$menu9) {
+                        @include_once(@$menu9.".php");
 
 
 

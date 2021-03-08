@@ -170,7 +170,7 @@ if($total_reg == 0){
 
 			success: function (mensagem) {
 				$('#mensagem').removeClass()
-				if (mensagem.trim() == "Sua senha foi Enviada para seu Email!") {
+				if (mensagem.trim() == "Seu login e senha foram enviados para seu Email!") {
                     //$('#nome').val('');
                     //$('#btn-fechar').click();
                     $('#mensagem').addClass('text-success')

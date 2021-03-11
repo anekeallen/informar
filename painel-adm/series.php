@@ -40,71 +40,72 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <tbody>
 
-                   <?php 
+                 <?php 
 
 
                   //VERIFICAR SERIES
-                   $query_3 = $pdo->query("SELECT * FROM tbserie order by NomeSerie ");
-                   $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
+                 $query_3 = $pdo->query("SELECT * FROM tbserie order by NomeSerie ");
+                 $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
 
-                   for ($i2=0; $i2 < count($res_3); $i2++) { 
-                      foreach ($res_3[$i2] as $key => $value) {
-                      }
+                 for ($i2=0; $i2 < count($res_3); $i2++) { 
+                  foreach ($res_3[$i2] as $key => $value) {
+                  }
 
-                      $serie = $res_3[$i2]['NomeSerie'];
-                      $id_prox_serie = $res_3[$i2]['IdProximaSerie'];
-                      $id_curso = $res_3[$i2]['IdCurso'];
-                      $id_mensalidade = $res_3[$i2]['IdServicoMensalidade'];
-                      $codigo_serie = $res_3[$i2]['CodigoSerie'];
-                      $id = $res_3[$i2]['IdSerie'];
+                  $serie = $res_3[$i2]['NomeSerie'];
+                  $id_prox_serie = $res_3[$i2]['IdProximaSerie'];
+                  $id_curso = $res_3[$i2]['IdCurso'];
+                  $id_mensalidade = $res_3[$i2]['IdServicoMensalidade'];
+                  $codigo_serie = $res_3[$i2]['CodigoSerie'];
+                  $id = $res_3[$i2]['IdSerie'];
 
-                      $query_4 = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_prox_serie' ");
-                      $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+                  $query_4 = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_prox_serie' ");
+                  $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
 
-                      $prox_serie = $res_4[0]['NomeSerie'];
+                  $prox_serie = $res_4[0]['NomeSerie'];
 
-                      $query_5 = $pdo->query("SELECT * FROM tbcurso where IdCurso = '$id_curso' ");
-                      $res_5 = $query_5->fetchAll(PDO::FETCH_ASSOC);
+                  $query_5 = $pdo->query("SELECT * FROM tbcurso where IdCurso = '$id_curso' ");
+                  $res_5 = $query_5->fetchAll(PDO::FETCH_ASSOC);
 
-                      $curso = $res_5[0]['NomeCurso'];
+                  $curso = $res_5[0]['NomeCurso'];
 
-                      ?>
-
-
-
-                      <tr>
-                        <td><?php echo $serie ?></td>
-                        <td><?php echo $curso ?></td>
-
-                        <td> <?php if(@$prox_serie != ""){ ?>
-                            <?php echo $prox_serie ?>
-
-                        <?php }else{ echo "-"; } ?>
-
-
-                    </td>
-
-                    <td><?php echo $codigo_serie ?> </td>
+                  ?>
 
 
 
+                  <tr>
+                    <td><a title="Ver Grade Curricular" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=anosLetivos&id=<?php echo $id ?>"><?php echo $serie ?></a></td>
+
+                    <td><?php echo $curso ?></td>
+
+                    <td> <?php if(@$prox_serie != ""){ ?>
+                        <?php echo $prox_serie ?>
+
+                    <?php }else{ echo "-"; } ?>
 
 
-                    <td>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados da Sala'><i class="fas fa-info-circle"></i></a>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
+                </td>
 
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                    </td>
-                </tr>
-            <?php } ?>
+                <td><?php echo $codigo_serie ?> </td>
 
 
 
 
 
-        </tbody>
-    </table>
+                <td>
+                    <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados da Sala'><i class="fas fa-info-circle"></i></a>
+                    <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
+
+                    <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                </td>
+            </tr>
+        <?php } ?>
+
+
+
+
+
+    </tbody>
+</table>
 </div>
 </div>
 </div>
@@ -169,15 +170,15 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                             <?php if(!isset($id_curso2)){
 
-                               ?> <option selected value="">Selecione o curso</option> 
-                           <?php } ?> 
+                             ?> <option selected value="">Selecione o curso</option> 
+                         <?php } ?> 
 
-                           <?php 
+                         <?php 
 
-                           $query = $pdo->query("SELECT * FROM tbcurso order by NomeCurso asc ");
-                           $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                         $query = $pdo->query("SELECT * FROM tbcurso order by NomeCurso asc ");
+                         $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                           for ($i=0; $i < @count($res); $i++) { 
+                         for ($i=0; $i < @count($res); $i++) { 
                             foreach ($res[$i] as $key => $value) {
                             }
                             $nome_reg = $res[$i]['NomeCurso'];
@@ -194,15 +195,15 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                         <?php if(!isset($id_prox_serie2)){
 
-                           ?> <option selected value="">Selecione a próxima série (se houver)</option> 
-                       <?php } ?> 
+                         ?> <option selected value="">Selecione a próxima série (se houver)</option> 
+                     <?php } ?> 
 
-                       <?php 
+                     <?php 
 
-                       $query2 = $pdo->query("SELECT * FROM tbserie order by NomeSerie asc ");
-                       $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+                     $query2 = $pdo->query("SELECT * FROM tbserie order by NomeSerie asc ");
+                     $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 
-                       for ($i=0; $i < @count($res2); $i++) { 
+                     for ($i=0; $i < @count($res2); $i++) { 
                         foreach ($res2[$i] as $key => $value) {
                         }
                         $nome_reg2 = $res2[$i]['NomeSerie'];
@@ -359,6 +360,123 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     </div>
 </div>
 
+<div class="modal" id="modal-anosLetivos" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ano Letivo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+
+    <?php
+    $id_serie = $_GET['id']; 
+    
+    $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
+    $res = $query->fetchAll(PDO::FETCH_ASSOC);
+    $total_notas_curso = 0;
+    for ($i=0; $i < count($res); $i++) { 
+      foreach ($res[$i] as $key => $value) {
+      }
+
+      $sigla = $res[$i]['SiglaPeriodo'];
+      $id_ano = $res[$i]['IdPeriodo'];
+      
+
+
+
+
+      ?>
+
+
+      <a title="Ver Grade por Ano Letivo" href="index.php?pag=series&funcao=grade&id=<?php echo $id_serie ?>&id_ano=<?php echo $id_ano ?>" name="btn-salvar-aula" class="btn btn-secondary text-light m-1"><?php echo $sigla ?></a>
+
+
+
+
+  <?php } ?>
+
+
+</div>
+
+
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+<div class="modal" id="modal-grade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Grade Curricular</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <small>
+                   <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Disciplinas</th>
+
+                      </thead>
+                      <tbody>
+
+                        <?php 
+
+                        $id_serie = $_GET['id'];
+                        $id_ano = $_GET['id_ano'];
+
+                        //VERIFICAR Disciplinas
+                        $query_3 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo = '$id_ano'");
+                        $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
+
+                        for ($i2=0; $i2 < count($res_3); $i2++) { 
+                          foreach ($res_3[$i2] as $key => $value) {
+                          }
+
+                          $id_disciplinas = $res_3[$i2]['IdDisciplina'];
+
+
+                          $query_4 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplinas' ");
+                          $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+
+                          $nome_disciplina = $res_4[0]['NomeDisciplina'];
+
+                          ?>
+
+
+                          <tr>
+
+                            <td><?php echo $nome_disciplina ?></td>
+
+                        </tr>
+
+
+
+                    <?php  }  ?>
+
+                </tbody>
+            </table>
+        </small>
+
+
+    </div>
+</div>
+</div>
+</div>
+
 
 
 
@@ -382,6 +500,12 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
 }
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "series") {
     echo "<script>$('#modal-series').modal('show');</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "anosLetivos") {
+    echo "<script>$('#modal-anosLetivos').modal('show');</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "grade") {
+    echo "<script>$('#modal-grade').modal('show');</script>";
 }
 
 ?>

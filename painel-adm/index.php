@@ -28,6 +28,8 @@ $menu7 = "turmas";
 $menu8 = "cursos";
 $menu9 = "series";
 $menu10 = "periodoLetivo";
+$menu11 = "gradecurricular";
+$menu12 = "novagradecurricular";
 
 
 ?>
@@ -123,6 +125,23 @@ $menu10 = "periodoLetivo";
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu8 ?>">Cursos</a>
 
                         <a class="collapse-item" href="index.php?pag=<?php echo $menu9 ?>">Séries</a>
+                        
+                        
+
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities3" aria-expanded="true" aria-controls="collapseUtilities3">
+                    <i class="fas fa-home"></i>
+                    <span> <small>Grade Curricular</small></span>
+                </a>
+                <div id="collapseUtilities3" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="index.php?pag=<?php echo $menu11 ?>">Grade Curricular</a>
+                        
                         
                         
 
@@ -269,6 +288,11 @@ $menu10 = "periodoLetivo";
                     } else if (@$pag==$menu9) {
                         @include_once(@$menu9.".php");
 
+                    } else if (@$pag==$menu11) {
+                        @include_once(@$menu11.".php");
+
+                    } else if (@$pag==$menu12) {
+                        @include_once(@$menu12.".php");
 
 
                     } else {

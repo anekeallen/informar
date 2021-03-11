@@ -28,6 +28,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 <thead>
                     <tr>
                         <th >Nome</th>
+                        <th >Sigla</th>
                         <th >Ações</th>
                     </tr>
                 </thead>
@@ -36,17 +37,18 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                  <?php 
 
-                 $query = $pdo->query("SELECT * FROM disciplinas order by id desc ");
+                 $query = $pdo->query("SELECT * FROM tbdisciplina order by IdDisciplina desc ");
                  $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
                  for ($i=0; $i < count($res); $i++) { 
                   foreach ($res[$i] as $key => $value) {
                   }
 
-                  $nome = $res[$i]['nome'];
-                  
+                  $nome = $res[$i]['NomeDisciplina'];
+                  $sigla = $res[$i]['SiglaDisciplina'];
 
-                  $id = $res[$i]['id'];
+
+                  $id = $res[$i]['IdDisciplina'];
 
 
                   ?>
@@ -54,7 +56,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                   <tr>
                     <td><?php echo $nome ?></td>
-                   
+                    <td><?php echo $sigla ?></td>
+
 
 
 
@@ -91,11 +94,13 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $titulo = "Editar Registro";
                     $id2 = $_GET['id'];
 
-                    $query = $pdo->query("SELECT * FROM disciplinas where id = '" . $id2 . "' ");
+                    $query = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '" . $id2 . "' ");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                    $nome2 = $res[0]['nome'];
-                   
+                    
+                    $nome2 = $res[0]['NomeDisciplina'];
+                    $sigla2 = $res[0]['SiglaDisciplina'];
+
 
                 } else {
                     $titulo = "Inserir Registro";
@@ -112,12 +117,17 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             </div>
             <form id="form" method="POST">
                 <div class="modal-body">
-
-                    <div class="form-group">
-                        <label >Disciplina</label>
-                        <input required value="<?php echo @$nome2 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label >Disciplina</label>
+                            <input required value="<?php echo @$nome2 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome da Disciplina">
+                        </div>
+                        <div class="form-group col-6">
+                            <label >Sigla da Disciplina</label>
+                            <input required value="<?php echo @$sigla2 ?>" type="text" class="form-control" id="sigla-cat" name="sigla-cat" placeholder="Sigla da Disciplina">
+                        </div>
                     </div>
-                   
+
 
 
 
@@ -138,7 +148,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                     <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
                     <input value="<?php echo @$nome2 ?>" type="hidden" name="antigo" id="antigo">
-                   
+
 
                     <button type="button" id="btn-fechar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" name="btn-salvar" id="btn-salvar" class="btn btn-primary">Salvar</button>
@@ -201,9 +211,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                     $id2 = $_GET['id'];
 
-                    $query = $pdo->query("SELECT * FROM disciplinas where id = '$id2' ");
+                    $query = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id2' ");
                     $res = $query->fetchAll(PDO::FETCH_ASSOC);
-                    $nome3 = $res[0]['nome'];
+                    $nome3 = $res[0]['NomeDisciplina'];
+                    $sigla3 = $res[0]['SiglaDisciplina'];
                     
                     
                 } 
@@ -211,16 +222,17 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 ?>
 
-                <div class="form-group">
-                    <label >Disciplina</label>
-                    <input disabled value="<?php echo @$nome3 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label >Disciplina</label>
+                        <input disabled value="<?php echo @$nome3 ?>" type="text" class="form-control" >
+                    </div>
+                    <div class="form-group col-6">
+                        <label >Sigla da Disciplina</label>
+                        <input disabled value="<?php echo @$sigla3 ?>" type="text" class="form-control" >
+                    </div>
                 </div>
                 
-
-
-
-
-
 
             </div>
         </div>

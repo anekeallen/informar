@@ -143,6 +143,11 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                     $curso2 = $res_5[0]['NomeCurso'];
 
+                    $query_6 = $pdo->query("SELECT * FROM tbservico where IdServico = '$id_mensalidade2' ");
+                    $res_6 = $query_6->fetchAll(PDO::FETCH_ASSOC);
+
+                    $servico2 = $res_6[0]['NomeServico'];
+
 
                 } else {
                     $titulo = "Inserir Registro";
@@ -220,6 +225,32 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             <div class="form-group">
                 <label >Código da Série</label>
                 <input value="<?php echo @$codigo_serie2 ?>" type="text" class="form-control" id="codigo-cat" name="codigo-cat" placeholder="Código da Série">
+            </div>
+
+            <div class="form-group">
+                <label >Tipo de Serviço</label>
+                        <select required name="servico-cat" class="form-control" id="servico-cat">
+
+                            <?php if(!isset($id_mensalidade2)){
+
+                             ?> <option selected value="">Selecione o tipo de Serviço</option> 
+                         <?php } ?> 
+
+                         <?php 
+
+                         $query = $pdo->query("SELECT * FROM tbservico order by NomeServico asc ");
+                         $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                         for ($i=0; $i < @count($res); $i++) { 
+                            foreach ($res[$i] as $key => $value) {
+                            }
+                            $nome_reg = $res[$i]['NomeServico'];
+                            $id_reg = $res[$i]['IdServico'];
+                            ?>                                  
+                            <option <?php if(@$id_mensalidade2 == $id_reg){ ?> selected <?php } ?> value="<?php echo $id_reg ?>"><?php echo $nome_reg ?></option>
+                        <?php } ?>
+
+                    </select>
             </div>
 
 

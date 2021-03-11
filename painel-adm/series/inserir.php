@@ -6,6 +6,7 @@ $serie = $_POST['serie-cat'];
 $id_prox_serie = @$_POST['proxima_serie-cat'];
 $id_curso = $_POST['curso-cat'];
 $codigo_serie = @$_POST['codigo-cat'];
+$servico = @$_POST['servico-cat'];
 
 $antigo = $_POST['antigo'];
 
@@ -33,11 +34,11 @@ if($antigo != $serie){
 
 
 if($id == ""){
-	$res = $pdo->prepare("INSERT INTO tbserie SET NomeSerie = :NomeSerie, IdProximaSerie = :IdProximaSerie, IdCurso = :IdCurso, CodigoSerie = :CodigoSerie");	
+	$res = $pdo->prepare("INSERT INTO tbserie SET NomeSerie = :NomeSerie, IdProximaSerie = :IdProximaSerie, IdCurso = :IdCurso, CodigoSerie = :CodigoSerie, IdServicoMensalidade = :idservico");	
 
 
 }else{
-	$res = $pdo->prepare("UPDATE tbserie SET NomeSerie = :NomeSerie, IdProximaSerie = :IdProximaSerie, IdCurso = :IdCurso, CodigoSerie = :CodigoSerie WHERE IdSerie = '$id'");
+	$res = $pdo->prepare("UPDATE tbserie SET NomeSerie = :NomeSerie, IdProximaSerie = :IdProximaSerie, IdCurso = :IdCurso, CodigoSerie = :CodigoSerie, IdServicoMensalidade = :idservico WHERE IdSerie = '$id'");
 
 	
 	
@@ -47,6 +48,7 @@ $res->bindValue(":IdProximaSerie", $id_prox_serie);
 $res->bindValue(":IdCurso", $id_curso);
 $res->bindValue(":CodigoSerie", $codigo_serie);
 $res->bindValue(":NomeSerie", $serie);
+$res->bindValue(":idservico", $servico);
 
 
 

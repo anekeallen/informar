@@ -135,7 +135,7 @@ $menu12 = "novagradecurricular";
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities3" aria-expanded="true" aria-controls="collapseUtilities3">
-                    <i class="fas fa-home"></i>
+                    <i class="fas fa-calendar-alt"></i>
                     <span> <small>Grade Curricular</small></span>
                 </a>
                 <div id="collapseUtilities3" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">

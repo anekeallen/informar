@@ -1,54 +1,79 @@
 <?php 
 require_once("../../conexao.php"); 
 
-$disciplina = $_POST['disciplina'];
-$sala = $_POST['sala'];
-$professor = $_POST['professor'];
-$data_inicio = $_POST['data_inicio'];
+
+
+$id_periodo = $_POST['ano'];
+$id_serie = $_POST['serie'];
+$nome_turma = $_POST['nome-turma'];
+$sigla_turma = $_POST['sigla'];
+$turno = $_POST['turno'];
+$vagas = $_POST['vagas'];
+//$codigo = $_POST['CodigoAgrupamento'];
+$id_sala = $_POST['sala'];
 
 $data_final = $_POST['data_final'];
-$horario = $_POST['horario'];
-$dia = $_POST['dia'];
-$valor_mensalidade = $_POST['valor_mensalidade'];
-$ano = $_POST['ano'];
+$data_inicio = $_POST['data_inicio'];
+
 
 $id = $_POST['txtid2'];
+$antigo = $_POST['antigo'];
 
-$valor_mensalidadeF = str_replace(',', '.', $valor_mensalidade);
 
 
-if($disciplina == ""){
-	echo 'A Disciplina é Obrigatória!';
+
+if($id_serie == ""){
+	echo 'A Série é Obrigatória!';
 	exit();
 }
-if($sala == ""){
-	echo 'A Sala é Obrigatória!';
+if($id_periodo == ""){
+	echo 'O ano é Obrigatório!';
 	exit();
+}
+if($sigla_turma == ""){
+	echo 'A Sigla da turma é Obrigatória!';
+	exit();
+}
+if($turno == ""){
+	echo 'O turno é Obrigatório!';
+	exit();
+}
+
+//VERIFICAR SE O REGISTRO JÁ EXISTE NO BANCO
+if($antigo != $sigla_turma){
+	$query = $pdo->query("SELECT * FROM tbturma where SiglaTurma = '$sigla_turma' ");
+	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+	$total_reg = @count($res);
+	if($total_reg > 0){
+		echo 'A turma já está Cadastrada!';
+		exit();
+	}
 }
 
 
 
 if ($id == "") {
-	$res = $pdo->prepare("INSERT INTO turmas SET disciplina = :disciplina, sala = :sala, professor =:professor, data_inicio = :data_inicio, data_final = :data_final, horario =:horario, dia =:dia, valor_mensalidade = :valor_mensalidade, ano = :ano");
+	$res = $pdo->prepare("INSERT INTO tbturma SET IdPeriodo = :periodo, IdSala = :sala, IdSerie =:serie, DataInicial = :data_inicio, DataFinal = :data_final, NomeTurma =:nometurma, SiglaTurma =:sigla, TurnoPrincipal = :turno, TotalVagas = :total");
 
 
 	
 } else{
 
-	$res = $pdo->prepare("UPDATE turmas SET disciplina = :disciplina, sala = :sala, professor =:professor, data_inicio = :data_inicio, data_final = :data_final, horario =:horario, dia =:dia, valor_mensalidade = :valor_mensalidade, ano = :ano where id = '$id'");
+	$res = $pdo->prepare("UPDATE tbturma SET IdPeriodo = :periodo, IdSala = :sala, IdSerie =:serie, DataInicial = :data_inicio, DataFinal = :data_final, NomeTurma =:nometurma, SiglaTurma =:sigla, TurnoPrincipal = :turno, TotalVagas = :total where IdTurma = '$id'");
 
 }
 
 
-$res->bindValue(":disciplina", $disciplina);
-$res->bindValue(":sala", $sala);
-$res->bindValue(":professor", $professor);
+$res->bindValue(":periodo", $id_periodo);
+$res->bindValue(":sala", $id_sala);
+$res->bindValue(":serie", $id_serie);
 $res->bindValue(":data_inicio", $data_inicio);
 $res->bindValue(":data_final", $data_final);
-$res->bindValue(":horario", $horario);
-$res->bindValue(":dia", $dia);
-$res->bindValue(":ano", $ano);
-$res->bindValue(":valor_mensalidade", $valor_mensalidadeF);
+$res->bindValue(":nometurma", $nome_turma);
+$res->bindValue(":sigla", $sigla_turma);
+$res->bindValue(":turno", $turno);
+$res->bindValue(":total", $vagas);
+
 
 
 $res->execute();

@@ -37,46 +37,46 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <tbody>
 
-                   <?php 
+                 <?php 
 
-                   $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
-                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                 $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
+                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                   for ($i=0; $i < count($res); $i++) { 
-                      foreach ($res[$i] as $key => $value) {
-                      }
+                 for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
 
-                      $sigla_ano = $res[$i]['SiglaPeriodo'];
-
-
-
-
-                      $id = $res[$i]['IdPeriodo'];
-
-
-                      ?>
-
-
-                      <tr>
-                        <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&id=<?php echo $id ?>"><?php echo $sigla_ano ?></a></td>
-
-
-                        <td>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados da Sala'><i class="fas fa-info-circle"></i></a>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
-
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                        </td>
-                    </tr>
-                <?php } ?>
+                  $sigla_ano = $res[$i]['SiglaPeriodo'];
 
 
 
 
+                  $id = $res[$i]['IdPeriodo'];
 
-            </tbody>
-        </table>
-    </div>
+
+                  ?>
+
+
+                  <tr>
+                    <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&disciplinas=sim&id=<?php echo $id ?>"><?php echo $sigla_ano ?></a></td>
+
+
+                    <td class="">
+                        
+                       
+
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=series&excluir=sim&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                    </td>
+                </tr>
+            <?php } ?>
+
+
+
+
+
+        </tbody>
+    </table>
+</div>
 </div>
 </div>
 
@@ -121,7 +121,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     <div class="form-group">
                         <label >Ano Letivo</label>
                         <select name="ano_letivo" class="form-control" id="ano_letivo">
-                            
+
 
                             <?php 
 
@@ -248,7 +248,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             </div>
             <div class="modal-body">
 
-                <p>Deseja realmente Excluir este Registro?</p>
+                <p>Deseja realmente excluir a grade curricular dessa série?</p>
 
                 <div align="center" id="mensagem_excluir" class="">
 
@@ -259,7 +259,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn-cancelar-excluir">Cancelar</button>
                 <form method="post">
 
-                    <input type="hidden" id="id"  name="id" value="<?php echo @$_GET['id'] ?>" required>
+                    <input type="hidden" id="id"  name="id" value="<?php echo @$_GET['id'] ?>" >
+                    <input type="hidden" id="id_serie"  name="id_serie" value="<?php echo @$_GET['id_serie'] ?>" >
 
                     <button type="button" id="btn-deletar" name="btn-deletar" class="btn btn-danger">Excluir</button>
                 </form>
@@ -340,10 +341,13 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                         //VERIFICAR Disciplinas
                 $query_4 = $pdo->query("SELECT DISTINCT IdSerie FROM tbgradecurricular where IdPeriodo = '$id_ano'");
                 $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+
+                 $contador = count($res_4);
                 for ($i=0; $i < count($res_4); $i++) { 
                   foreach ($res_4[$i] as $key => $value) {
                   }
 
+                 
                   $id_serie = $res_4[$i]['IdSerie'];
 
 
@@ -358,10 +362,14 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                   ?>
 
+                  
 
-
-                  <a title="Ver disciplinas por série" href="index.php?pag=gradecurricular&funcao=disciplinas&id=<?php echo $id_ano ?>&id_serie=<?php echo $id_serie ?>" name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $serie ?></a>
-
+                  <?php if(@$_GET['disciplinas'] != ""){ ?>
+                      <a title="Ver disciplinas por série" href="index.php?pag=gradecurricular&funcao=disciplinas&id=<?php echo $id_ano ?>&id_serie=<?php echo $id_serie ?>" name="btn-ver-disciplinas" class="btn btn-primary text-light m-1"><?php echo $serie ?></a>
+                  <?php } ?>
+                  <?php if(@$_GET['excluir'] != ""){ ?>
+                      <a title="Excluir" href="index.php?pag=gradecurricular&funcao=excluir&id=<?php echo $id_ano ?>&id_serie=<?php echo $id_serie ?>" name="btn-excluir-grade" class="btn btn-primary text-light m-1"><?php echo $serie ?></a>
+                  <?php } ?>
 
 
 
@@ -369,9 +377,22 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
               <?php  }  ?>
 
+              <?php if ($contador == 0){ ?>
+                    <small> <span class="text-danger">Ainda não existem séries e disciplinas cadastradas para esse ano letivo. Por favor cadastre clicando abaixo!</span></small>
+                  <?php } ?>
+
 
 
           </div>
+            <?php if ($contador == 0){ ?>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" href="#" class="btn btn-secondary">Fechar</button>
+
+
+
+            <a title="Cadastrar Nova Grade Curricular" type="button" href="index.php?pag=novagradecurricular"  class="btn btn-primary">Cadastrar</a>
+            <?php } ?>
+        </div>
       </div>
   </div>
 </div>
@@ -416,7 +437,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
 
-                  <a title="Ver disciplinas por série"  name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $disciplina ?></a>
+                  <a title="Ver disciplinas por série"  name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $disciplina ?></a><br>
 
 
 
@@ -426,7 +447,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
           </div>
           <div class="modal-footer">
-            <a type="button" href="index.php?pag=gradecurricular&funcao=series&id=<?php echo $id_ano ?>" class="btn btn-secondary">Voltar</a>
+            <a type="button" href="index.php?pag=gradecurricular&funcao=series&disciplinas=sim&id=<?php echo $id_ano ?>" class="btn btn-secondary">Voltar</a>
 
 
 

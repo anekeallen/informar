@@ -12,7 +12,7 @@ if(@count($res)>0){
 }
 
 
-$pdo->query("DELETE FROM turmas WHERE id = '$id'");
+$pdo->query("DELETE FROM tbturma WHERE Idturma = '$id'");
 
 
 echo 'Excluído com Sucesso!!';

@@ -264,8 +264,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 </button>
             </div>
             <div class="modal-body">
-
-                <small>
+                 <small>
                    <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -274,6 +273,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                           <th scope="col">Código da Série</th>
                       </thead>
                       <tbody>
+
+               
 
                         <?php 
 

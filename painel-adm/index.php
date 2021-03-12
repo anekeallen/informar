@@ -134,19 +134,11 @@ $menu12 = "novagradecurricular";
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities3" aria-expanded="true" aria-controls="collapseUtilities3">
+                <a class="nav-link" href="index.php?pag=<?php echo $menu11 ?>">
                     <i class="fas fa-calendar-alt"></i>
-                    <span> <small>Grade Curricular</small></span>
+                    <span> Grade Curricular</span>
                 </a>
-                <div id="collapseUtilities3" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="index.php?pag=<?php echo $menu11 ?>">Grade Curricular</a>
-                        
-                        
-                        
-
-                    </div>
-                </div>
+                
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->

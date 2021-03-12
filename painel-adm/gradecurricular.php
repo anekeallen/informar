@@ -9,11 +9,23 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 }
 
+$query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc limit 1 ");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$id_periodo_renovar = $res[0]['IdPeriodo'];
+
+$query = $pdo->query("SELECT * FROM tbgradecurricular order by IdPeriodo desc limit 1 ");
+$res2 = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$id_periodo_antigo = $res2[0]['IdPeriodo'];
+
+
 
 ?>
 
 <div class="row mt-4 mb-4">
     <a type="button" title="Cadastrar Nova Grade Curricular" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=novagradecurricular">Nova Grade Curricular</a>
+    <a type="button" title="Renovar Grade Curricular" class="btn-success btn-sm ml-3 d-none d-md-block" href="index.php?pag=gradecurricular&funcao=renovar&id_periodo=<?php echo $id_periodo_renovar ?>&id_periodo_antigo=<?php echo $id_periodo_antigo ?>">Renovar Grade Curricular</a>
     <a type="button" title="Cadastrar Nova Grade Curricular" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
     
     
@@ -37,46 +49,46 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <tbody>
 
-                 <?php 
+                   <?php 
 
-                 $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
-                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                   $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
+                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                 for ($i=0; $i < count($res); $i++) { 
-                  foreach ($res[$i] as $key => $value) {
-                  }
+                   for ($i=0; $i < count($res); $i++) { 
+                      foreach ($res[$i] as $key => $value) {
+                      }
 
-                  $sigla_ano = $res[$i]['SiglaPeriodo'];
-
-
-
-
-                  $id = $res[$i]['IdPeriodo'];
-
-
-                  ?>
-
-
-                  <tr>
-                    <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&disciplinas=sim&id=<?php echo $id ?>"><?php echo $sigla_ano ?></a></td>
-
-
-                    <td class="">
-                        
-                       
-
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=series&excluir=sim&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                    </td>
-                </tr>
-            <?php } ?>
+                      $sigla_ano = $res[$i]['SiglaPeriodo'];
 
 
 
 
+                      $id = $res[$i]['IdPeriodo'];
 
-        </tbody>
-    </table>
-</div>
+
+                      ?>
+
+
+                      <tr>
+                        <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&disciplinas=sim&id=<?php echo $id ?>"><?php echo $sigla_ano ?></a></td>
+
+
+                        <td class="">
+
+
+
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=series&excluir=sim&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
+
+
+
+
+
+            </tbody>
+        </table>
+    </div>
 </div>
 </div>
 
@@ -269,6 +281,39 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     </div>
 </div>
 
+<div class="modal" id="modal-renovar" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Renovar Grade Curricular</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <p>Deseja renovar toda a grade curricular para o ano letivo?</p>
+
+                <div align="center" id="mensagem_renovar" class="">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn-cancelar1">Não</button>
+                <form method="post">
+                    <input type="hidden" id="id_periodoRenovar"  name="id_periodoRenovar" value="<?php echo @$_GET['id_periodo'] ?>">
+                    <input type="hidden" id="id_periodoRenovar_antigo"  name="id_periodoRenovar_antigo" value="<?php echo @$_GET['id_periodo_antigo'] ?>">
+
+                    <button type="button" id="btn-renovar" name="btn-renovar" class="btn btn-primary">Sim</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <div class="modal" id="modal-endereco" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -342,12 +387,12 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 $query_4 = $pdo->query("SELECT DISTINCT IdSerie FROM tbgradecurricular where IdPeriodo = '$id_ano'");
                 $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
 
-                 $contador = count($res_4);
+                $contador = count($res_4);
                 for ($i=0; $i < count($res_4); $i++) { 
                   foreach ($res_4[$i] as $key => $value) {
                   }
 
-                 
+
                   $id_serie = $res_4[$i]['IdSerie'];
 
 
@@ -378,23 +423,25 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
               <?php  }  ?>
 
               <?php if ($contador == 0){ ?>
-                    <small> <span class="text-danger">Ainda não existem séries e disciplinas cadastradas para esse ano letivo. Por favor cadastre clicando abaixo!</span></small>
-                  <?php } ?>
+                <small> <span class="text-danger">Ainda não existem séries e disciplinas cadastradas para esse ano letivo. Por favor cadastre clicando 'Cadastrar' ou renove a grade curricular automaticamente em 'Renovar'</span></small>
+            <?php } ?>
 
 
 
-          </div>
-            <?php if ($contador == 0){ ?>
+        </div>
+        <?php if ($contador == 0){ ?>
           <div class="modal-footer">
             <button type="button" data-dismiss="modal" href="#" class="btn btn-secondary">Fechar</button>
 
 
 
             <a title="Cadastrar Nova Grade Curricular" type="button" href="index.php?pag=novagradecurricular"  class="btn btn-primary">Cadastrar</a>
-            <?php } ?>
-        </div>
-      </div>
-  </div>
+
+            <a type="button" title="Renovar Grade Curricular" class="btn btn-success " href="index.php?pag=gradecurricular&funcao=renovar&id_periodo=<?php echo $id_periodo_renovar ?>&id_periodo_antigo=<?php echo $id_periodo_antigo ?>">Renovar</a>
+        <?php } ?>
+    </div>
+</div>
+</div>
 </div>
 
 <div class="modal" id="modal-disciplinas" tabindex="-1" role="dialog">
@@ -483,6 +530,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "disciplinas") {
     echo "<script>$('#modal-disciplinas').modal('show');</script>";
 }
 
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "renovar") {
+    echo "<script>$('#modal-renovar').modal('show');</script>";
+}
+
 ?>
 
 
@@ -533,6 +584,45 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "disciplinas") {
             }
         });
     });
+</script>
+
+<!--AJAX PARA RENOVAR GRADE CURRICULAR -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var pag = "<?=$pag?>";
+        $('#btn-renovar').click(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: pag + "/renovar.php",
+                method: "post",
+                data: $('form').serialize(),
+                dataType: "text",
+                success: function (mensagem) {
+
+                    $('#mensagem_renovar').addClass('')
+
+                    if (mensagem.trim() === 'Renovado com Sucesso!!') {
+
+
+                        $('#btn-cancelar1').click();
+                        window.location = "index.php?pag=" + pag;
+                    }else{
+
+                        $('#mensagem_renovar').addClass('text-danger')
+                        $('#mensagem_renovar').text(mensagem)
+
+                    }
+
+
+
+
+                },
+
+            })
+        })
+    })
 </script>
 
 

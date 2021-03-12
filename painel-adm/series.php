@@ -13,8 +13,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 ?>
 
 <div class="row mt-4 mb-4">
-    <a type="button" title="Cadastrar Novo Curso" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=<?php echo $pag ?>&funcao=novo">Nova Série</a>
-    <a type="button" title="Cadastrar Novo Curso" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
+    <a type="button" title="Cadastrar Nova Série" class="btn-primary btn-sm ml-3 d-none d-md-block" href="index.php?pag=<?php echo $pag ?>&funcao=novo">Nova Série</a>
+    <a type="button" title="Cadastrar Nova Série" class="btn-primary btn-sm ml-3 d-block d-sm-none" href="index.php?pag=<?php echo $pag ?>&funcao=novo"><i class="fas fa-user-plus"></i></a>
     
 </div>
 
@@ -422,7 +422,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
       ?>
 
 
-      <a title="Ver Grade por Ano Letivo" href="index.php?pag=series&funcao=grade&id=<?php echo $id_serie ?>&id_ano=<?php echo $id_ano ?>" name="btn-salvar-aula" class="btn btn-secondary text-light m-1"><?php echo $sigla ?></a>
+      <a title="Ver Grade por Ano Letivo" href="index.php?pag=series&funcao=grade&id=<?php echo $id_serie ?>&id_ano=<?php echo $id_ano ?>" name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $sigla ?></a>
 
 
 

@@ -67,7 +67,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
                       <tr>
-                        <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&id=<?php echo $id ?>"><?php echo $periodo ?></a></td>
+                        <td><?php echo $periodo ?></td>
                         <td><?php echo $dataInicialF ?></td>
 
                         <td><?php echo $dataFinalF ?></td>
@@ -321,82 +321,6 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     </div>
 </div>
 
-<div class="modal" id="modal-series" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Séries do Curso</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <small>
-                   <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th scope="col">Série</th>
-                          <th scope="col">Próxima Série</th>
-                          <th scope="col">Código da Série</th>
-                      </thead>
-                      <tbody>
-
-                        <?php 
-
-                        $id_serie = $_GET['id'];
-
-                  //VERIFICAR SERIES
-                        $query_3 = $pdo->query("SELECT * FROM tbserie where IdCurso = '$id_serie' order by NomeSerie ");
-                        $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
-
-                        for ($i2=0; $i2 < count($res_3); $i2++) { 
-                          foreach ($res_3[$i2] as $key => $value) {
-                          }
-
-                          $serie = $res_3[$i2]['NomeSerie'];
-                          $id_prox_serie = $res_3[$i2]['IdProximaSerie'];
-                          $id_mensalidade = $res_3[$i2]['IdServicoMensalidade'];
-                          $codigo_serie = $res_3[$i2]['CodigoSerie'];
-
-                          $query_4 = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_prox_serie' ");
-                          $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
-
-                          $prox_serie = $res_4[0]['NomeSerie'];
-
-                          ?>
-
-
-                          <tr>
-                            <td><?php echo $serie ?></td>
-
-                            <td> <?php if(@$prox_serie != ""){ ?>
-                                <?php echo $prox_serie ?>
-
-                            <?php }else{ echo "-"; } ?>
-
-
-                        </td>
-
-                        <td><?php echo $codigo_serie ?> </td>
-
-
-
-
-
-                    </tr>
-
-                <?php  }  ?>
-
-            </tbody>
-        </table>
-    </small>
-
-
-</div>
-</div>
-</div>
-</div>
 
 
 
@@ -417,9 +341,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
     echo "<script>$('#modal-endereco').modal('show');</script>";
 }
-if (@$_GET["funcao"] != null && @$_GET["funcao"] == "series") {
-    echo "<script>$('#modal-series').modal('show');</script>";
-}
+
 
 ?>
 

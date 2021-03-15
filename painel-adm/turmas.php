@@ -112,6 +112,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
               <a href="index.php?pag=<?php echo $pag ?>&funcao=matriculados&id_turma=<?php echo @$id ?>" class='text-primary ml-1 ' title='Ver Alunos Matriculados'><i class="fas fa-clipboard-list"></i></a>
 
+              <a href="index.php?pag=<?php echo $pag ?>&funcao=professores&id_turma=<?php echo @$id ?>" class='text-success ml-2 ' title='Cadastrar Professores na Turma'><i class="fas fa-id-badge"></i></a>
+
+
 
 
 
@@ -713,73 +716,194 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
         $res = $query->fetchAll(PDO::FETCH_ASSOC); 
 
         if (count($res) != 0) {
-          
-        ?>
+
+          ?>
 
 
+
+          <small>
+           <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Aluno</th>
+                <th scope="col">Situação do Aluno</th>
+                <th scope="col">Ação</th>
+
+              </thead>
+              <tbody>
+                <?php 
+
+
+                for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
+
+                  $id_aluno = $res[$i]['IdAluno'];
+                  $id_situacao = $res[$i]['IdSituacaoAlunoTurma'];
+
+                  $query_r1 = $pdo->query("SELECT * FROM tbaluno where IdAluno = '".$id_aluno."' ");
+                  $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
+
+                  $nome_aluno = $res_r1[0]['NomeAluno'];
+                  $id_responsavelFinaceiro = $res_r1[0]['IdResponsavel'];
+
+                  $query_r2 = $pdo->query("SELECT * FROM tbsituacaoalunoturma where IdSituacaoAlunoTurma = '".$id_situacao."' ");
+                  $res_r2 = $query_r2->fetchAll(PDO::FETCH_ASSOC);
+
+                  $situacao = $res_r2[0]['SituacaoAlunoTurma'];
+
+
+
+                  ?>
+
+                  <tr>
+                    <td><?php echo @$nome_aluno ?></td>
+
+                    <td><?php echo @$situacao ?></td>
+
+                    <td><span><small><a title="Excluir Matrícula" href="index.php?pag=<?php echo $pag ?>&funcao=excluir_matricula&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-user-times text-danger ml-3"></i></small></span></a></td>
+
+                  </tr>
+
+                <?php } ?>
+
+              </tbody>
+            </table>
+          </small>
+
+
+          <div align="center" id="mensagem" class="">
+
+          </div>
+        <?php }else { ?>
+
+          <span class="text-danger">Não existem alunos matriculados nessa turma!</span>
+        <?php } ?>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-professores" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cadastrar professores nas disciplinas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
         <small>
          <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Aluno</th>
-              <th scope="col">Situação do Aluno</th>
-              <th scope="col">Ação</th>
+          <form method="post" id="form-prof">
+            <thead>
+              <tr>
+                <th scope="col">Disciplinas</th>
+                <th scope="col">Escolher Professor</th>
 
-            </thead>
-            <tbody>
-              <?php 
-              
+              </thead>
+              <tbody>
 
-              for ($i=0; $i < count($res); $i++) { 
-                foreach ($res[$i] as $key => $value) {
-                }
+                <?php 
 
-                $id_aluno = $res[$i]['IdAluno'];
-                $id_situacao = $res[$i]['IdSituacaoAlunoTurma'];
+                $id_turma = $_GET['id_turma'];
 
-                $query_r1 = $pdo->query("SELECT * FROM tbaluno where IdAluno = '".$id_aluno."' ");
-                $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
+                $query_5 = $pdo->query("SELECT * FROM tbturma where Idturma = '$id_turma'");
+                $res_5 = $query_5->fetchAll(PDO::FETCH_ASSOC);
 
-                $nome_aluno = $res_r1[0]['NomeAluno'];
-                $id_responsavelFinaceiro = $res_r1[0]['IdResponsavel'];
+                $id_serie = $res_5[0]['IdSerie'];
+                $id_ano = $res_5[0]['IdPeriodo'];
 
-                $query_r2 = $pdo->query("SELECT * FROM tbsituacaoalunoturma where IdSituacaoAlunoTurma = '".$id_situacao."' ");
-                $res_r2 = $query_r2->fetchAll(PDO::FETCH_ASSOC);
+                        //VERIFICAR Disciplinas
+                $query_3 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo = '$id_ano'");
+                $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
 
-                $situacao = $res_r2[0]['SituacaoAlunoTurma'];
+                for ($i2=0; $i2 < count($res_3); $i2++) { 
+                  foreach ($res_3[$i2] as $key => $value) {
+                  }
 
-
-
-                ?>
-
-                <tr>
-                  <td><?php echo @$nome_aluno ?></td>
-
-                  <td><?php echo @$situacao ?></td>
-
-                  <td><span><small><a title="Excluir Matrícula" href="index.php?pag=<?php echo $pag ?>&funcao=excluir_matricula&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-user-times text-danger ml-3"></i></small></span></a></td>
-
-                </tr>
-
-              <?php } ?>
-
-            </tbody>
-          </table>
-        </small>
+                  $id_disciplinas = $res_3[$i2]['IdDisciplina'];
 
 
-        <div align="center" id="mensagem" class="">
+                  $query_4 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplinas' ");
+                  $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+
+                  $nome_disciplina = $res_4[0]['NomeDisciplina'];
+
+                  ?>
+
+                  <input type="hidden" id="id_disc"  name="id_disc[]" value="<?php echo @$id_disciplinas ?>">
+                  <tr>
+
+                    <td><?php echo @$nome_disciplina ?></td>
+
+                    <td>
+                      <select name="id_profe[]" class="form-control" id="">
+                        <option selected value="">Selecione o Professor</option>
+                        <?php 
+                        $query = $pdo->query("SELECT * FROM tbprofessordisciplina where IdDisciplina = '$id_disciplinas' ");
+                        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                        for ($i=0; $i < count($res); $i++) { 
+                          foreach ($res[$i] as $key => $value) {
+                          }
+
+                          $id_professor = $res[$i]['IdProfessor'];
+
+                          $query11 = $pdo->query("SELECT * FROM tbprofessor where IdProfessor = '$id_professor'");
+                          $res11 = $query11->fetchAll(PDO::FETCH_ASSOC);
+
+                          $nome_professor = $res11[0]['NomeProfessor'];
+
+                           $query12 = $pdo->query("SELECT * FROM tbturmaprofessor where IdProfessor = '$id_professor' and IdDisciplina = '$id_disciplinas' and IdTurma = '$id_turma'");
+                          $res12 = $query12->fetchAll(PDO::FETCH_ASSOC);
+
+
+                          ?>
+                        
+                          <?php if (@count($res12) != 0){ ?>
+                            <option selected value="<?php echo $id_professor ?>"><?php echo @$nome_professor ?></option>
+
+                          <?php 
+                          continue;
+                          }else{ ?>
+                          
+                          <option value="<?php echo $id_professor ?>"><?php echo @$nome_professor ?></option>
+
+
+                        <?php }}?>
+
+                      </select>
+
+                    </td>
+
+
+
+                  </tr>
+
+                <?php  }  ?>
+
+              </tbody>
+            </table>
+          </small>
+
 
         </div>
-      <?php }else { ?>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn-cancelar-prof">Cancelar</button>
 
-        <span class="text-danger">Não existem alunos matriculados nessa turma!</span>
-      <?php } ?>
 
-      
+          <input type="hidden" id="id-turma"  name="id-turma" value="<?php echo @$_GET['id_turma'] ?>" required>
+
+          <button type="submit" id="btn-salvar-prof" name="btn-salvar-prof" class="btn btn-primary">Salvar</button>
+        </form>
       </div>
-
+      <div align="center" id="mensagem-prof" class="">
     </div>
   </div>
 </div>
@@ -816,11 +940,11 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "confirmar") {
 
   if (@count($res_r) == 0) {
     $res = $pdo->query("INSERT INTO tbalunoturma SET IdTurma = '$id_turma', IdAluno = '$id_aluno', DataSituacaoAtivo = curDate(),  IdSituacaoAlunoTurma = 5, IdResponsavelFinanceiro = '$id_resp' ");
-    
+
   }
-  
+
   echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
-  
+
 }
 
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
@@ -836,6 +960,8 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
 
   echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma2&id_aluno=$id_aluno&funcao=matriculados';</script>";
 
+} if (@$_GET["funcao"] != null && @$_GET["funcao"] == "professores") {
+  echo "<script>$('#modal-professores').modal('show');</script>";
 }
 
 ?>
@@ -874,6 +1000,54 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
                   }
 
                   $('#mensagem').text(mensagem)
+
+                },
+
+                cache: false,
+                contentType: false,
+                processData: false,
+            xhr: function () {  // Custom XMLHttpRequest
+              var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
+                  myXhr.upload.addEventListener('progress', function () {
+                    /* faz alguma coisa durante o progresso do upload */
+                  }, false);
+                }
+                return myXhr;
+              }
+            });
+  });
+</script>
+
+<!--AJAX PARA INSERÇÃO de professores nas turmas -->
+<script type="text/javascript">
+  $("#form-prof").submit(function () {
+    var pag = "<?=$pag?>";
+    event.preventDefault();
+    var formData = new FormData(this);
+
+    $.ajax({
+      url: pag + "/inserir-professores.php",
+      type: 'POST',
+      data: formData,
+
+      success: function (mensagem) {
+
+        $('#mensagem-prof').removeClass()
+
+        if (mensagem.trim() == "Salvo com Sucesso!!") {
+
+                    //$('#nome').val('');
+                    //$('#cpf').val('');
+                    $('#btn-cancelar-prof').click();
+                    window.location = "index.php?pag="+pag;
+
+                  } else {
+
+                    $('#mensagem-prof').addClass('text-danger')
+                  }
+
+                  $('#mensagem-prof').text(mensagem)
 
                 },
 

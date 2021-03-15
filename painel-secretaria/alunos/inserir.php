@@ -124,7 +124,7 @@ if($ext == 'png' or $ext == 'jpg' or $ext == 'jpeg' or $ext == 'gif'){
 	exit();
 }
 
-//VERIFICAR O ID DO ENDEREÇO PELO CPF DO RESPONSAVEL
+//VERIFICAR SE JA EXISTE USUARIO CADASTRADO
 
 $query = $pdo->query("SELECT * FROM usuarios where cpf = '$registro' ");
 $res_usu = $query->fetchAll(PDO::FETCH_ASSOC);

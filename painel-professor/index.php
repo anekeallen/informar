@@ -88,38 +88,45 @@ $senha_usu = @$res[0]['senha'];
 
             <?php 
 
-            $query = $pdo->query("SELECT * FROM professores where cpf = '$cpf_usu' ");
+            $query = $pdo->query("SELECT * FROM tbprofessor where CPF = '$cpf_usu' ");
             $res = $query->fetchAll(PDO::FETCH_ASSOC);
-            $id_prof = $res[0]['id'];
+            $id_prof = $res[0]['IdProfessor'];
 
+            $antigo = 0;
 
-
-            $query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' and data_final > curDate() order by data_final desc");
+            $query = $pdo->query("SELECT * FROM tbturmaprofessor where IdProfessor = '$id_prof'");
             $res = $query->fetchAll(PDO::FETCH_ASSOC);
             for ($i=0; $i < count($res); $i++) { 
               foreach ($res[$i] as $key => $value) {
               }
-              $disciplina = $res[$i]['disciplina'];
+              $id_disciplina = $res[$i]['IdDisciplina'];
               
-              $id_turma = $res[$i]['id'];
+              $id_turma = $res[$i]['IdTurma'];
 
               
-              $query_resp = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
+              $query_resp = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' and datafinal > curDate() ");
               $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);
               
-              $nome_disc = $res_resp[0]['nome'];
+              $sigla_turma = @$res_resp[0]['SiglaTurma'];
+              $nome_turma = @$res_resp[0]['NomeTurma'];
+
+              $id_serie = @$res_resp[0]['IdSerie'];
+
+              $query_serie = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_serie'");
+              $res_serie = $query_serie->fetchAll(PDO::FETCH_ASSOC);
+
+              $nome_serie = @$res_serie[0]['NomeSerie'];
 
 
               
               ?> 
 
-
-
+              <?php if($nome_turma != "" and $id_turma != $antigo){ ?>
               <!-- Nav Item - Charts -->
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?pag=turma&id=<?php echo $id_turma ?>">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span><?php echo $nome_disc ?></span></a>
+                        <i class="fab fa-leanpub"></i>
+                        <span><?php echo $nome_serie ?> - <?php echo $nome_turma ?></span></a>
                 </li>
 
                 <!-- Nav Item - Tables -->
@@ -128,7 +135,10 @@ $senha_usu = @$res[0]['senha'];
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
 
-            <?php } ?>
+            <?php }
+
+                $antigo = $id_turma; 
+        } ?>
                 <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -268,10 +278,7 @@ $senha_usu = @$res[0]['senha'];
                                 <input value="<?php echo $nome_usu ?>" type="text" class="form-control" id="nome_usu" name="nome_usu" placeholder="Nome">
                             </div>
 
-                            <div class="form-group">
-                                <label >CPF</label>
-                                <input value="<?php echo $cpf_usu ?>" type="text" class="form-control" id="cpf_usu" name="cpf_usu" placeholder="CPF">
-                            </div>
+                        
 
                             <div class="form-group">
                                 <label >Login</label>
@@ -300,7 +307,8 @@ $senha_usu = @$res[0]['senha'];
 
 
                             <input value="<?php echo $idUsuario ?>" type="hidden" name="id_usu" id="id_usu">
-                            <input value="<?php echo $cpf_usu ?>" type="hidden" name="antigo_usu" id="antigo_usu">
+                            <input value="<?php echo $cpf_usu ?>" type="hidden" name="cpf_usu" id="cpf_uso">
+                            <input value="<?php echo $login_usu ?>" type="hidden" name="antigo2_usu" id="antigo2_usu">
 
                             <button type="button" id="btn-fechar-perfil" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                             <button type="submit" name="btn-salvar-perfil" id="btn-salvar-perfil" class="btn btn-primary">Salvar</button>

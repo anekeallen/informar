@@ -305,22 +305,18 @@ $menu6 = "movimentacoes";
 
                         <div class="form-group">
                             <label >Nome</label>
-                            <input value="<?php echo $nome_usu ?>" type="text" class="form-control" id="nome_usu" name="nome_usu" placeholder="Nome">
+                            <input required value="<?php echo $nome_usu ?>" type="text" class="form-control" id="nome_usu" name="nome_usu" placeholder="Nome">
                         </div>
 
-                        <div class="form-group">
-                            <label >CPF</label>
-                            <input value="<?php echo $cpf_usu ?>" type="text" class="form-control" id="cpf_usu" name="cpf_usu" placeholder="CPF">
-                        </div>
 
                         <div class="form-group">
                             <label >Login</label>
-                            <input value="<?php echo $login_usu ?>" type="text" class="form-control" id="login_usu" name="login_usu" placeholder="Login">
+                            <input required value="<?php echo $login_usu ?>" type="text" class="form-control" id="login_usu" name="login_usu" placeholder="Login">
                         </div>
 
                         <div class="form-group">
                             <label >Senha</label>
-                            <input value="<?php echo $senha_usu ?>" type="password" class="form-control" id="senha_usu" name="senha_usu" placeholder="Senha">
+                            <input required value="<?php echo $senha_usu ?>" type="password" class="form-control" id="senha_usu" name="senha_usu" placeholder="Senha">
                         </div>
 
 
@@ -341,7 +337,8 @@ $menu6 = "movimentacoes";
 
 
                         <input value="<?php echo $id_usu ?>" type="hidden" name="id_usu" id="id_usu">
-                        <input value="<?php echo $cpf_usu ?>" type="hidden" name="antigo_usu" id="antigo_usu">
+                        <input value="<?php echo $cpf_usu ?>" type="hidden" name="cpf_usu" id="cpf_usu">
+                        <input value="<?php echo $login_usu ?>" type="hidden" name="antigo_usu" id="antigo_usu">
 
                         <button type="button" id="btn-fechar-perfil" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="submit" name="btn-salvar-perfil" id="btn-salvar-perfil" class="btn btn-primary">Salvar</button>

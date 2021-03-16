@@ -30,11 +30,24 @@ if($cpf == ""){
 if($antigo != $cpf){
 	$query = $pdo->query("SELECT * FROM tesoureiros where cpf = '$cpf' ");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$query = $pdo->query("SELECT * FROM usuarios where cpf = '$cpf' ");
+	$res3 = $query->fetchAll(PDO::FETCH_ASSOC);
+
 	$total_reg = @count($res);
+
+	$total_reg2 = @count($res3);
+
 	if($total_reg > 0){
 		echo 'O CPF já está Cadastrado!';
 		exit();
 	}
+
+	if($total_reg2 > 0){
+		echo 'O CPF já cadastrado para algum usuário!';
+		exit();
+	}
+	
 }
 
 
@@ -42,11 +55,23 @@ if($antigo != $cpf){
 if($antigo2 != $email){
 	$query = $pdo->query("SELECT * FROM tesoureiros where email = '$email' ");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+	$query = $pdo->query("SELECT * FROM usuarios where email = '$email' ");
+	$res3 = $query->fetchAll(PDO::FETCH_ASSOC);
+
 	$total_reg = @count($res);
+
+	$total_reg2 = @count($res3);
+
 	if($total_reg > 0){
 		echo 'O Email já está Cadastrado!';
 		exit();
 	}
+
+	if($total_reg2 > 0){
+		echo 'O login já cadastrado para algum usuário!';
+		exit();
+	}
+	
 }
 
 

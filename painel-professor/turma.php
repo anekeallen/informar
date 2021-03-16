@@ -8,15 +8,16 @@ require_once("../conexao.php");
 $id_turma = $_GET['id'];
 
 
-$query_2 = $pdo->query("SELECT * FROM turmas where id = '$id_turma' ");
+$query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' ");
 $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
-$disciplina = $res_2[0]['disciplina'];
-$horario = $res_2[0]['horario'];
-$dia = $res_2[0]['dia'];
-$ano = $res_2[0]['ano'];
-$data_final = $res_2[0]['data_final'];
-$data_inicio = $res_2[0]['data_inicio'];
-$professor = $res_2[0]['professor'];
+$id_serie = $res_2[0]['IdSerie'];
+$id_periodo = $res_2[0]['IdPeriodo'];
+$nome_turma = $res_2[0]['NomeTurma'];
+$sigla = $res_2[0]['SiglaTurma'];
+$totalvagas = $res_2[0]['TotalVagas'];
+$id_sala = $res_2[0]['IdSala'];
+$data_final = $res_2[0]['DataFinal'];
+$turno = $res_2[0]['TurnoPrincipal'];
 
 
 //RECUPERAR O TOTAL DE MESES ENTRE DATAS
@@ -468,14 +469,14 @@ if($data_final < date('Y-m-d')){
              </div>
 
              
-                 <div class="form-group">
+             <div class="form-group">
                <input type="text" class="form-control" id="nota" name="nota" placeholder="Valor da Nota do Aluno">
              </div>
-            
-                 <div class="form-group">
+             
+             <div class="form-group">
                <input type="text" class="form-control" id="nota-max" name="nota-max" placeholder="Nota Máxima Possível">
              </div>
-            
+             
              
 
              <div align="right">
@@ -486,7 +487,7 @@ if($data_final < date('Y-m-d')){
             <input type="hidden" name="periodo" value="<?php echo $_GET['id_periodo'] ?>">
             <input type="hidden" id="txtidaluno" name="aluno">
 
-           
+            
 
           </form>
         </div>
@@ -512,22 +513,22 @@ if($data_final < date('Y-m-d')){
       </div>
       <div class="modal-body">
 
-      
+        
 
-            <span class=""><b>Aulas do Curso</b></span>
-            <small><div id="listar-aulas-chamada" class="mt-2">
+        <span class=""><b>Aulas do Curso</b></span>
+        <small><div id="listar-aulas-chamada" class="mt-2">
 
-            </div></small>
+        </div></small>
 
 
-      <div align="center" id="mensagem_chamada" class="">
+        <div align="center" id="mensagem_chamada" class="">
+
+        </div>
 
       </div>
 
     </div>
-
   </div>
-</div>
 </div>
 
 
@@ -546,24 +547,24 @@ if($data_final < date('Y-m-d')){
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-       <form id="form3" method="POST">
-      <div class="modal-body">
+      <form id="form3" method="POST">
+        <div class="modal-body">
 
-       <!-- DataTales Example -->
-<div class="card shadow mb-4">
+         <!-- DataTales Example -->
+         <div class="card shadow mb-4">
 
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
-                        <th>Nome</th>
-                       
-                        <th>Email</th>
-                       
-                        <th>Foto</th>
-                        <th>Ações</th>
-                    </tr>
+                  <tr>
+                    <th>Nome</th>
+                    
+                    <th>Email</th>
+                    
+                    <th>Foto</th>
+                    <th>Ações</th>
+                  </tr>
                 </thead>
 
                 <tbody>
@@ -579,8 +580,8 @@ if($data_final < date('Y-m-d')){
 
                   $aluno = $res[$i]['aluno'];
 
-                   $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' order by NomeAluno asc");
-                    $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
+                  $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' order by NomeAluno asc");
+                  $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
                   $nome = $res_r[0]['NomeAluno'];
                   //$telefone = $res_r[0]['telefone'];
@@ -591,7 +592,7 @@ if($data_final < date('Y-m-d')){
                   $id_aluno = $res_r[0]['IdAluno'];
 
 
-                   $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$_GET[id]' and aluno = '$id_aluno' and aula = '$_GET[id_aula]' ");
+                  $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$_GET[id]' and aluno = '$id_aluno' and aula = '$_GET[id_aula]' ");
                   $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
                   $presenca = $res2[0]['presenca'];
 
@@ -606,51 +607,51 @@ if($data_final < date('Y-m-d')){
 
                   <tr>
                     <td>
-                        <?php echo $nome ?>
-                      </td>
-                   
+                      <?php echo $nome ?>
+                    </td>
+                    
                     <td><?php echo $email ?></td>
-                  
+                    
                     <td><img src="../img/alunos/<?php echo $foto ?>" width="50"></td>
 
 
                     <td>
-                       <a href="index.php?pag=<?php echo $pag ?>&funcao=presenca&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-success mr-1' title='Presente'><i class='far fa-check-circle'></i></a>
+                     <a href="index.php?pag=<?php echo $pag ?>&funcao=presenca&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-success mr-1' title='Presente'><i class='far fa-check-circle'></i></a>
 
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=falta&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-danger mr-1' title='Falta'><i class="fas fa-times-circle"></i></a>
-
-
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=justificado&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-info mr-1' title='Justificar Falta'><i class='fas fa-question-circle fa-1x'></i></a>
-
-                        <?php if($presenca != ""){ ?>
-                        - <span class="<?php echo $classe_chamada ?>"><?php echo $presenca ?></span>
-                         <?php } ?>
-
-                        
-
-                   </td>
-               </tr>
-           <?php } ?>
+                     <a href="index.php?pag=<?php echo $pag ?>&funcao=falta&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-danger mr-1' title='Falta'><i class="fas fa-times-circle"></i></a>
 
 
+                     <a href="index.php?pag=<?php echo $pag ?>&funcao=justificado&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-info mr-1' title='Justificar Falta'><i class='fas fa-question-circle fa-1x'></i></a>
+
+                     <?php if($presenca != ""){ ?>
+                      - <span class="<?php echo $classe_chamada ?>"><?php echo $presenca ?></span>
+                    <?php } ?>
+
+                    
+
+                  </td>
+                </tr>
+              <?php } ?>
 
 
 
-       </tbody>
-   </table>
-</div>
-</div>
-</div>
 
-       
 
+            </tbody>
+          </table>
+        </div>
       </div>
-
-       
-    </form>
-
     </div>
+
+    
+
   </div>
+
+  
+</form>
+
+</div>
+</div>
 </div>
 
 
@@ -694,10 +695,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "presenca") {
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'P' where id = '$id_chamada'");
   }else{
-      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate(), periodo = '$id_periodo_chamada'");
+    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate(), periodo = '$id_periodo_chamada'");
   }
 
-   echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
+  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
 
 
 }
@@ -717,10 +718,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'F' where id = '$id_chamada'");
   }else{
-      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'F', data = curDate(), periodo = '$id_periodo_chamada'");
+    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'F', data = curDate(), periodo = '$id_periodo_chamada'");
   }
 
-   echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
+  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
 
 
 }
@@ -740,10 +741,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'J' where id = '$id_chamada'");
   }else{
-      $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'J', data = curDate(), periodo = '$id_periodo_chamada'");
+    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'J', data = curDate(), periodo = '$id_periodo_chamada'");
   }
 
-   echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
+  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
 
 
 }
@@ -1006,42 +1007,42 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     </script>
 
     <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
-<script type="text/javascript">
-  $("#form-notas").submit(function () {
-    var pag = "<?=$pag?>";
-    event.preventDefault();
-    var formData = new FormData(this);
+    <script type="text/javascript">
+      $("#form-notas").submit(function () {
+        var pag = "<?=$pag?>";
+        event.preventDefault();
+        var formData = new FormData(this);
 
-    $.ajax({
-      url: pag + "/inserir-nota.php",
-      type: 'POST',
-      data: formData,
+        $.ajax({
+          url: pag + "/inserir-nota.php",
+          type: 'POST',
+          data: formData,
 
-      success: function (mensagem) {
+          success: function (mensagem) {
 
-        $('#mensagem-notas').removeClass()
+            $('#mensagem-notas').removeClass()
 
-        if (mensagem.trim() == "Salvo com Sucesso!") {
+            if (mensagem.trim() == "Salvo com Sucesso!") {
 
-          $('#descricao-nota').val('');
-          $('#nota').val('');
-          $('#nota-max').val('');
-          listarDadosNotas(document.getElementById('txtidaluno').value);
-          $('#mensagem-notas').addClass('text-success')
+              $('#descricao-nota').val('');
+              $('#nota').val('');
+              $('#nota-max').val('');
+              listarDadosNotas(document.getElementById('txtidaluno').value);
+              $('#mensagem-notas').addClass('text-success')
 
-        } else {
+            } else {
 
-          $('#mensagem-notas').addClass('text-danger')
-        }
+              $('#mensagem-notas').addClass('text-danger')
+            }
 
 
-        $('#mensagem-notas').text(mensagem)
+            $('#mensagem-notas').text(mensagem)
 
-      },
+          },
 
-      cache: false,
-      contentType: false,
-      processData: false,
+          cache: false,
+          contentType: false,
+          processData: false,
             xhr: function () {  // Custom XMLHttpRequest
               var myXhr = $.ajaxSettings.xhr();
                 if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
@@ -1052,53 +1053,53 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
                 return myXhr;
               }
             });
-  });
-</script>
+      });
+    </script>
 
-<script type="text/javascript">
-  function listarDadosNotas(aluno){
-    var pag = "<?=$pag?>";
-    var turma = "<?=$id_turma?>";
-    var periodo = "<?=$id_per?>";
-    
-    $.ajax({
-     url: pag + "/listar-notas.php",
-     method: "post",
-     data: {turma, periodo, aluno},
-     dataType: "html",
-     success: function(result){
-      $('#listar-notas').html(result)
-
-    },
-
-
-  })
-  }
-</script>
-
-<script type="text/javascript">
-  function deletarNota(idnota) {
-    event.preventDefault();
-    var pag = "<?=$pag?>";
-    
-      $.ajax({
-        url: pag + "/excluir-nota.php",
-        method: "post",
-        data: {idnota},
-        dataType: "text",
-        success: function (mensagem) {
-
-          if (mensagem.trim() === 'Excluído com Sucesso!') {
-
-
-            listarDadosNotas(document.getElementById('txtidaluno').value);
-          }
-
-         
+    <script type="text/javascript">
+      function listarDadosNotas(aluno){
+        var pag = "<?=$pag?>";
+        var turma = "<?=$id_turma?>";
+        var periodo = "<?=$id_per?>";
+        
+        $.ajax({
+         url: pag + "/listar-notas.php",
+         method: "post",
+         data: {turma, periodo, aluno},
+         dataType: "html",
+         success: function(result){
+          $('#listar-notas').html(result)
 
         },
 
+
       })
-    }
-  
-</script>
+      }
+    </script>
+
+    <script type="text/javascript">
+      function deletarNota(idnota) {
+        event.preventDefault();
+        var pag = "<?=$pag?>";
+        
+        $.ajax({
+          url: pag + "/excluir-nota.php",
+          method: "post",
+          data: {idnota},
+          dataType: "text",
+          success: function (mensagem) {
+
+            if (mensagem.trim() === 'Excluído com Sucesso!') {
+
+
+              listarDadosNotas(document.getElementById('txtidaluno').value);
+            }
+
+            
+
+          },
+
+        })
+      }
+      
+    </script>

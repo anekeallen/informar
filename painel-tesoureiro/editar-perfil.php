@@ -10,28 +10,29 @@ $antigo = $_POST['antigo_usu'];
 $id = $_POST['id_usu'];
 
 if($nome == ""){
-	echo 'O nome é Obrigatório!';
+	echo 'O nome é obrigatório!';
 	exit();
 }
 
 if($login == ""){
-	echo 'O login é Obrigatório!';
+	echo 'O login é obrigatório!';
 	exit();
 }
 
-if($cpf == ""){
-	echo 'O CPF é Obrigatório!';
+if($senha == ""){
+	echo 'A senha é obrigatória!';
 	exit();
 }
+
 
 
 //VERIFICAR SE O REGISTRO JÁ EXISTE NO BANCO
-if($antigo != $cpf){
-	$query = $pdo->query("SELECT * FROM usuarios where cpf = '$cpf' ");
+if($antigo != $login){
+	$query = $pdo->query("SELECT * FROM usuarios where email = '$login' ");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$total_reg = @count($res);
 	if($total_reg > 0){
-		echo 'O CPF já está Cadastrado!';
+		echo 'O login já está cadastrado!';
 		exit();
 	}
 }

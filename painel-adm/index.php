@@ -373,6 +373,7 @@ $menu12 = "novagradecurricular";
 
                         <input value="<?php echo $id_usu ?>" type="hidden" name="id_usu" id="id_usu">
                         <input value="<?php echo $cpf_usu ?>" type="hidden" name="antigo_usu" id="antigo_usu">
+                        <input value="<?php echo $login_usu ?>" type="hidden" name="antigo2_usu" id="antigo2_usu">
 
                         <button type="button" id="btn-fechar-perfil" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="submit" name="btn-salvar-perfil" id="btn-salvar-perfil" class="btn btn-primary">Salvar</button>

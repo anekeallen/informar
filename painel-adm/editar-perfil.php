@@ -7,6 +7,7 @@ $login = $_POST['login_usu'];
 $senha = $_POST['senha_usu'];
 
 $antigo = $_POST['antigo_usu'];
+$antigo2 = $_POST['antigo2_usu'];
 $id = $_POST['id_usu'];
 
 if($nome == ""){
@@ -32,6 +33,17 @@ if($antigo != $cpf){
 	$total_reg = @count($res);
 	if($total_reg > 0){
 		echo 'O CPF já está Cadastrado!';
+		exit();
+	}
+}
+
+//VERIFICAR SE O REGISTRO JÁ EXISTE NO BANCO
+if($antigo2 != $login){
+	$query = $pdo->query("SELECT * FROM usuarios where email = '$login' ");
+	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+	$total_reg = @count($res);
+	if($total_reg > 0){
+		echo 'O login já está Cadastrado!';
 		exit();
 	}
 }

@@ -55,19 +55,39 @@ if($email == ""){
 if($antigo != $cpf){
 	$query = $pdo->query("SELECT * FROM tbprofessor where CPF = '$cpf' ");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$query = $pdo->query("SELECT * FROM usuarios where cpf = '$cpf' ");
+	$res3 = $query->fetchAll(PDO::FETCH_ASSOC);
+
 	$total_reg = @count($res);
+	$total_reg2 = @count($res3);
 	if($total_reg > 0){
-		echo 'O CPF já está Cadastrado!';
+		echo 'O CPF já está Cadastrado para um professor!';
+		exit();
+	}
+
+	if($total_reg2 > 0){
+		echo 'O CPF já cadastrado para algum usuário!';
 		exit();
 	}
 }
 
 if($antigo2 != $email){
-	$query = $pdo->query("SELECT * FROM tbprofessor where CPF = '$cpf' ");
+	$query = $pdo->query("SELECT * FROM tbprofessor where Email = '$email' ");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$query = $pdo->query("SELECT * FROM usuarios where email = '$email' ");
+	$res3 = $query->fetchAll(PDO::FETCH_ASSOC);
+
 	$total_reg = @count($res);
+	$total_reg2 = @count($res3);
 	if($total_reg > 0){
-		echo 'O CPF já está Cadastrado!';
+		echo 'O Email já cadastrado para um professor!';
+		exit();
+	}
+
+	if($total_reg2 > 0){
+		echo 'O Email já cadastrado para algum usuário!';
 		exit();
 	}
 }
@@ -134,6 +154,13 @@ if ($id_endereco == "") {
 
 }
 
+//VERIFICAR SE JA EXISTE USUARIO CADASTRADO
+
+$query = $pdo->query("SELECT * FROM usuarios where cpf = '$cpf' ");
+$res_usu = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 
 
 if($id == ""){
@@ -146,14 +173,39 @@ if($id == ""){
 }else{
 	if ($imagem == "sem-foto.jpg") {
 		$res = $pdo->prepare("UPDATE tbprofessor SET NomeProfessor = :nome, CPF = :cpf, Email = :email, Celular = :celular, Fone = :telefone, Sexo = :sexo, DataNascimento = :data, RG = :rg, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade, GpaDataHoraAlteracao = NOW(), RG_OrgaoEmissor = :RG_OrgaoEmissor, RG_DataEmissao =:RG_DataEmissao, IdEndereco = '$id_endereco' WHERE IdProfessor = '$id'");
+
+
+		if(@count($res_usu) == 0){
+			$res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha, nivel = :nivel");
+			$res2->bindValue(":senha", "123");
+			$res2->bindValue(":nivel", "professor");
+
+
+		}else {
+			$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha where cpf = '$cpf'");
+			$res2->bindValue(":senha", "123");
+
+
+		}
 	
 	}else{
 		$res = $pdo->prepare("UPDATE tbprofessor SET NomeProfessor = :nome, CPF = :cpf, Email = :email, Celular = :celular, Fone = :telefone, Sexo = :sexo, DataNascimento = :data, RG = :rg, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade, GpaDataHoraAlteracao = NOW(), RG_OrgaoEmissor = :RG_OrgaoEmissor, RG_DataEmissao =:RG_DataEmissao, IdEndereco = '$id_endereco', foto = '$imagem' WHERE IdProfessor = '$id'");
 
-	}
-	
+		if(@count($res_usu) == 0){
+			$res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha, nivel = :nivel");
+			$res2->bindValue(":senha", "123");
+			$res2->bindValue(":nivel", "professor");
 
-	$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email = :email WHERE cpf = '$antigo'");	
+
+		}else {
+			$res2 = $pdo->prepare("UPDATE usuarios SET nome = :nome, cpf = :cpf, email =:email, senha = :senha where cpf = '$cpf'");
+			$res2->bindValue(":senha", "123");
+
+
+		}
+
+	}
+		
 	
 }
 

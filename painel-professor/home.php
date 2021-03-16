@@ -15,48 +15,59 @@ $mes_atual = Date('m');
 $ano_atual = Date('Y');
 $dataInicioMes = $ano_atual."-".$mes_atual."-01";
 
-$query = $pdo->query("SELECT * FROM professores where cpf = '$cpf_usuario' ");
+$query = $pdo->query("SELECT * FROM tbprofessor where cpf = '$cpf_usuario' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
-$id_prof = $res[0]['id'];
+$id_prof = $res[0]['IdProfessor'];
 
-$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof'");
+// total de disciplinas ministradas pelo professor
+$query = $pdo->query("SELECT Distinct IdDisciplina FROM tbprofessordisciplina where IdProfessor = '$id_prof'");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $totalDisc = @count($res);
 
-$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' and data_final >= curDate()");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$totalAndamento = @count($res);
-
-$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' and data_final < curDate()");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$totalConcluidas = @count($res);
-
-
-
-
-$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' and data_final >= curDate()");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-
+// total de turmas do professor
+$totalAndamento = 0;
+$totalConcluidas = 0;
 $totalAlunos = 0;
+$query = $pdo->query("SELECT Distinct IdTurma FROM tbturmaprofessor where IdProfessor = '$id_prof' ");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
 for ($i=0; $i < count($res); $i++) { 
 	foreach ($res[$i] as $key => $value) {
 	}
-	
-	$id_turma = $res[$i]['id'];
+	$id_turma = $res[$i]['IdTurma'];
 
-	$query2 = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma'");
+	//total de turmas em andamento
+	$query2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' and datafinal >= curDate()");
 	$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-	$total_mat = @count($res2);
-	$totalAlunos = $totalAlunos + $total_mat;
+
+	if (count($res2) > 0) {
+		$totalAndamento = $totalAndamento + 1;
+		$id_turma_andamento = $id_turma;
+	}
+
+	//Total de turmas concluídas
+	$query3 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' and datafinal < curDate()");
+	$res3 = $query3->fetchAll(PDO::FETCH_ASSOC);
+
+	if (count($res3) > 0) {
+		$totalConcluidas = $totalConcluidas + 1;
+	}
+
+	if ($id_turma_andamento != 0) {
+ 		//Total de Alunos
+		$query4 = $pdo->query("SELECT IdAluno FROM tbalunoturma where IdTurma = '$id_turma_andamento'");
+		$res4 = $query4->fetchAll(PDO::FETCH_ASSOC);
+		$totalAlunos = $totalAlunos + count($res4);
+	}
+
+
+	$id_turma_andamento = 0;
+
 }
 
+
+
+
 ?>
-
-
-
-
-
-
 
 
 <div class="row">
@@ -133,40 +144,50 @@ for ($i=0; $i < count($res); $i++) {
 
 
 
+
+
 <div class="row">
 
 	<?php 
 
-	$query = $pdo->query("SELECT * FROM professores where cpf = '$cpf_usuario' ");
+	$query = $pdo->query("SELECT * FROM tbprofessor where CPF = '$cpf_usuario' ");
+	$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+	$id_prof = $res1[0]['IdProfessor'];
+
+
+
+	$query = $pdo->query("SELECT Distinct IdTurma FROM tbturmaprofessor where IdProfessor = '$id_prof' order by IdTurma asc ");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
-	$id_prof = $res[0]['id'];
 
-
-
-
-
-
-	$query = $pdo->query("SELECT * FROM turmas where professor = '$id_prof' order by data_final desc ");
-	$res_2 = $query->fetchAll(PDO::FETCH_ASSOC);
-
-	for ($i=0; $i < count($res_2); $i++) { 
-		foreach ($res_2[$i] as $key => $value) {
+	for ($i=0; $i < count($res); $i++) { 
+		foreach ($res[$i] as $key => $value) {
 		}
 
+		$id_turma = $res[$i]['IdTurma'];
 
-		$disciplina = $res_2[$i]['disciplina'];
-		$horario = $res_2[$i]['horario'];
-		$dia = $res_2[$i]['dia'];
-		$ano = $res_2[$i]['ano'];
-		$data_final = $res_2[$i]['data_final'];
-		$id_turma = $res_2[$i]['id'];
+		$query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma'");
+		$res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
+
+		$id_serie = $res_2[0]['IdSerie'];
+		$id_periodo = $res_2[0]['IdPeriodo'];
+		$nome_turma = $res_2[0]['NomeTurma'];
+		$sigla = $res_2[0]['SiglaTurma'];
+		$totalvagas = $res_2[0]['TotalVagas'];
+		$id_sala = $res_2[0]['IdSala'];
+		$data_final = $res_2[0]['DataFinal'];
+		$turno = $res_2[0]['TurnoPrincipal'];
 
 		$data_finalF = implode('/', array_reverse(explode('-', $data_final)));
 
-		$query_resp = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
+		$query_resp = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_serie' ");
 		$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);
 
-		$nome_disc = $res_resp[0]['nome'];
+		$serie = $res_resp[0]['NomeSerie'];
+
+		$query_ano = $pdo->query("SELECT * FROM tbperiodo where IdPeriodo = '$id_periodo' ");
+		$res_ano = $query_ano->fetchAll(PDO::FETCH_ASSOC);
+
+		$ano = $res_ano[0]['SiglaPeriodo'];
 
 
 		if($data_final < date('Y-m-d')){
@@ -183,8 +204,9 @@ for ($i=0; $i < count($res); $i++) {
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
-								<div class="text-xs font-weight-bold  <?php echo $classe_card ?> text-uppercase"><?php echo $nome_disc ?></div>
-								<div class="text-xs text-secondary"><?php echo $horario ?> <br> <?php echo $dia ?> </div>
+								<div class="text-xs font-weight-bold  <?php echo $classe_card ?> text-uppercase">Série: <?php echo $serie ?> <?php echo $nome_turma ?></div>
+								<div class="text-xs font-weight-bold  <?php echo $classe_card ?> text-uppercase">Turma: <?php echo $sigla ?></div>
+								<div class="text-xs text-secondary">Turno: <?php echo $turno ?> <br> Ano Letivo: <?php echo $ano ?> </div>
 							</div>
 							<div class="col-auto" align="center">
 								<i class="far fa-calendar-alt fa-2x  <?php echo $classe_card ?>"></i><br>

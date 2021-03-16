@@ -453,7 +453,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
           <div class="form-group col-md-4 ">
             <label for="cpf-cat" >Logradouro</label>
-            <input onkeyup="maiuscula(this)" required value="<?php echo $logradouro2 ?>" type="text" class="form-control" id="logradouro-cat" name="logradouro-cat" placeholder="(Rua, AV...)">
+            <input onkeyup="maiuscula(this)" value="<?php echo $logradouro2 ?>" type="text" class="form-control" id="logradouro-cat" name="logradouro-cat" placeholder="(Rua, AV...)">
         </div>
         <div class="form-group col-md-4 ">
             <label >Complemento</label>
@@ -461,7 +461,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
         </div>
         <div class="form-group col-md-4 ">
             <label >Bairro</label>
-            <input onkeyup="maiuscula(this)" required value="<?php echo @$bairro2 ?>" type="text" class="form-control" id="bairro-cat" name="bairro-cat" placeholder="Bairro">
+            <input onkeyup="maiuscula(this)" value="<?php echo @$bairro2 ?>" type="text" class="form-control" id="bairro-cat" name="bairro-cat" placeholder="Bairro">
         </div>
 
 
@@ -469,11 +469,11 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     <div class="row">
       <div class="form-group col-md-3 ">
         <label >Cidade</label>
-        <input onkeyup="maiuscula(this)" required value="<?php echo @$cidade2 ?>" type="text" class="form-control" id="cidade-cat" name="cidade-cat" placeholder="Cidade">
+        <input onkeyup="maiuscula(this)" value="<?php echo @$cidade2 ?>" type="text" class="form-control" id="cidade-cat" name="cidade-cat" placeholder="Cidade">
     </div>
     <div class="form-group col-md-2 ">
         <label >UF</label>
-        <select class="form-control" required value="<?php echo @$uf_endereco ?>" id="uf_endereco-cat" name="uf_endereco-cat"  >
+        <select class="form-control" value="<?php echo @$uf_endereco ?>" id="uf_endereco-cat" name="uf_endereco-cat"  >
 
          <?php if ($uf_endereco==""){
           echo '<option selected value=""></option>';
@@ -509,7 +509,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 </div>
 <div class="form-group col-md-3 ">
   <label >CEP</label>
-  <input value="<?php echo @$cep2 ?>" type="text" class="form-control" id="cep-cat" name="cep-cat" required placeholder="CEP">
+  <input value="<?php echo @$cep2 ?>" type="text" class="form-control" id="cep-cat" name="cep-cat" placeholder="CEP">
 </div>
 
 <div class="col-md-3">

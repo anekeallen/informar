@@ -1,19 +1,27 @@
 <?php  
 
-$nome_escola = "Informar - Centro Educacional";
+$nome_escola = "Centro Educacional Informar";
 $url = "http://localhost/informar/";
-$endereco_escola = "Av. Moema Tinoco da Cunha Lima, 1861 - Pajuçara, Natal - RN, 59133-090";
-$telefone_escola = "(84)3663-2516";
+$endereco_escola = "Av. Moema Tinoco da Cunha Lima, 1861 - Pajuçara, Natal/RN";
+$telefone_escola = "(84) 3663-2516";
+$cep_escola = "59133-090";
+$email_escola = "ceinformar@yahoo.com.br";
 $email_adm = "anekeapj@gmail.com";
 $rodape_relatorios = "Desenvolvido por DevAllen";
-$cnpj_escola = '26.100.560/0000-50';
+$cnpj_escola = '03.178.155/0001-00';
 $cidade_escola = 'Natal/RN'; 
 
-//Variaveis do Banco de dados
+//Variaveis do Banco de dados Local
 $servidor = 'localhost';
 $usuario = 'root';
 $senha = '';
 $banco = 'informar';
+
+/*Variaveis do Banco de dados Hospedados
+$servidor = 'localhost';
+$usuario = 'devall47_aneke';
+$senha = 'AAmm031323';
+$banco = 'devall47_informar'; */
 
 
 //VARIAVEIS GLOBAIS

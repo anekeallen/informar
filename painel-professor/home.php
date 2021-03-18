@@ -45,7 +45,7 @@ for ($i=0; $i < count($res); $i++) {
 	}
 
 	//Total de turmas concluídas
-	$query3 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' and datafinal < curDate()");
+	$query3 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' and (datafinal < curDate())");
 	$res3 = $query3->fetchAll(PDO::FETCH_ASSOC);
 
 	if (count($res3) > 0) {

@@ -36,51 +36,51 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <tbody>
 
-                 <?php 
+                   <?php 
 
-                 $query = $pdo->query("SELECT * FROM salas order by id desc ");
-                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                   $query = $pdo->query("SELECT * FROM salas order by id desc ");
+                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                 for ($i=0; $i < count($res); $i++) { 
-                  foreach ($res[$i] as $key => $value) {
-                  }
+                   for ($i=0; $i < count($res); $i++) { 
+                      foreach ($res[$i] as $key => $value) {
+                      }
 
-                  $sala = $res[$i]['sala'];
-                  $descricao = $res[$i]['descricao'];
-                  $total_vagas = $res[$i]['total_vagas'];
-
-
-                  $id = $res[$i]['id'];
+                      $sala = $res[$i]['sala'];
+                      $descricao = $res[$i]['descricao'];
+                      $total_vagas = $res[$i]['total_vagas'];
 
 
-                  ?>
+                      $id = $res[$i]['id'];
 
 
-                  <tr>
-                    <td><?php echo $sala ?></td>
-
-                    <td><?php echo $descricao ?></td>
-                    <td><?php echo $total_vagas ?></td>
+                      ?>
 
 
+                      <tr>
+                        <td><?php echo $sala ?></td>
 
-
-                    <td>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados da Sala'><i class="fas fa-info-circle"></i></a>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
-
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                    </td>
-                </tr>
-            <?php } ?>
+                        <td><?php echo $descricao ?></td>
+                        <td><?php echo $total_vagas ?></td>
 
 
 
 
+                        <td>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados da Sala'><i class="fas fa-info-circle"></i></a>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
 
-        </tbody>
-    </table>
-</div>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
+
+
+
+
+
+            </tbody>
+        </table>
+    </div>
 </div>
 </div>
 
@@ -388,7 +388,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     <script type="text/javascript">
         $(document).ready(function () {
             $('#dataTable').dataTable({
-                "ordering": false
+                "ordering": false,
+                "stateSave": true,
+                "stateDuration": 60 * 60 * 24,
+                "autoWidth": false
             })
 
         });

@@ -56,7 +56,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
           $sigla_turma = $res[$i]['SiglaTurma'];
           $turno = $res[$i]['TurnoPrincipal'];
           $vagas = $res[$i]['TotalVagas'];
-          $codigo = $res[$i]['CodigoAgrupamento'];
+          //$codigo = $res[$i]['CodigoAgrupamento'];
           $id_sala = $res[$i]['IdSala'];
           $id = $res[$i]['IdTurma'];
 
@@ -713,70 +713,70 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
         if (count($res) != 0) {
           
-        ?>
+          ?>
 
 
 
-        <small>
-         <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Aluno</th>
-              <th scope="col">Situação do Aluno</th>
-              <th scope="col">Ação</th>
+          <small>
+           <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Aluno</th>
+                <th scope="col">Situação do Aluno</th>
+                <th scope="col">Ação</th>
 
-            </thead>
-            <tbody>
-              <?php 
-              
+              </thead>
+              <tbody>
+                <?php 
+                
 
-              for ($i=0; $i < count($res); $i++) { 
-                foreach ($res[$i] as $key => $value) {
-                }
+                for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
 
-                $id_aluno = $res[$i]['IdAluno'];
-                $id_situacao = $res[$i]['IdSituacaoAlunoTurma'];
+                  $id_aluno = $res[$i]['IdAluno'];
+                  $id_situacao = $res[$i]['IdSituacaoAlunoTurma'];
 
-                $query_r1 = $pdo->query("SELECT * FROM tbaluno where IdAluno = '".$id_aluno."' ");
-                $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
+                  $query_r1 = $pdo->query("SELECT * FROM tbaluno where IdAluno = '".$id_aluno."' ");
+                  $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
 
-                $nome_aluno = $res_r1[0]['NomeAluno'];
-                $id_responsavelFinaceiro = $res_r1[0]['IdResponsavel'];
+                  $nome_aluno = $res_r1[0]['NomeAluno'];
+                  $id_responsavelFinaceiro = $res_r1[0]['IdResponsavel'];
 
-                $query_r2 = $pdo->query("SELECT * FROM tbsituacaoalunoturma where IdSituacaoAlunoTurma = '".$id_situacao."' ");
-                $res_r2 = $query_r2->fetchAll(PDO::FETCH_ASSOC);
+                  $query_r2 = $pdo->query("SELECT * FROM tbsituacaoalunoturma where IdSituacaoAlunoTurma = '".$id_situacao."' ");
+                  $res_r2 = $query_r2->fetchAll(PDO::FETCH_ASSOC);
 
-                $situacao = $res_r2[0]['SituacaoAlunoTurma'];
-
-
-
-                ?>
-
-                <tr>
-                  <td><?php echo @$nome_aluno ?></td>
-
-                  <td><?php echo @$situacao ?></td>
-
-                  <td><span><small><a title="Excluir Matrícula" href="index.php?pag=<?php echo $pag ?>&funcao=excluir_matricula&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-user-times text-danger ml-3"></i></small></span></a></td>
-
-                </tr>
-
-              <?php } ?>
-
-            </tbody>
-          </table>
-        </small>
+                  $situacao = $res_r2[0]['SituacaoAlunoTurma'];
 
 
-        <div align="center" id="mensagem" class="">
 
-        </div>
-      <?php }else { ?>
+                  ?>
 
-        <span class="text-danger">Não existem alunos matriculados nessa turma!</span>
-      <?php } ?>
+                  <tr>
+                    <td><?php echo @$nome_aluno ?></td>
 
-      
+                    <td><?php echo @$situacao ?></td>
+
+                    <td><span><small><a title="Excluir Matrícula" href="index.php?pag=<?php echo $pag ?>&funcao=excluir_matricula&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-user-times text-danger ml-3"></i></small></span></a></td>
+
+                  </tr>
+
+                <?php } ?>
+
+              </tbody>
+            </table>
+          </small>
+
+
+          <div align="center" id="mensagem" class="">
+
+          </div>
+        <?php }else { ?>
+
+          <span class="text-danger">Não existem alunos matriculados nessa turma!</span>
+        <?php } ?>
+
+        
       </div>
 
     </div>
@@ -829,6 +829,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
   $id_aluno2 = $_GET['id_aluno'];
   $id_turma2 = $_GET['id_turma'];
+  
 
   $res = $pdo->query("DELETE FROM tbalunoturma WHERE IdAluno = '$id_aluno2' and IdTurma = '$id_turma2'");
 
@@ -962,10 +963,16 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
 <script type="text/javascript">
   $(document).ready(function () {
     $('#dataTable').dataTable({
-      "ordering": false
+      "ordering": false,
+      "stateSave": true,
+      "stateDuration": 60 * 60 * 24,
+      "autoWidth": false
     })
     $('#dataTable2').dataTable({
-      "ordering": false
+      "ordering": false,
+      "stateSave": true,
+      "stateDuration": 60 * 60 * 24,
+      "autoWidth": false
     })
 
   });

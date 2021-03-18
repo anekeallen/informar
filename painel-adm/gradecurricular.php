@@ -49,46 +49,46 @@ $id_periodo_antigo = $res2[0]['IdPeriodo'];
 
                 <tbody>
 
-                   <?php 
+                 <?php 
 
-                   $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
-                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                 $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
+                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                   for ($i=0; $i < count($res); $i++) { 
-                      foreach ($res[$i] as $key => $value) {
-                      }
+                 for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
 
-                      $sigla_ano = $res[$i]['SiglaPeriodo'];
-
-
-
-
-                      $id = $res[$i]['IdPeriodo'];
-
-
-                      ?>
-
-
-                      <tr>
-                        <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&disciplinas=sim&id=<?php echo $id ?>"><?php echo $sigla_ano ?></a></td>
-
-
-                        <td class="">
-
-
-
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=series&excluir=sim&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                        </td>
-                    </tr>
-                <?php } ?>
+                  $sigla_ano = $res[$i]['SiglaPeriodo'];
 
 
 
 
+                  $id = $res[$i]['IdPeriodo'];
 
-            </tbody>
-        </table>
-    </div>
+
+                  ?>
+
+
+                  <tr>
+                    <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&disciplinas=sim&id=<?php echo $id ?>"><?php echo $sigla_ano ?></a></td>
+
+
+                    <td class="">
+
+
+
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=series&excluir=sim&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                    </td>
+                </tr>
+            <?php } ?>
+
+
+
+
+
+        </tbody>
+    </table>
+</div>
 </div>
 </div>
 
@@ -672,7 +672,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "renovar") {
 <script type="text/javascript">
     $(document).ready(function () {
         $('#dataTable').dataTable({
-            "ordering": false
+            "ordering": false,
+            "stateSave": true,
+            "stateDuration": 60 * 60 * 24,
+            "autoWidth": false
         })
 
     });

@@ -5,6 +5,9 @@ $curso = $_POST['curso-cat'];
 $descricao = $_POST['descricao-cat'];
 $portaria = $_POST['portaria-cat'];
 
+$horario_M = $_POST['matutino-cat'];
+$horario_T = $_POST['vespertino-cat'];
+
 $antigo = $_POST['antigo'];
 
 $id = $_POST['txtid2'];
@@ -33,11 +36,11 @@ if($antigo != $curso){
 
 
 if($id == ""){
-	$res = $pdo->prepare("INSERT INTO tbcurso SET NomeCurso = :curso, descricao = :descricao, PortariaAutorizacao = :portaria");	
+	$res = $pdo->prepare("INSERT INTO tbcurso SET NomeCurso = :curso, descricao = :descricao, PortariaAutorizacao = :portaria, horarioManha = :matutino, horarioTarde = :vespertino");	
 
 
 }else{
-	$res = $pdo->prepare("UPDATE tbcurso SET NomeCurso = :curso, descricao = :descricao, PortariaAutorizacao = :portaria WHERE IdCurso = '$id'");
+	$res = $pdo->prepare("UPDATE tbcurso SET NomeCurso = :curso, descricao = :descricao, PortariaAutorizacao = :portaria, horarioManha = :matutino, horarioTarde = :vespertino WHERE IdCurso = '$id'");
 
 	
 	
@@ -46,6 +49,8 @@ if($id == ""){
 $res->bindValue(":curso", $curso);
 $res->bindValue(":descricao", $descricao);
 $res->bindValue(":portaria", $portaria);
+$res->bindValue(":matutino", $horario_M);
+$res->bindValue(":vespertino", $horario_T);
 
 
 

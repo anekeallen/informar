@@ -37,52 +37,52 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <tbody>
 
-                   <?php 
+                 <?php 
 
-                   $query = $pdo->query("SELECT * FROM tesoureiros order by id desc ");
-                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                 $query = $pdo->query("SELECT * FROM tesoureiros order by id desc ");
+                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                   for ($i=0; $i < count($res); $i++) { 
-                      foreach ($res[$i] as $key => $value) {
-                      }
+                 for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
 
-                      $nome = $res[$i]['nome'];
-                      $email = $res[$i]['email'];
-                      $telefone = $res[$i]['telefone'];
-                      $cpf = $res[$i]['cpf'];
-                      $endereco = $res[$i]['endereco'];
-
-
-                      $id = $res[$i]['id'];
+                  $nome = $res[$i]['nome'];
+                  $email = $res[$i]['email'];
+                  $telefone = $res[$i]['telefone'];
+                  $cpf = $res[$i]['cpf'];
+                  $endereco = $res[$i]['endereco'];
 
 
-                      ?>
+                  $id = $res[$i]['id'];
 
 
-                      <tr>
-                        <td><?php echo $nome ?></td>
-                        <td class="classe-nova"><?php echo $email ?></td>
-                        <td class="classe-nova "><?php echo $telefone ?></td>
-                        <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
+                  ?>
 
 
-
-                        <td>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Secretário'><i class="fas fa-info-circle"></i></a>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
-
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                        </td>
-                    </tr>
-                <?php } ?>
+                  <tr>
+                    <td><?php echo $nome ?></td>
+                    <td class="classe-nova"><?php echo $email ?></td>
+                    <td class="classe-nova "><?php echo $telefone ?></td>
+                    <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
 
 
 
+                    <td>
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Tesoureiro'><i class="fas fa-info-circle"></i></a>
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
+
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                    </td>
+                </tr>
+            <?php } ?>
 
 
-            </tbody>
-        </table>
-    </div>
+
+
+
+        </tbody>
+    </table>
+</div>
 </div>
 </div>
 
@@ -247,7 +247,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 ?>
 
-                   <div class="form-group">
+                <div class="form-group">
                     <label >Nome</label>
                     <input disabled value="<?php echo @$nome3 ?>" type="text" class="form-control" id="nome-cat" name="nome-cat" placeholder="Nome">
                 </div>
@@ -276,53 +276,53 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
 
-            
-            
+                
+                
+            </div>
         </div>
     </div>
-</div>
 
 
 
 
-<?php 
+    <?php 
 
-if (@$_GET["funcao"] != null && @$_GET["funcao"] == "novo") {
-    echo "<script>$('#modalDados').modal('show');</script>";
-}
+    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "novo") {
+        echo "<script>$('#modalDados').modal('show');</script>";
+    }
 
-if (@$_GET["funcao"] != null && @$_GET["funcao"] == "editar") {
-    echo "<script>$('#modalDados').modal('show');</script>";
-}
+    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "editar") {
+        echo "<script>$('#modalDados').modal('show');</script>";
+    }
 
-if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
-    echo "<script>$('#modal-deletar').modal('show');</script>";
-}
-if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
-    echo "<script>$('#modal-endereco').modal('show');</script>";
-}
+    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir") {
+        echo "<script>$('#modal-deletar').modal('show');</script>";
+    }
+    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
+        echo "<script>$('#modal-endereco').modal('show');</script>";
+    }
 
-?>
+    ?>
 
 
 
-<!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
-<script type="text/javascript">
-    $("#form").submit(function () {
-        var pag = "<?=$pag?>";
-        event.preventDefault();
-        var formData = new FormData(this);
+    <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+    <script type="text/javascript">
+        $("#form").submit(function () {
+            var pag = "<?=$pag?>";
+            event.preventDefault();
+            var formData = new FormData(this);
 
-        $.ajax({
-            url: pag + "/inserir.php",
-            type: 'POST',
-            data: formData,
+            $.ajax({
+                url: pag + "/inserir.php",
+                type: 'POST',
+                data: formData,
 
-            success: function (mensagem) {
+                success: function (mensagem) {
 
-                $('#mensagem').removeClass()
+                    $('#mensagem').removeClass()
 
-                if (mensagem.trim() == "Salvo com Sucesso!!") {
+                    if (mensagem.trim() == "Salvo com Sucesso!!") {
 
                     //$('#nome').val('');
                     //$('#cpf').val('');
@@ -351,88 +351,91 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
                 return myXhr;
             }
         });
-    });
-</script>
+        });
+    </script>
 
 
 
 
 
-<!--AJAX PARA EXCLUSÃO DOS DADOS -->
-<script type="text/javascript">
-    $(document).ready(function () {
-        var pag = "<?=$pag?>";
-        $('#btn-deletar').click(function (event) {
-            event.preventDefault();
+    <!--AJAX PARA EXCLUSÃO DOS DADOS -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var pag = "<?=$pag?>";
+            $('#btn-deletar').click(function (event) {
+                event.preventDefault();
 
-            $.ajax({
-                url: pag + "/excluir.php",
-                method: "post",
-                data: $('form').serialize(),
-                dataType: "text",
-                success: function (mensagem) {
+                $.ajax({
+                    url: pag + "/excluir.php",
+                    method: "post",
+                    data: $('form').serialize(),
+                    dataType: "text",
+                    success: function (mensagem) {
 
-                    if (mensagem.trim() === 'Excluído com Sucesso!!') {
-
-
-                        $('#btn-cancelar-excluir').click();
-                        window.location = "index.php?pag=" + pag;
-                    }
-
-                    $('#mensagem_excluir').text(mensagem)
+                        if (mensagem.trim() === 'Excluído com Sucesso!!') {
 
 
+                            $('#btn-cancelar-excluir').click();
+                            window.location = "index.php?pag=" + pag;
+                        }
 
-                },
+                        $('#mensagem_excluir').text(mensagem)
 
+
+
+                    },
+
+                })
             })
         })
-    })
-</script>
+    </script>
 
 
 
-<!--SCRIPT PARA CARREGAR IMAGEM -->
-<script type="text/javascript">
+    <!--SCRIPT PARA CARREGAR IMAGEM -->
+    <script type="text/javascript">
 
-    function carregarImg() {
+        function carregarImg() {
 
-        var target = document.getElementById('target');
-        var file = document.querySelector("input[type=file]").files[0];
-        var reader = new FileReader();
+            var target = document.getElementById('target');
+            var file = document.querySelector("input[type=file]").files[0];
+            var reader = new FileReader();
 
-        reader.onloadend = function () {
-            target.src = reader.result;
-        };
+            reader.onloadend = function () {
+                target.src = reader.result;
+            };
 
-        if (file) {
-            reader.readAsDataURL(file);
+            if (file) {
+                reader.readAsDataURL(file);
 
 
-        } else {
-            target.src = "";
+            } else {
+                target.src = "";
+            }
         }
-    }
 
-</script>
-
+    </script>
 
 
 
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#dataTable').dataTable({
-            "ordering": false
-        })
 
-    });
-</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#dataTable').dataTable({
+                "ordering": false,
+                "stateSave": true,
+                "stateDuration": 60 * 60 * 24,
+                "autoWidth": false
+            })
+
+        });
+    </script>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
 
-<script src="../js/mascaras.js"></script>
+    <script src="../js/mascaras.js"></script>
 
 
 

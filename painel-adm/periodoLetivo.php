@@ -41,59 +41,59 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <tbody>
 
-                   <?php 
+                 <?php 
 
-                   $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
-                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                 $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc ");
+                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                   for ($i=0; $i < count($res); $i++) { 
-                      foreach ($res[$i] as $key => $value) {
-                      }
+                 for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
 
-                      $periodo = $res[$i]['NomePeriodo'];
-                      $dataInicial = $res[$i]['DataInicial'];
-                      $dataFinal = $res[$i]['DataFinal'];
-                      $dias_letivos = $res[$i]['DiasLetivos'];
-                      $semanas_letivas = $res[$i]['SemanasLetivas'];
-                      $ano_conclusao = $res[$i]['AnoConclusao'];
+                  $periodo = $res[$i]['NomePeriodo'];
+                  $dataInicial = $res[$i]['DataInicial'];
+                  $dataFinal = $res[$i]['DataFinal'];
+                  $dias_letivos = $res[$i]['DiasLetivos'];
+                  $semanas_letivas = $res[$i]['SemanasLetivas'];
+                  $ano_conclusao = $res[$i]['AnoConclusao'];
 
-                      $dataInicialF = implode('/', array_reverse(explode('-', $dataInicial)));
-                      $dataFinalF = implode('/', array_reverse(explode('-', $dataFinal)));
+                  $dataInicialF = implode('/', array_reverse(explode('-', $dataInicial)));
+                  $dataFinalF = implode('/', array_reverse(explode('-', $dataFinal)));
 
-                      $id = $res[$i]['IdPeriodo'];
-
-
-                      ?>
+                  $id = $res[$i]['IdPeriodo'];
 
 
-                      <tr>
-                        <td><?php echo $periodo ?></td>
-                        <td><?php echo $dataInicialF ?></td>
-
-                        <td><?php echo $dataFinalF ?></td>
-                        <td><?php echo $dias_letivos ?></td>
-                        <td><?php echo $semanas_letivas ?></td>
-                        <td><?php echo $ano_conclusao ?></td>
+                  ?>
 
 
+                  <tr>
+                    <td><?php echo $periodo ?></td>
+                    <td><?php echo $dataInicialF ?></td>
 
-
-                        <td>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Ano Letivo'><i class="fas fa-info-circle"></i></a>
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
-
-                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                        </td>
-                    </tr>
-                <?php } ?>
+                    <td><?php echo $dataFinalF ?></td>
+                    <td><?php echo $dias_letivos ?></td>
+                    <td><?php echo $semanas_letivas ?></td>
+                    <td><?php echo $ano_conclusao ?></td>
 
 
 
 
+                    <td>
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Ano Letivo'><i class="fas fa-info-circle"></i></a>
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
 
-            </tbody>
-        </table>
-    </div>
+                        <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                    </td>
+                </tr>
+            <?php } ?>
+
+
+
+
+
+        </tbody>
+    </table>
+</div>
 </div>
 </div>
 
@@ -126,7 +126,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $dataInicialF2 = implode('/', array_reverse(explode('-', $dataInicial2)));
                     $dataFinalF2 = implode('/', array_reverse(explode('-', $dataFinal2)));
 
-                
+                    
 
 
                 } else {
@@ -281,39 +281,39 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 ?>
 
                 <div class="row">
-                        <div class="form-group col-6">
-                            <label >Período</label>
-                            <input required value="<?php echo @$periodo3 ?>" type="text" class="form-control" disabled>
-                        </div>
-                        <div class="form-group col-6">
-                            <label >Sigla</label>
-                            <input value="<?php echo @$sigla3 ?>" type="text" class="form-control" disabled >
-                        </div>
+                    <div class="form-group col-6">
+                        <label >Período</label>
+                        <input required value="<?php echo @$periodo3 ?>" type="text" class="form-control" disabled>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <label >Data Inicial</label>
-                            <input value="<?php echo @$dataInicial3 ?>" type="date" class="form-control" disabled>
-                        </div>
-                        <div class="form-group col-6">
-                            <label >Data Final</label>
-                            <input value="<?php echo @$dataFinal3 ?>" type="date" class="form-control" disabled>
-                        </div>
+                    <div class="form-group col-6">
+                        <label >Sigla</label>
+                        <input value="<?php echo @$sigla3 ?>" type="text" class="form-control" disabled >
                     </div>
-                    <div class="row">
-                        <div class="form-group col-4">
-                            <label >Dias Letivos</label>
-                            <input value="<?php echo @$dias_letivos3 ?>" type="number" class="form-control" disabled>
-                        </div>
-                        <div class="form-group col-4">
-                            <label >Semanas Letivas</label>
-                            <input value="<?php echo @$semanas_letivas3 ?>" type="number" class="form-control" disabled>
-                        </div>
-                        <div class="form-group col-4">
-                            <label >Ano de Conclusão</label>
-                            <input value="<?php echo @$ano_conclusao3 ?>" type="number" class="form-control" disabled>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label >Data Inicial</label>
+                        <input value="<?php echo @$dataInicial3 ?>" type="date" class="form-control" disabled>
                     </div>
+                    <div class="form-group col-6">
+                        <label >Data Final</label>
+                        <input value="<?php echo @$dataFinal3 ?>" type="date" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label >Dias Letivos</label>
+                        <input value="<?php echo @$dias_letivos3 ?>" type="number" class="form-control" disabled>
+                    </div>
+                    <div class="form-group col-4">
+                        <label >Semanas Letivas</label>
+                        <input value="<?php echo @$semanas_letivas3 ?>" type="number" class="form-control" disabled>
+                    </div>
+                    <div class="form-group col-4">
+                        <label >Ano de Conclusão</label>
+                        <input value="<?php echo @$ano_conclusao3 ?>" type="number" class="form-control" disabled>
+                    </div>
+                </div>
 
 
             </div>
@@ -442,7 +442,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
 <script type="text/javascript">
     $(document).ready(function () {
         $('#dataTable').dataTable({
-            "ordering": false
+            "ordering": false,
+            "stateSave": true,
+            "stateDuration": 60 * 60 * 24,
+            "autoWidth": false
         })
 
     });

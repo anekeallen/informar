@@ -97,15 +97,15 @@ $menu7 = "";
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="index.php?pag=<?php echo $menu1 ?>">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-address-card"></i>
                     <span>Alunos</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?pag=<?php echo $menu2 ?>">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Responsável</span></a>
+                        <i class="fas fa-address-book"></i>
+                        <span>Responsáveis </span></a>
                     </li>
 
                     <!-- Nav Item - Charts -->
@@ -155,7 +155,7 @@ $menu7 = "";
 
                                   <!-- Nav Item - User Information -->
                                   <li class="nav-item dropdown no-arrow">
-                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Editar dados">
                                         <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $nome_usu ?></span>
                                         <img class="img-profile rounded-circle" src="../img/sem-foto.jpg">
 

@@ -30,6 +30,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                         <th >Curso</th>
                         <th >Descrição</th>
                         <th >Portaria de Autorização</th>
+                        <th >Horário Matutino</th>
+                        <th >Horário Vespertino</th>
                         
                         
                         <th >Ações</th>
@@ -50,6 +52,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                       $curso = $res[$i]['NomeCurso'];
                       $portaria = $res[$i]['PortariaAutorizacao'];
                       $descricao = $res[$i]['descricao'];
+                      $horario_M = $res[$i]['horarioManha'];
+                      $horario_T = $res[$i]['horarioTarde'];
 
 
 
@@ -64,6 +68,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                         <td><?php echo $descricao ?></td>
 
                         <td><?php echo $portaria ?></td>
+                        <td><?php echo $horario_M ?></td>
+                        <td><?php echo $horario_T ?></td>
 
 
 
@@ -107,6 +113,8 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $curso2 = $res[0]['NomeCurso'];
                     $portaria2 = $res[0]['PortariaAutorizacao'];
                     $descricao2 = $res[0]['descricao'];
+                    $horario_M2 = $res[0]['horarioManha'];
+                    $horario_T2 = $res[0]['horarioTarde'];
 
 
                 } else {
@@ -136,6 +144,15 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     <div class="form-group">
                         <label >Portaria</label>
                         <input value="<?php echo @$portaria2 ?>" type="text" class="form-control" id="portaria-cat" name="portaria-cat" placeholder="Portaria de Autorização">
+                    </div>
+                    <div class="form-group">
+                        <label >Horário Matutino</label>
+                        <input value="<?php echo @$horario_M2 ?>" type="text" class="form-control" id="matutino-cat" name="matutino-cat" placeholder="Ex: 07h às 11h">
+                    </div>
+
+                     <div class="form-group">
+                        <label >Horário Vespertino</label>
+                        <input value="<?php echo @$horario_T2 ?>" type="text" class="form-control" id="vespertino-cat" name="vespertino-cat" placeholder="Ex: 13h às 17h">
                     </div>
 
 
@@ -264,70 +281,70 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 </button>
             </div>
             <div class="modal-body">
-                 <small>
-                   <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th scope="col">Série</th>
-                          <th scope="col">Próxima Série</th>
-                          <th scope="col">Código da Série</th>
-                      </thead>
-                      <tbody>
+             <small>
+               <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Série</th>
+                      <th scope="col">Próxima Série</th>
+                      <th scope="col">Código da Série</th>
+                  </thead>
+                  <tbody>
 
-               
 
-                        <?php 
 
-                        $id_serie = $_GET['id'];
+                    <?php 
+
+                    $id_serie = $_GET['id'];
 
                   //VERIFICAR SERIES
-                        $query_3 = $pdo->query("SELECT * FROM tbserie where IdCurso = '$id_serie' order by NomeSerie ");
-                        $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
+                    $query_3 = $pdo->query("SELECT * FROM tbserie where IdCurso = '$id_serie' order by NomeSerie ");
+                    $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
 
-                        for ($i2=0; $i2 < count($res_3); $i2++) { 
-                          foreach ($res_3[$i2] as $key => $value) {
-                          }
+                    for ($i2=0; $i2 < count($res_3); $i2++) { 
+                      foreach ($res_3[$i2] as $key => $value) {
+                      }
 
-                          $serie = $res_3[$i2]['NomeSerie'];
-                          $id_prox_serie = $res_3[$i2]['IdProximaSerie'];
-                          $id_mensalidade = $res_3[$i2]['IdServicoMensalidade'];
-                          $codigo_serie = $res_3[$i2]['CodigoSerie'];
+                      $serie = $res_3[$i2]['NomeSerie'];
+                      $id_prox_serie = $res_3[$i2]['IdProximaSerie'];
+                      $id_mensalidade = $res_3[$i2]['IdServicoMensalidade'];
+                      $codigo_serie = $res_3[$i2]['CodigoSerie'];
 
-                          $query_4 = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_prox_serie' ");
-                          $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+                      $query_4 = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_prox_serie' ");
+                      $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
 
-                          $prox_serie = $res_4[0]['NomeSerie'];
+                      $prox_serie = $res_4[0]['NomeSerie'];
 
-                          ?>
-
-
-                          <tr>
-                            <td><?php echo $serie ?></td>
-
-                            <td> <?php if(@$prox_serie != ""){ ?>
-                                <?php echo $prox_serie ?>
-                                 
-                                 <?php }else{ echo "-"; } ?>
-
-                               
-                                </td>
-
-                            <td><?php echo $codigo_serie ?> </td>
+                      ?>
 
 
+                      <tr>
+                        <td><?php echo $serie ?></td>
+
+                        <td> <?php if(@$prox_serie != ""){ ?>
+                            <?php echo $prox_serie ?>
+                            
+                        <?php }else{ echo "-"; } ?>
+
+                        
+                    </td>
+
+                    <td><?php echo $codigo_serie ?> </td>
 
 
 
-                        </tr>
-
-                    <?php  }  ?>
-
-                </tbody>
-            </table>
-        </small>
 
 
-    </div>
+                </tr>
+
+            <?php  }  ?>
+
+        </tbody>
+    </table>
+</small>
+
+
+</div>
 </div>
 </div>
 </div>
@@ -454,7 +471,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "series") {
 <script type="text/javascript">
     $(document).ready(function () {
         $('#dataTable').dataTable({
-            "ordering": false
+            "ordering": false,
+            "stateSave": true,
+            "stateDuration": 60 * 60 * 24,
+            "autoWidth": false
         })
 
     });

@@ -104,7 +104,7 @@ $senha_usu = @$res[0]['senha'];
               $id_turma = $res[$i]['IdTurma'];
 
               
-              $query_resp = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' and datafinal > curDate() ");
+              $query_resp = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' and datafinal >= curDate() ");
               $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);
               
               $sigla_turma = @$res_resp[0]['SiglaTurma'];

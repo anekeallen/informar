@@ -46,6 +46,8 @@ $nacionalidade2 = @$res[0]['Nacionalidade'];
 $naturalidadeUF2 = @$res[0]['NaturalidadeUF'];
 $id_responsavel2 = @$res[0]['IdResponsavel'];
 
+$data_nascimento = utf8_encode(strftime('%d de %B de %Y', strtotime($data2)));
+
 $query_r = $pdo->query("SELECT * FROM tbresponsavel where IdResponsavel = '$id_responsavel2' ");
 $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
@@ -126,13 +128,17 @@ $vespertino = $res_r3[0]['horarioTarde'];
 
 
 
+$query_r4 = $pdo->query("SELECT * FROM tbperiodo where IdPeriodo = '".$id_periodo."' ");
+$res_r4 = $query_r4->fetchAll(PDO::FETCH_ASSOC);
+
+$periodo = $res_r4[0]['SiglaPeriodo'];
 
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Declaração de Estudo</title>
+	<title>Declaração de Aprovação</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 	<style>
@@ -266,7 +272,7 @@ $vespertino = $res_r3[0]['horarioTarde'];
 		.container p{ 
 			padding-left: 30px;
 			padding-right: 30px;
-		 }
+		}
 
 
 	</style>
@@ -295,33 +301,26 @@ $vespertino = $res_r3[0]['horarioTarde'];
 
 	<div class="container">
 
-		<div class="">
-			<div class="esquerda">	
-				<big> Matrícula Nº <?php echo $id ?>  </big>
-			</div>
-			<div class="direita" align="right">	
-				<big> <small> Data: <?php echo $data_hoje; ?></small> </big>
-			</div>
-		</div>
+		
 
 
 		<hr>
 
 		<br><br>
-		<p class="titulo" align="center"><b>DECLARAÇÃO DE ESTUDO</b></p>
+		<p class="titulo" align="center"><b>DECLARAÇÃO DE APROVAÇÃO</b></p>
 		<br><br>
 
-		<p>Declaramos para os devidos fins que se fizerem necessários, que o (a) aluno (a) <?php echo $nome2 ?>, filho (a) do Sr(a) <?php echo $nome_responsavel ?>, encontra-se regularmente matriculado (a) em nosso Estabelecimento de Ensino onde cursa o <?php echo $nome_serie; ?> do <?php echo $nome_curso ?>.</p>
+		<p>Declaramos para os devidos fins que o(a) aluno(a) <b><?php echo $nome2 ?></b>, natural de <?php if ($naturalidade2 != "") { echo $naturalidade2;
+		}else{ echo "<b>(Não informada)</b>";} ?>, nascido(a) em <b><?php echo 
+		$data_nascimento ?></b>, filho(a) de <b><?php echo $nome_responsavel ?></b>, matricula <b><?php echo $id ?></b>, concluiu o(a) <b><?php echo $nome_serie; ?></b>, do curso <b><?php echo $nome_curso ?></b>, no período <b><?php echo $periodo ?></b>, neste Estabelecimento de Ensino.</p>
 
-		<p>Informamos ainda que o (a) aluno (a) tem frequentado regularmente as aulas no horário das <?php if($turno == 'M') { echo $matutino;}elseif($turno == 'T'){echo $vespertino;} ?>.</p><br>
-		<p>Sem mais, </p>
 
-		<br><br>
+		<br><br><br><br>
 		<p align="center">
 			<?php echo strtoupper($cidade_escola) .' '. $data_hoje ?>
 		</p>
 
-		<br><br>
+		<br><br><br><br>
 		<p align="center">
 			_________________________________________________________________
 			<br>

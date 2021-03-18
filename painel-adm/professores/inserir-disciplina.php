@@ -2,16 +2,18 @@
 
 require_once("../../conexao.php"); 
 
-$id_professor = $_POST['id_professor'];
+$id_professor = @$_POST['id_professor'];
 
 
-if(!isset($_POST['id_disci'])){
-	echo "Selecione alguma Disciplina!";
-	exit();
-}
+//if(!isset($_POST['id_disci'])){
+	//echo "Selecione alguma Disciplina!";
+	//exit();
+//}
 
 
+$pdo->query("DELETE FROM tbprofessordisciplina WHERE IdProfessor = '$id_professor'");
 
+if(isset($_POST['id_disci'])){
 foreach (@$_POST['id_disci'] as $key => $value) {
 	$id_disciplina = @$_POST['id_disci'][$key];
 
@@ -39,7 +41,7 @@ foreach (@$_POST['id_disci'] as $key => $value) {
 	$res->execute();
 
 
-}
+}}
 
 
 

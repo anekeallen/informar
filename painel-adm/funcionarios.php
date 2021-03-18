@@ -38,54 +38,54 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <tbody>
 
-                 <?php 
+                   <?php 
 
-                 $query = $pdo->query("SELECT * FROM funcionarios order by id desc ");
-                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                   $query = $pdo->query("SELECT * FROM funcionarios order by id desc ");
+                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                 for ($i=0; $i < count($res); $i++) { 
-                  foreach ($res[$i] as $key => $value) {
-                  }
+                   for ($i=0; $i < count($res); $i++) { 
+                      foreach ($res[$i] as $key => $value) {
+                      }
 
-                  $nome = $res[$i]['nome'];
-                  $email = $res[$i]['email'];
-                  $telefone = $res[$i]['telefone'];
-                  $cpf = $res[$i]['cpf'];
-                  $endereco = $res[$i]['endereco'];
-                  $cargo = $res[$i]['cargo'];
-
-
-                  $id = $res[$i]['id'];
+                      $nome = $res[$i]['nome'];
+                      $email = $res[$i]['email'];
+                      $telefone = $res[$i]['telefone'];
+                      $cpf = $res[$i]['cpf'];
+                      $endereco = $res[$i]['endereco'];
+                      $cargo = $res[$i]['cargo'];
 
 
-                  ?>
+                      $id = $res[$i]['id'];
 
 
-                  <tr>
-                    <td><?php echo $nome ?></td>
-                    <td class="classe-nova"><?php echo $email ?></td>
-                    <td class="classe-nova "><?php echo $telefone ?></td>
-                    <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
-                    <td class="classe-nova classe-nova-tel"><?php echo $cargo ?></td>
+                      ?>
 
 
-
-                    <td>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Secretário'><i class="fas fa-info-circle"></i></a>
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
-
-                        <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
-                    </td>
-                </tr>
-            <?php } ?>
+                      <tr>
+                        <td><?php echo $nome ?></td>
+                        <td class="classe-nova"><?php echo $email ?></td>
+                        <td class="classe-nova "><?php echo $telefone ?></td>
+                        <td class="classe-nova classe-nova-tel"><?php echo $cpf ?></td>
+                        <td class="classe-nova classe-nova-tel"><?php echo $cargo ?></td>
 
 
 
+                        <td>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=endereco&id=<?php echo $id ?>" class='text-info mr-1' title='Dados do Secretário'><i class="fas fa-info-circle"></i></a>
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=editar&id=<?php echo $id ?>" class='text-primary mr-1' title='Editar Dados'><i class='far fa-edit'></i></a>
+
+                            <a href="index.php?pag=<?php echo $pag ?>&funcao=excluir&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
 
 
-        </tbody>
-    </table>
-</div>
+
+
+
+            </tbody>
+        </table>
+    </div>
 </div>
 </div>
 
@@ -111,7 +111,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $telefone2 = $res[0]['telefone'];
                     $endereco2 = $res[0]['endereco'];
                     $cpf2 = $res[0]['cpf'];
-                     $cargo2 = $res[0]['cargo'];
+                    $cargo2 = $res[0]['cargo'];
 
                 } else {
                     $titulo = "Inserir Registro";
@@ -274,7 +274,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                         <input disabled value="<?php echo @$cpf3 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
                     </div>
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                     <label >Cargo</label>
                     <input disabled value="<?php echo @$cargo3 ?>" type="text" class="form-control" id="cargo-cat" name="cargo-cat" placeholder="Cargo">
                 </div>
@@ -435,7 +435,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     <script type="text/javascript">
         $(document).ready(function () {
             $('#dataTable').dataTable({
-                "ordering": false
+                "ordering": false,
+                "stateSave": true,
+                "stateDuration": 60 * 60 * 24,
+                "autoWidth": false
             })
 
         });

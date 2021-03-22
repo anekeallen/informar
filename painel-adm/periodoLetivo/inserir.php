@@ -58,6 +58,7 @@ if($id == ""){
 	$res = $pdo->prepare("INSERT INTO tbperiodo SET NomePeriodo = :NomePeriodo, DataInicial = :DataInicial, DataFinal = :DataFinal, DiasLetivos = :DiasLetivos, SemanasLetivas = :SemanasLetivas, AnoConclusao = :AnoConclusao, SiglaPeriodo = :SiglaPeriodo");
 
 
+
 	
 
 
@@ -83,8 +84,39 @@ $res->execute();
 
 $id_ultimo = $pdo->lastInsertId();
 
+
+
 $pdo->query("UPDATE tbperiodo SET IdProximoPeriodo = '$id_ultimo' WHERE IdPeriodo = '$id_periodo_anterior'");
-	
+
+if($id == ""){
+
+$query = $pdo->query("SELECT * from tbserie where StSerieUtilizaAvaliacaoNota = 1 ");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0; $i < count($res); $i++) { 
+	foreach ($res[$i] as $key => $value) {
+	}
+	$id_serie = $res[$i]['IdSerie'];
+
+	$query2 = $pdo->query("SELECT * from tbfases_ano order by NumeroFase asc");
+	$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+	for ($j=0; $j < count($res2); $j++) { 
+		foreach ($res2[$j] as $key => $value) {
+		}
+
+		$nome_fase = $res2[$j]['NomeFase'];
+		$sigla_fase = $res2[$j]['CabecBoletim'];
+		$informada = $res2[$j]['FaseInformada'];
+		$numeroFase = $res2[$j]['NumeroFase'];
+
+		$pdo->query("INSERT INTO tbfasenota SET IdPeriodo = '$id_ultimo', IdSerie = '$id_serie', NumeroFase = '$numeroFase', NomeFase = '$nome_fase', CabecBoletim = '$sigla_fase', StFaseInformada = '$informada'");
+
+	}
+
+
+
+}
+}
+
 
 
 

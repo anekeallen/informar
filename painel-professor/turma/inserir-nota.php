@@ -1,43 +1,67 @@
 <?php 
 require_once("../../conexao.php"); 
 
-$nota = $_POST['nota'];
-$descricao = $_POST['descricao'];
-$nota_max = $_POST['nota-max'];
+
 $turma = $_POST['turma'];
 $periodo = $_POST['periodo'];
+$disciplina = $_POST['disciplina'];
 $aluno = $_POST['aluno'];
+$nota1 = $_POST['nota1'];
+$nota2 = $_POST['nota2'];
+$nota3 = $_POST['nota3'];
+$serie = $_POST['serie'];
 
-if($descricao == ""){
-	echo 'O descrição é Obrigatória!';
+
+
+$numero_fase = $_POST['fase'];
+
+
+
+
+
+
+
+if($nota1 > $nota_maxima1){
+	echo 'A nota não pode ser maior que ' . $nota_maxima1. '!';
+	exit();
+}
+if($nota2 > $nota_maxima2){
+	echo 'A nota não pode ser maior que ' . $nota_maxima2. '!';
+	exit();
+}
+if($nota3 > $nota_maxima3){
+	echo 'A nota não pode ser maior que ' . $nota_maxima3. '!';
 	exit();
 }
 
-if($nota == ""){
-	echo 'O nota é Obrigatória!';
-	exit();
+
+$query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and NumeroFase = '$numero_fase' and IdSerie = '$serie'");
+$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$idfasenota = $res1[0]['IdFaseNota'];
+
+
+$query = $pdo->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and IdAluno = '$aluno' and IdDisciplina = '$disciplina' and IdFaseNota = '$idfasenota'");
+$res2 = $query->fetchAll(PDO::FETCH_ASSOC);
+
+if (@count($res2) != 0) {
+	$res = $pdo->prepare("UPDATE tbfasenotaaluno SET Nota01 = :nota01, Nota02 = :nota02, Nota03 = :nota03 where IdTurma = :turma and IdDisciplina = :disciplina and IdAluno = :aluno and IdFaseNota = :fasenota");
+
+}else{
+
+	$res = $pdo->prepare("INSERT INTO tbfasenotaaluno SET IdTurma = :turma, IdDisciplina = :disciplina, IdAluno = :aluno, IdFaseNota = :fasenota, Nota01 = :nota01, Nota02 = :nota02, Nota03 = :nota03");
+
+
 }
 
-if($nota_max == ""){
-	echo 'O nota máxima é Obrigatória!';
-	exit();
-}
-
-if($nota > $nota_max){
-	echo 'A nota do aluno não pode ser maior que a nota distribuida pelo trabalho / prova!';
-	exit();
-}
-
-
-$res = $pdo->prepare("INSERT INTO notas SET turma = :turma, nota = :nota, descricao = :descricao, periodo = :periodo, aluno = :aluno, nota_max = :nota_max");	
-
-	
-$res->bindValue(":nota", $nota);
-$res->bindValue(":descricao", $descricao);
-$res->bindValue(":nota_max", $nota_max);
+$res->bindValue(":nota01", $nota1);
+$res->bindValue(":nota02", $nota2);
+$res->bindValue(":nota03", $nota3);
+$res->bindValue(":disciplina", $disciplina);
 $res->bindValue(":turma", $turma);
-$res->bindValue(":periodo", $periodo);
+$res->bindValue(":fasenota", $idfasenota);
 $res->bindValue(":aluno", $aluno);
+
 
 $res->execute();
 

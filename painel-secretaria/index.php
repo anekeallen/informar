@@ -111,7 +111,7 @@ $menu7 = "";
                     <!-- Nav Item - Charts -->
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?pag=<?php echo $menu3 ?>">
-                            <i class="fas fa-fw fa-chart-area"></i>
+                            <i class="fas fa-bookmark"></i>
                             <span>Turmas</span></a>
                         </li>
 

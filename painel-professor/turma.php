@@ -21,20 +21,34 @@ $turno = $res_2[0]['TurnoPrincipal'];
 
 
 //RECUPERAR O TOTAL DE MESES ENTRE DATAS
-$d1 = new DateTime($data_inicio);
-$d2 = new DateTime($data_final);
-$intervalo = $d1->diff( $d2 );
-$anos = $intervalo->y;
-$meses = $intervalo->m + ($anos * 12);
+//$d1 = new DateTime($data_inicio);
+//$d2 = new DateTime($data_final);
+//$intervalo = $d1->diff( $d2 );
+//$anos = $intervalo->y;
+//$meses = $intervalo->m + ($anos * 12);
 
-$data_finalF = implode('/', array_reverse(explode('-', $data_final)));
+//$data_finalF = implode('/', array_reverse(explode('-', $data_final)));
 
-$query_resp = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
+$query_resp = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_serie' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
-$nome_disc = $res_resp[0]['nome'];
+$nome_disc = $res_resp[0]['NomeSerie'];
+$id_curso = $res_resp[0]['IdCurso'];
+$id_periodo = $res_resp[0]['IdPeriodo'];
+
+$query_resp = $pdo->query("SELECT * FROM tbcurso where IdCurso = '$id_curso' ");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC); 
+$nome_curso = $res_resp[0]['NomeCurso'];
+
+$query_resp = $pdo->query("SELECT * FROM tbperiodo where IdPeriodo = '$id_periodo' ");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC); 
+$nome_periodo = $res_resp[0]['SiglaPeriodo'];
+
+$query = $pdo->query("SELECT * FROM tbprofessor where CPF = '$cpf_usu' ");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$id_prof = $res[0]['IdProfessor'];
 
 
-$query_resp = $pdo->query("SELECT * FROM professores where id = '$professor' ");
+$query_resp = $pdo->query("SELECT * FROM tbprofessor where IdProfessor = '$id_prof' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
 $nome_prof = $res_resp[0]['nome'];
 $email_prof = $res_resp[0]['email'];
@@ -50,12 +64,6 @@ $id_get_periodo = @$_GET['id_periodo'];
 $query_resp = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_get_periodo'");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                 
 $total_aulas = @count($res_resp);
-
-$query_resp = $pdo->query("SELECT * FROM periodos where id = '$id_get_periodo' ");
-$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                 
-$nome_periodo = $res_resp[0]['nome'];
-$maximo_nota = $res_resp[0]['total_pontos'];
-
 
 
 if($data_final < date('Y-m-d')){
@@ -108,7 +116,8 @@ if($data_final < date('Y-m-d')){
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-	<a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&notas=sim" title="Informações da Turma">
+  <?php $id_periodo = @$_GET['id_periodo'] ?>
+  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>&notas=sim" title="Informações da Turma">
    <div class="card text-primary shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -130,7 +139,8 @@ if($data_final < date('Y-m-d')){
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-	<a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&aulas=sim" title="Lançar Aulas">
+  <?php $id_periodo = @$_GET['id_periodo'] ?>
+  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>&aulas=sim" title="Lançar Aulas">
    <div class="card text-info shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -178,7 +188,7 @@ if($data_final < date('Y-m-d')){
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_periodo ?> - <?php echo $total_aulas ?> Aulas</h5>
+        <h5 class="modal-title"><?php echo $nome_curso ?> / <?php echo $nome_disc ?> <?php echo $nome_turma?> - Aulas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -188,7 +198,7 @@ if($data_final < date('Y-m-d')){
         <div class="row">
           <div class="col-md-7">
 
-            <span class=""><b>Aulas do Curso</b></span>
+            <span class=""><b>Aulas da Turma</b></span>
             <small><div id="listar-aulas" class="mt-2">
 
 
@@ -203,33 +213,74 @@ if($data_final < date('Y-m-d')){
             <form id="form" method="POST" class="mt-2">
 
               <div class="form-group">
-               <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome da Aula">
-             </div>
+                <select required name="disc-cat" class="form-control" id="disc-cat">
 
-             <div class="form-group">
-               <textarea placeholder="Descrição do conteúdo da aula caso tenha" class="form-control" id="descricao" name="descricao"></textarea>  
-             </div>
 
-             <div align="right">
-              <button type="submit" name="btn-salvar-aula" id="btn-salvar-aula" class="btn btn-primary">Salvar</button>
+
+                 ?> <option selected value="">Selecione a disciplina</option> 
+                 
+
+                 <?php 
+
+
+                 $query = $pdo->query("SELECT * FROM tbturmaprofessor where IdTurma = '$id_turma' and IdProfessor = '$id_prof'");
+                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                 for ($i=0; $i < @count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
+                  $id_disciplina = $res[$i]['IdDisciplina'];
+
+                  $query1 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplina'");
+                  $res1 = $query1->fetchAll(PDO::FETCH_ASSOC);
+                  $nome_disciplina = $res1[0]['NomeDisciplina'];
+
+
+
+                  ?>                                  
+                  <option value="<?php echo $id_disciplina ?>"><?php echo $nome_disciplina ?></option>
+                <?php } ?>
+
+              </select>
             </div>
 
-            <input type="hidden" name="turma" value="<?php echo $_GET['id'] ?>">
-            <input type="hidden" name="periodo" value="<?php echo $_GET['id_periodo'] ?>">
 
-            <?php $id_per = @$_GET['id_periodo']; ?>
+            
 
-          </form>
-        </div>
+            <div class="form-group">
+             <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome da Aula">
+           </div>
+
+           <div class="form-group">
+             <textarea placeholder="Descrição do conteúdo da aula caso tenha" class="form-control" id="descricao" name="descricao"></textarea>  
+           </div>
+           <div class="form-group">
+             <input required type="date" class="form-control" id="data_aula" name="data_aula" >
+           </div>
+
+           <div align="right">
+            <button type="submit" name="btn-salvar-aula" id="btn-salvar-aula" class="btn btn-primary">Salvar</button>
+          </div>
+
+          <input type="hidden" name="turma" value="<?php echo $_GET['id'] ?>">
+          <input type="hidden" name="periodo" value="<?php echo $_GET['id_periodo'] ?>">
+          <input type="hidden" name="professor" value="<?php echo $_GET['id_prof'] ?>">
+          <input type="hidden" name="fase" value="<?php echo $_GET['numero_fase'] ?>">
+
+          <?php $id_per = @$_GET['id_periodo']; 
+          $fase = @$_GET['numero_fase'];?>
+
+        </form>
       </div>
+    </div>
 
-      <div align="center" id="mensagem_aulas" class="">
-
-      </div>
+    <div align="center" id="mensagem_aulas" class="">
 
     </div>
 
   </div>
+
+</div>
 </div>
 </div>
 
@@ -240,7 +291,7 @@ if($data_final < date('Y-m-d')){
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disc ?> </h5>
+        <h5 class="modal-title"><?php echo $nome_curso ?> / <?php echo $nome_disc ?> <?php echo $nome_turma?> </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -249,9 +300,17 @@ if($data_final < date('Y-m-d')){
 
         <?php 
 
+        $id_turma = @$_GET['id'];
 
-        $query = $pdo->query("SELECT * FROM periodos where turma = '$id_turma' order by id asc ");
-        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+        if(@$_GET['aulas'] != ""){
+          $query = $pdo->query("SELECT * FROM tbfases_ano where NumeroFase >=1 and NumeroFase <=3 order by NumeroFase asc ");
+          $res = $query->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        if(@$_GET['notas'] != ""){
+          $query = $pdo->query("SELECT * FROM tbfases_ano where FaseInformada = 1 order by NumeroFase asc ");
+          $res = $query->fetchAll(PDO::FETCH_ASSOC);
+        }
 
         if(@count($res)==0){
           echo "<span class='text-danger'><small>Não existem períodos cadastrados, por favor cadastre os períodos da turma!</small></span>";
@@ -262,22 +321,22 @@ if($data_final < date('Y-m-d')){
           foreach ($res[$i] as $key => $value) {
           }
 
-          $nome = $res[$i]['nome'];
-          $id_periodo = $res[$i]['id'];
+          $nome = $res[$i]['NomeFase'];
+          $numeroFase = $res[$i]['NumeroFase'];
           ?>
 
           <?php if(@$_GET['aulas'] != ""){ ?>
-            <a href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-secondary text-light"><?php echo $nome ?></a>
+            <a href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_turma ?>&numero_fase=<?php echo $numeroFase ?>&id_prof=<?php echo $id_prof ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
           <?php } ?>
 
 
           <?php if(@$_GET['notas'] != ""){ ?>
-            <a href="index.php?pag=turma&funcao=notas&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-secondary text-light"><?php echo $nome ?></a>
+            <a href="index.php?pag=turma&funcao=notas&id=<?php echo $id_turma ?>&numero_fase=<?php echo $numeroFase ?>&id_prof=<?php echo $id_prof ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
           <?php } ?>
 
 
           <?php if(@$_GET['chamada'] != ""){ ?>
-            <a href="index.php?pag=turma&funcao=chamada&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-secondary text-light"><?php echo $nome ?></a>
+            <a href="index.php?pag=turma&funcao=chamada&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
           <?php } ?>
 
 
@@ -374,14 +433,14 @@ if($data_final < date('Y-m-d')){
 
                  <?php 
 
-                 $query = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma' order by id desc ");
+                 $query = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma' and IdSituacaoAlunoTurma = 1 order by IdAlunoTurma desc ");
                  $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
                  for ($i=0; $i < count($res); $i++) { 
                   foreach ($res[$i] as $key => $value) {
                   }
 
-                  $aluno = $res[$i]['aluno'];
+                  $aluno = $res[$i]['IdAluno'];
 
                   $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' ");
                   $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
@@ -409,7 +468,7 @@ if($data_final < date('Y-m-d')){
 
 
                     <td>
-                      <a onclick="lancarNotas(<?php echo $id_aluno ?>, '<?php echo $nome ?>', <?php echo $maximo_nota ?>)" href="" class='text-info mr-1' title='Lançar Notas'><i class='fas fa-sticky-note fa-1x'></i></a>
+                      <a onclick="chamarDisciplinas(<?php echo  $id_aluno; ?>)" href="" class='text-info mr-1' title='Lançar Notas'><i class='fas fa-sticky-note fa-1x'></i></a>
                     </td>
                   </tr>
                 <?php } ?>
@@ -435,70 +494,140 @@ if($data_final < date('Y-m-d')){
 </div>
 </div>
 
-
-<div class="modal" id="modal-lancar-notas" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content bg-light">
+<div class="modal" id="modal-disciplinas" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_periodo ?> - <span id="txtnomealuno"></span></h5>
+        <h5 class="modal-title">Selecione a Disciplina para Lançar Notas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
-        <div class="row">
-          <div class="col-md-7">
 
-            <span class=""><b>Notas do Aluno </b></span>
-            - <span id="total_notas">  </span> de <span id="maximonota"> <?php echo $maximo_nota ?></span> Pontos
-            <small><div id="listar-notas" class="mt-2">
+        <?php 
 
-            </div></small>
-
-          </div>
-          <div class="col-md-5">
-
-            <span class="mb-2"><b>Inserir nova Nota</b></span>
+        $id_turma = $_GET['id'];
+        $id_prof = $_GET['id_prof'];
+        $numeroFase = $_GET['numero_fase'];
 
 
-            <form id="form-notas" method="POST" class="mt-2">
+        $query_4 = $pdo->query("SELECT * FROM tbturmaprofessor where IdTurma = '$id_turma' and IdProfessor = '$id_prof'");
+        $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+        for ($i=0; $i < count($res_4); $i++) { 
+          foreach ($res_4[$i] as $key => $value) {
+          }
 
-              <div class="form-group">
-               <input type="text" class="form-control" id="descricao-nota" name="descricao" placeholder="Trabalho, Prova, Participação, etc">
-             </div>
+          $id_disciplina = $res_4[$i]['IdDisciplina'];
 
-             
-             <div class="form-group">
-               <input type="text" class="form-control" id="nota" name="nota" placeholder="Valor da Nota do Aluno">
-             </div>
-             
-             <div class="form-group">
-               <input type="text" class="form-control" id="nota-max" name="nota-max" placeholder="Nota Máxima Possível">
-             </div>
-             
-             
 
-             <div align="right">
-              <button type="submit" name="btn-salvar-nota" id="btn-salvar-nota" class="btn btn-primary mb-4">Salvar</button>
-            </div>
 
-            <input type="hidden" name="turma" value="<?php echo $_GET['id'] ?>">
-            <input type="hidden" name="periodo" value="<?php echo $_GET['id_periodo'] ?>">
-            <input type="hidden" id="txtidaluno" name="aluno">
+          $query_3 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplina'");
+          $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
 
-            
 
-          </form>
-        </div>
+
+          $disciplina = $res_3[0]['NomeDisciplina'];
+          $id_disciplina = $res_3[0]['IdDisciplina'];
+
+
+          ?>
+
+
+
+          <a onclick="lancarNotas(<?php echo $id_aluno ?>, '<?php echo $nome ?>', <?php echo $maximo_nota ?>, '<?php echo $disciplina ?>', <?php echo $id_disciplina ?>,<?php echo $numeroFase ?>)" href="" class='btn btn-primary mr-1' title='Lançar Notas'><?php echo $disciplina ?></a>
+
+
+
+        <?php  }  ?>
+
+
+
       </div>
 
-      <small> <div align="center" id="mensagem-notas" class=""></div></small>
-
     </div>
-
   </div>
 </div>
+
+
+
+
+<div class="modal" id="modal-lancar-notas" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_turma ?> - <span id="txtnomealuno"></span> - <span id="txtdisciplina"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+
+
+
+        <span class=""><b>Notas do Aluno </b></span>
+        - <span id="total_notas">  </span> de <span id="maximonota"> <?php echo $maximo_nota ?></span> Pontos
+        <div id="listar-notas" class="mt-2">
+
+        </div>
+
+        <?php  
+        $id_turma = $_GET['id'];
+           // $query_4 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$id_turma' and IdProfessor = '$id_prof'");
+           // $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+
+
+        ?>
+
+
+        <form id="form-notas" method="POST" class="mt-2">
+
+
+          <div class="form-group">
+            <label>Nota 1</label>
+            <input type="number"  min=0 step="0.01" max="<?php echo $nota_maxima1 ?>" class="form-control" id="nota1" name="nota1" placeholder="Participação, comportamento etc">
+          </div>
+
+
+          <div class="form-group">
+            <label>Nota 2</label>
+            <input type="number" min=0 step="0.01" max="<?php echo $nota_maxima2 ?>" class="form-control" id="nota2" name="nota2" placeholder="Testes, trabalhos, seminários">
+          </div>
+
+          <div class="form-group">
+            <label>Nota 3</label>
+            <input type="number" min=0 step="0.01" max="<?php echo $nota_maxima3 ?>" class="form-control" id="nota3" name="nota3" placeholder="Atividade Avaliativa Final">
+          </div>
+
+
+
+          <div align="right">
+            <button type="submit" name="btn-salvar-nota" id="btn-salvar-nota" class="btn btn-primary mb-4">Salvar</button>
+          </div>
+
+          <input type="hidden" name="turma" value="<?php echo $_GET['id'] ?>">
+          <input type="hidden" name="periodo" value="<?php echo $_GET['id_periodo'] ?>">
+          <input type="hidden" id="fase" name="fase" value="<?php echo $_GET['numero_fase'] ?>">
+          <input type="hidden" id="txtidaluno" name="aluno"> 
+          <input type="hidden" id="txtiddisciplina" name="disciplina"> 
+
+          <input type="hidden" name="serie" value="<?php echo $id_serie ?>">
+
+
+
+        </form>
+        
+
+
+        <small> <div align="center" id="mensagem-notas" class=""></div></small>
+
+      </div>
+
+    </div>
+  </div>
 </div>
 
 
@@ -513,7 +642,7 @@ if($data_final < date('Y-m-d')){
       </div>
       <div class="modal-body">
 
-        
+
 
         <span class=""><b>Aulas do Curso</b></span>
         <small><div id="listar-aulas-chamada" class="mt-2">
@@ -682,8 +811,9 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "fazerchamada") {
   echo "<script>$('#modal-chamada').modal('show');</script>";
 }
 
+
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "presenca") {
-  
+
   $id_turma_chamada = $_GET['id'];
   $id_aluno_chamada = $_GET['id_aluno'];
   $id_aula_chamada = $_GET['id_aula'];
@@ -706,7 +836,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "presenca") {
 
 
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
-  
+
   $id_turma_chamada = $_GET['id'];
   $id_aluno_chamada = $_GET['id_aluno'];
   $id_aula_chamada = $_GET['id_aula'];
@@ -729,7 +859,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
 
 
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
-  
+
   $id_turma_chamada = $_GET['id'];
   $id_aluno_chamada = $_GET['id_aluno'];
   $id_aula_chamada = $_GET['id_aula'];
@@ -768,11 +898,12 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     var pag = "<?=$pag?>";
     var turma = "<?=$id_turma?>";
     var periodo = "<?=$id_per?>";
+    var fase = "<?=$fase?>";
     
     $.ajax({
      url: pag + "/listar-aulas.php",
      method: "post",
-     data: {turma, periodo},
+     data: {turma, periodo, fase},
      dataType: "html",
      success: function(result){
       $('#listar-aulas').html(result)
@@ -822,20 +953,24 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
       success: function (mensagem) {
 
-        $('#mensagem').removeClass()
+        $('#mensagem_aulas').removeClass()
 
         if (mensagem.trim() == "Salvo com Sucesso!") {
 
           $('#nome').val('');
           $('#descricao').val('');
+          $('#data_aula').val('');
+          $('#disc-cat').val('');
+          $('#mensagem_aulas').addClass('text-success')
           listarDados();
 
         } else {
 
-          $('#mensagem').addClass('text-danger')
+          $('#mensagem_aulas').addClass('text-danger')
         }
 
-        $('#mensagem').text(mensagem)
+
+        $('#mensagem_aulas').text(mensagem)
 
       },
 
@@ -990,18 +1125,34 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
 
     <script type="text/javascript">
-      function lancarNotas(idaluno, nomealuno, maximonota) {
+      function lancarNotas(idaluno, nomealuno, maximonota, disciplina, iddisciplina, numerofase) {
         event.preventDefault();
 
         var pag = "<?=$pag?>";
         document.getElementById('txtidaluno').value = idaluno;
+        document.getElementById('txtiddisciplina').value = iddisciplina;
 
         $("#txtnomealuno").text(nomealuno);
         $("#maximonota").text(maximonota);
+        $("#txtdisciplina").text(disciplina);
+        
 
-        listarDadosNotas(idaluno);
+
+        listarDadosNotas(idaluno, iddisciplina, numerofase);
 
         $('#modal-lancar-notas').modal('show');
+      }
+
+    </script>
+
+    <script type="text/javascript">
+      function chamarDisciplinas(idaluno) {
+        event.preventDefault();
+
+        var pag = "<?=$pag?>";
+        
+
+        $('#modal-disciplinas').modal('show');
       }
 
     </script>
@@ -1024,11 +1175,14 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
             if (mensagem.trim() == "Salvo com Sucesso!") {
 
-              $('#descricao-nota').val('');
-              $('#nota').val('');
-              $('#nota-max').val('');
-              listarDadosNotas(document.getElementById('txtidaluno').value);
-              $('#mensagem-notas').addClass('text-success')
+              var iddisciplina = document.getElementById('txtiddisciplina').value;
+              var idaluno = document.getElementById('txtidaluno').value;
+              var numerofase = document.getElementById('fase').value;
+
+              
+              
+              listarDadosNotas(idaluno, iddisciplina, numerofase );
+              //$('#mensagem-notas').addClass('text-success')
 
             } else {
 
@@ -1036,7 +1190,6 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
             }
 
 
-            $('#mensagem-notas').text(mensagem)
 
           },
 
@@ -1057,7 +1210,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     </script>
 
     <script type="text/javascript">
-      function listarDadosNotas(aluno){
+      function listarDadosNotas(aluno, disciplina, numerofase){
         var pag = "<?=$pag?>";
         var turma = "<?=$id_turma?>";
         var periodo = "<?=$id_per?>";
@@ -1065,7 +1218,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
         $.ajax({
          url: pag + "/listar-notas.php",
          method: "post",
-         data: {turma, periodo, aluno},
+         data: {turma, periodo, aluno, disciplina, numerofase},
          dataType: "html",
          success: function(result){
           $('#listar-notas').html(result)

@@ -220,7 +220,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             </div>
             <div class="modal-body">
 
-                <p>Deseja realmente Excluir este Registro?</p>
+                <p id="frase">Deseja realmente Excluir este Registro?</p>
 
                 <div align="center" id="mensagem_excluir" class="">
 
@@ -419,7 +419,8 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "endereco") {
                         $('#btn-cancelar-excluir').click();
                         window.location = "index.php?pag=" + pag;
                     }
-
+                     $('#frase').addClass('d-none')
+                    $('#mensagem_excluir').addClass('text-danger')
                     $('#mensagem_excluir').text(mensagem)
 
 

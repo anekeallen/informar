@@ -230,7 +230,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
       </div>
 
       <div class="form-group">
-        <label >Utiliza sistema de avaliação?</label>
+        <label >Utilizada no sistema de avaliação?</label>
         <select class="form-control" name="nota-cat"  id="nota-cat">
           <?php $sim = 1; $nao = 0; ?>
           

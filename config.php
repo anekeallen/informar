@@ -37,4 +37,17 @@ $maximo_pontos_disciplina = 100; //Maximo de pontos possiveis para distribuir em
 
 $carga_horaria_cert = 250; //carga horaria em horas
 
+//Possivel editar configurações
+
+$config_editavel = "Não";
+
+//Composição de notas Informar
+
+$nota_maxima1 = 1.00;
+$nota_maxima2 = 3.00;
+$nota_maxima3 = 6.00;
+
+$maximo_nota = $nota_maxima1 + $nota_maxima2 + $nota_maxima3; //Nota maxima por fase
+
 ?>
+

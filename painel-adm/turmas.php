@@ -846,6 +846,32 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
       </div>
       <div class="modal-body">
 
+        <?php  
+
+        $id_turma = $_GET['id_turma'];
+
+        $query_5 = $pdo->query("SELECT * FROM tbturma where Idturma = '$id_turma'");
+        $res_5 = $query_5->fetchAll(PDO::FETCH_ASSOC);
+
+        $id_serie = $res_5[0]['IdSerie'];
+        $id_ano = $res_5[0]['IdPeriodo'];
+
+                        //VERIFICAR Disciplinas
+        $query_3 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo = '$id_ano'");
+        $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($res_3) == 0) {
+          echo "<span class='text-danger'>Cadastre ou renove a Grade Curricular!</span>";
+
+
+        }
+
+
+
+        ?>
+        <?php if (count($res_3) != 0): ?>
+          
+        
         <small>
          <table class="table table-bordered">
           <form method="post" id="form-prof">
@@ -859,17 +885,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 <?php 
 
-                $id_turma = $_GET['id_turma'];
-
-                $query_5 = $pdo->query("SELECT * FROM tbturma where Idturma = '$id_turma'");
-                $res_5 = $query_5->fetchAll(PDO::FETCH_ASSOC);
-
-                $id_serie = $res_5[0]['IdSerie'];
-                $id_ano = $res_5[0]['IdPeriodo'];
-
-                        //VERIFICAR Disciplinas
-                $query_3 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo = '$id_ano'");
-                $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
+                
 
                 for ($i2=0; $i2 < count($res_3); $i2++) { 
                   foreach ($res_3[$i2] as $key => $value) {
@@ -939,6 +955,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 </tbody>
               </table>
             </small>
+            <?php endif ?>
 
 
           </div>
@@ -947,8 +964,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
             <input type="hidden" id="id-turma"  name="id-turma" value="<?php echo @$_GET['id_turma'] ?>" required>
-
+            <?php if (count($res_3) != 0): ?>
             <button type="submit" id="btn-salvar-prof" name="btn-salvar-prof" class="btn btn-primary">Salvar</button>
+            <?php endif ?>
           </form>
         </div>
         <div align="center" id="mensagem-prof" class="">

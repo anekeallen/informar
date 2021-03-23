@@ -37,7 +37,12 @@ $nota3F = number_format($nota3, 2, ',', '.');
 
 $total_nota_fase = $nota1 + $nota2 + $nota3;
 
-$total_nota_faseF = number_format($total_nota_fase, 2, ',', '.');
+if (isset($total_nota_fase)) {
+	$pdo->query("UPDATE tbfasenotaaluno SET NotaFase = '$total_nota_fase' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno' and IdFaseNota = '$id_fase_nota'");
+}
+
+
+$total_nota_faseF = number_format(@$total_nota_fase, 2, ',', '.');
 
 ?>
 

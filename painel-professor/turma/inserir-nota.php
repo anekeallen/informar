@@ -11,8 +11,6 @@ $nota2 = $_POST['nota2'];
 $nota3 = $_POST['nota3'];
 $serie = $_POST['serie'];
 
-
-
 $numero_fase = $_POST['fase'];
 
 

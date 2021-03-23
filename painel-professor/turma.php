@@ -27,7 +27,7 @@ $turno = $res_2[0]['TurnoPrincipal'];
 //$anos = $intervalo->y;
 //$meses = $intervalo->m + ($anos * 12);
 
-//$data_finalF = implode('/', array_reverse(explode('-', $data_final)));
+$data_finalF = implode('/', array_reverse(explode('-', $data_final)));
 
 $query_resp = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_serie' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
@@ -74,13 +74,13 @@ if($data_final < date('Y-m-d')){
 
 ?>
 
-<h6><?php echo strtoupper($nome_disc) ?></h6>
+<h6><b><?php echo strtoupper($nome_curso) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?> - TURNO: <?php echo $turno ?> </h6></b>
 <hr>
 
 <small>
   <div class="mb-3">
-   <span class="mr-3"><i><b>Aulas Concluídas:</b> 10 Aulas</i></span>
-   <span class="mr-3"><i><b>Disciplina Concluída </b> <?php echo $concluido ?></i></span>
+   <span class="mr-3"><i><b>Aulas Concluídas:</b> <?php echo $total_aulas ?> Aulas</i></span>
+   <span class="mr-3"><i><b>Turma Concluída </b> <?php echo $concluido ?></i></span>
    <span class="mr-3"><i><b>Dias de Aula </b> <?php echo $dia ?></i></span>
    <span class="mr-3"><i><b>Horário Aula </b> <?php echo $horario ?></i></span>
    <span class="mr-3"><i><b>Ano Início </b> <?php echo $ano ?></i></span>
@@ -158,7 +158,7 @@ if($data_final < date('Y-m-d')){
 </a>
 </div>
 
-
+<!--
 <div class="col-xl-3 col-md-6 mb-4">
   <a class="text-dark" href="index.php?pag=periodos&id=<?php echo $id_turma ?>" title="Cadastro de Períodos">
     <div class="card text-dark shadow h-100 py-2">
@@ -176,7 +176,7 @@ if($data_final < date('Y-m-d')){
       </div>
     </div>
   </a>
-</div>
+</div> -->
 
 
 </div>
@@ -417,12 +417,12 @@ if($data_final < date('Y-m-d')){
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <table class="table table-bordered" id="dataTable-alunos" width="100%" cellspacing="0">
                 <thead>
                   <tr>
                     <th>Nome</th>
 
-                    <th>Email</th>
+                    <th>Situação</th>
 
                     <th>Foto</th>
                     <th>Ações</th>
@@ -433,7 +433,7 @@ if($data_final < date('Y-m-d')){
 
                  <?php 
 
-                 $query = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma' and IdSituacaoAlunoTurma = 1 order by IdAlunoTurma desc ");
+                 $query = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma' ");
                  $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
                  for ($i=0; $i < count($res); $i++) { 
@@ -441,8 +441,9 @@ if($data_final < date('Y-m-d')){
                   }
 
                   $aluno = $res[$i]['IdAluno'];
+                  $id_situacao = $res[$i]['IdSituacaoAlunoTurma'];
 
-                  $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' ");
+                  $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' order by NomeAluno");
                   $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
                   $nome = $res_r[0]['NomeAluno'];
@@ -453,6 +454,11 @@ if($data_final < date('Y-m-d')){
                   $foto = $res_r[0]['foto'];
                   $id_aluno = $res_r[0]['IdAluno'];
 
+                  $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunoturma where IdSituacaoAlunoTurma = '$id_situacao'");
+                  $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
+
+                  $situacao = $res_r1[0]['SituacaoAlunoTurma'];
+
 
                   ?>
 
@@ -462,13 +468,13 @@ if($data_final < date('Y-m-d')){
                       <?php echo $nome ?>
                     </td>
 
-                    <td><?php echo $email ?></td>
+                    <td><?php echo  $situacao ?></td>
 
                     <td><img src="../img/alunos/<?php echo $foto ?>" width="50"></td>
 
 
                     <td>
-                      <a onclick="chamarDisciplinas(<?php echo  $id_aluno; ?>)" href="" class='text-info mr-1' title='Lançar Notas'><i class='fas fa-sticky-note fa-1x'></i></a>
+                      <a onclick="chamarDisciplinas(<?php echo  $id_aluno; ?>, '<?php echo $nome ?>')" href="" class='text-info mr-1' title='Lançar Notas'><i class='fas fa-sticky-note fa-1x'></i></a>
                     </td>
                   </tr>
                 <?php } ?>
@@ -536,7 +542,7 @@ if($data_final < date('Y-m-d')){
 
 
 
-          <a onclick="lancarNotas(<?php echo $id_aluno ?>, '<?php echo $nome ?>', <?php echo $maximo_nota ?>, '<?php echo $disciplina ?>', <?php echo $id_disciplina ?>,<?php echo $numeroFase ?>)" href="" class='btn btn-primary mr-1' title='Lançar Notas'><?php echo $disciplina ?></a>
+          <a onclick="lancarNotas(<?php echo $maximo_nota ?>, '<?php echo $disciplina ?>', <?php echo $id_disciplina ?>,<?php echo $numeroFase ?>)" href="" class='btn btn-primary mr-1' title='Lançar Notas'><?php echo $disciplina ?></a>
 
 
 
@@ -563,9 +569,6 @@ if($data_final < date('Y-m-d')){
         </button>
       </div>
       <div class="modal-body">
-
-
-
 
 
         <span class=""><b>Notas do Aluno </b></span>
@@ -963,6 +966,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
           $('#disc-cat').val('');
           $('#mensagem_aulas').addClass('text-success')
           listarDados();
+          window.location.reload();
 
         } else {
 
@@ -1006,6 +1010,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
 
           listarDados();
+          window.location.reload();
         }
 
 
@@ -1125,14 +1130,16 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
 
     <script type="text/javascript">
-      function lancarNotas(idaluno, nomealuno, maximonota, disciplina, iddisciplina, numerofase) {
+      function lancarNotas(maximonota, disciplina, iddisciplina, numerofase) {
         event.preventDefault();
 
         var pag = "<?=$pag?>";
-        document.getElementById('txtidaluno').value = idaluno;
+        
+        var idaluno = document.getElementById('txtidaluno').value;
+        
         document.getElementById('txtiddisciplina').value = iddisciplina;
 
-        $("#txtnomealuno").text(nomealuno);
+        //$("#txtnomealuno").text(nomealuno);
         $("#maximonota").text(maximonota);
         $("#txtdisciplina").text(disciplina);
         
@@ -1146,8 +1153,11 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     </script>
 
     <script type="text/javascript">
-      function chamarDisciplinas(idaluno) {
+      function chamarDisciplinas(idaluno, nomealuno) {
         event.preventDefault();
+
+        $("#txtnomealuno").text(nomealuno);
+        document.getElementById('txtidaluno').value = idaluno;
 
         var pag = "<?=$pag?>";
         
@@ -1256,3 +1266,21 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
       }
       
     </script>
+    <script type="text/javascript">
+      $('#modal-disciplinas').on('hidden.bs.modal', function(e){
+        $("body").addClass("modal-open");
+      });
+
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#dataTable-alunos').dataTable({
+            "ordering": false,
+            "stateSave": true,
+            "stateDuration": 60 * 60 * 24,
+            "autoWidth": false
+        })
+
+    });
+</script>

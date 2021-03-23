@@ -33,8 +33,6 @@ $nota2F = number_format($nota2, 2, ',', '.');
 $nota3F = number_format($nota3, 2, ',', '.');
 
 
-	//$id_nota = $res[0]['id'];
-
 $total_nota_fase = $nota1 + $nota2 + $nota3;
 
 if (isset($total_nota_fase)) {

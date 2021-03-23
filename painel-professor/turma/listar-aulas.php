@@ -4,8 +4,10 @@ require_once("../../conexao.php");
 $turma = @$_POST['turma'];
 $periodo = @$_POST['periodo'];
 $fase = @$_POST['fase'];
+$id_disciplina = @$_POST['id_disciplina'];
 
-$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' and NumeroFase = '$fase' order by id asc ");
+
+$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' and NumeroFase = '$fase' and id_disciplina = '$id_disciplina' order by id asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
 for ($i=0; $i < count($res); $i++) { 
@@ -14,14 +16,14 @@ for ($i=0; $i < count($res); $i++) {
 
 	$nome = $res[$i]['nome'];
 	$descricao = $res[$i]['descricao'];
-	$disciplina = $res[$i]['id_disciplina'];
+	//$disciplina = $res[$i]['id_disciplina'];
 	$data = $res[$i]['data'];
 	$arquivo = $res[$i]['arquivo'];
 	$id_aula = $res[$i]['id'];
 
 	$dataF = implode('/', array_reverse(explode('-', $data)));
 
-	$query1 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$disciplina'");
+	$query1 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplina'");
 	$res1 = $query1->fetchAll(PDO::FETCH_ASSOC);
 	$nome_disc = $res1[0]['NomeDisciplina'];
 

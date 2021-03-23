@@ -199,7 +199,7 @@ for ($i=0; $i < count($res); $i++) {
 		?>	
 
 		<div class="col-xl-3 col-md-6 mb-4">
-			<a class="text-dark" href="index.php?pag=turma&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" title="Informações da Turma">
+			<a class="text-dark" href="index.php?pag=disciplinas&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" title="Informações da Turma">
 				<div class="card <?php echo $classe_card ?> shadow h-100 py-2">
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">

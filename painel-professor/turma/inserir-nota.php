@@ -15,10 +15,6 @@ $numero_fase = $_POST['fase'];
 
 
 
-
-
-
-
 if($nota1 > $nota_maxima1){
 	echo 'A nota não pode ser maior que ' . $nota_maxima1. '!';
 	exit();
@@ -62,6 +58,11 @@ $res->bindValue(":aluno", $aluno);
 
 
 $res->execute();
+
+$query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and NumeroFase = 4 and IdSerie = '$serie'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$idfasenota_MediaParcial = $res[0]['IdFaseNota'];
 
 
 echo 'Salvo com Sucesso!';

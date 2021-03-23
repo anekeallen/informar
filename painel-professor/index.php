@@ -125,7 +125,7 @@ $senha_usu = @$res[0]['senha'];
               <?php if($nome_turma != "" and $id_turma != $antigo){ ?>
               <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?pag=turma&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>">
+                    <a class="nav-link" href="index.php?pag=disciplinas&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>">
                         <i class="fab fa-leanpub"></i>
                         <span><?php echo $nome_serie ?> - <?php echo $nome_turma ?></span></a>
                 </li>
@@ -227,6 +227,9 @@ $senha_usu = @$res[0]['senha'];
 
                         } else if (@$pag=='periodos') {
                             @include_once("periodos.php");
+
+                        } else if (@$pag=='disciplinas') {
+                            @include_once("disciplinas.php");
 
                         } else {
                             @include_once("home.php");

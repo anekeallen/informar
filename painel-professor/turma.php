@@ -400,6 +400,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
       <form id="form2" method="POST">
         <div class="modal-body">
 
+
          <!-- DataTales Example -->
          <div class="card shadow mb-4">
 
@@ -423,15 +424,17 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                  $id_turma = $_GET['id'];
                  $id_prof = $_GET['id_prof'];
                  $id_disciplina = $_GET['id_disciplina'];
-                 $id_prof = $_GET['id_prof'];
                  $numeroFase = $_GET['numero_fase'];
+                 $id_periodo = $_GET['id_periodo'];
+
+                 $query_4 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma'");
+                 $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+                 $serie = $res_4[0]['IdSerie'];
 
                  $query_3 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplina'");
                  $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
-
-
-
                  $disciplina = $res_3[0]['NomeDisciplina'];
+
 
 
                  $query = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma' ");
@@ -455,6 +458,10 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                   $foto = $res_r[0]['foto'];
                   $id_aluno = $res_r[0]['IdAluno'];
 
+
+
+                  
+
                   $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
                   $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
 
@@ -469,7 +476,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                       <?php echo $nome ?>
                     </td>
 
-                    <td><?php echo  $situacao ?></td>
+                    <td id="situacao_disc"><?php echo  $situacao ?></td>
 
                     <td><img src="../img/alunos/<?php echo $foto ?>" width="50"></td>
 
@@ -509,7 +516,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
     <div class="modal-content bg-light">
       <div class="modal-header">
         <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_turma ?> - <span id="txtnomealuno"></span> - <span id="txtdisciplina"></span></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" onclick="atualizarPagina()" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -855,6 +862,9 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
    listarDados();
    listarAulasChamada();
 
+
+   
+
  })
 </script>
 
@@ -935,6 +945,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
           $('#disc-cat').val('');
           $('#mensagem_aulas').addClass('text-success')
           listarDados();
+          window.location.reload();
           window.location.reload();
 
         } else {
@@ -1130,6 +1141,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     <script type="text/javascript">
       $("#form-notas").submit(function () {
         var pag = "<?=$pag?>";
+        
         event.preventDefault();
         var formData = new FormData(this);
 
@@ -1148,44 +1160,59 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
               var idaluno = document.getElementById('txtidaluno').value;
               var numerofase = document.getElementById('fase').value;
 
-              console.log(iddisciplina);
+              //console.log(iddisciplina);
               
               listarDadosNotas(idaluno, iddisciplina, numerofase );
               
               $('#mensagem-notas').text(mensagem);
               $('#mensagem-notas').addClass('text-success')
+             // window.location.reload();
 
 
-            } else if(mensagem.trim() == "Salvo com Sucesso!!") {
+           } else if(mensagem.trim() == "Atualizado com Sucesso!") {
 
              var iddisciplina = document.getElementById('disciplina').value;
              var idaluno = document.getElementById('txtidaluno').value;
              var numerofase = document.getElementById('fase').value;
 
              
-             $('#btn-salvar-nota').click();
+             //$('#btn-salvar-nota').click();
 
-             console.log("dsadsd");
 
              $('#mensagem-notas').text(mensagem);
              $('#mensagem-notas').addClass('text-success')
-             window.location.reload();
+             //window.location.reload();
+             
              listarDadosNotas(idaluno, iddisciplina, numerofase );
+             //$('#modal-lancar-notas').modal('show');
+             atualizarMedia(iddisciplina, idaluno, numerofase );
+             
 
-           }else{
+             //atualizarSituacao(iddisciplina, idaluno, numerofase );
 
-            $('#mensagem-notas').addClass('text-danger')
-            $('#mensagem-notas').text(mensagem);
+           }else if(mensagem.trim() == "Salvo com Sucesso! E Média Parcial Atualizada!"){
 
-          }
+             var iddisciplina = document.getElementById('disciplina').value;
+             var idaluno = document.getElementById('txtidaluno').value;
+             var numerofase = document.getElementById('fase').value;
+
+             $('#mensagem-notas').addClass('text-success')
+             $('#mensagem-notas').text(mensagem);
+             $('#btn-salvar-nota').click();
+             //console.log("dsadsa")
+             listarDadosNotas(idaluno, iddisciplina, numerofase );
+             //window.location.reload();
+             atualizarMedia(iddisciplina, idaluno, numerofase );
+
+           }
 
 
 
-        },
+         },
 
-        cache: false,
-        contentType: false,
-        processData: false,
+         cache: false,
+         contentType: false,
+         processData: false,
             xhr: function () {  // Custom XMLHttpRequest
               var myXhr = $.ajaxSettings.xhr();
                 if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
@@ -1198,6 +1225,39 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
             });
       });
     </script>
+
+    <script type="text/javascript">
+      function atualizarMedia(iddisciplina, idaluno, numerofase, turma ){
+        var pag = "<?=$pag?>";
+        var turma = "<?=$id_turma?>";
+        var periodo = "<?=$id_per?>"
+        $.ajax({
+         url: pag + "/atualizar-media.php",
+         method: "post",
+         data: {iddisciplina, idaluno, numerofase, turma, periodo},
+         dataType: "html",
+         success: function(result){
+          //window.location.reload();
+
+        },
+
+
+      })
+
+      }
+
+    </script>
+
+    <script type="text/javascript">
+      function atualizarPagina(){
+
+        window.location.reload();
+
+
+      }
+    </script>
+
+    
 
     <script type="text/javascript">
       function listarDadosNotas(aluno, disciplina, numerofase){
@@ -1279,3 +1339,5 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
       });
     </script>
+
+    

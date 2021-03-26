@@ -49,5 +49,8 @@ $nota_maxima3 = 6.00;
 
 $maximo_nota = $nota_maxima1 + $nota_maxima2 + $nota_maxima3; //Nota maxima por fase
 
+$media_aprovacao = 7.0;
+$media_reprovacao = 2.5;
+
 ?>
 

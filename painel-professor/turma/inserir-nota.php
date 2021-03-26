@@ -40,6 +40,13 @@ $query = $pdo->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and
 $res6 = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
+//Verificar o id da fase nota do NumeroFase = 5
+$query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$serie' and NumeroFase = 5");
+$res55 = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$id_fase5 = $res55[0]['IdFaseNota'];
+
+
 
 //Pega idfasenota para add o id certo da fase da nota, assim sabendo se eh 1ºtrimestre, 2º ou 3º...
 $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and NumeroFase = '$numero_fase' and IdSerie = '$serie'");
@@ -52,49 +59,45 @@ $query = $pdo->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and
 $res2 = $query->fetchAll(PDO::FETCH_ASSOC);
 
 if (@count($res2) != 0) {
-	$res = $pdo->prepare("UPDATE tbfasenotaaluno SET Nota01 = :nota01, Nota02 = :nota02, Nota03 = :nota03 where IdTurma = :turma and IdDisciplina = :disciplina and IdAluno = :aluno and IdFaseNota = :fasenota");
+	$pdo->query("UPDATE tbfasenotaaluno SET Nota01 = '$nota1', Nota02 = '$nota2', Nota03 = '$nota3' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno' and IdFaseNota = '$idfasenota'");
+
+	echo 'Atualizado com Sucesso!';
 
 }else{
 
-	$res = $pdo->prepare("INSERT INTO tbfasenotaaluno SET IdTurma = :turma, IdDisciplina = :disciplina, IdAluno = :aluno, IdFaseNota = :fasenota, Nota01 = :nota01, Nota02 = :nota02, Nota03 = :nota03");
+	$pdo->query("INSERT INTO tbfasenotaaluno SET IdTurma = '$turma', IdDisciplina = '$disciplina', IdAluno = '$aluno', IdFaseNota = '$idfasenota', Nota01 = '$nota1', Nota02 = '$nota2', Nota03 = '$nota3'");
+
+	echo 'Salvo com Sucesso!';
 
 	if(($numero_fase == 3) and ($res6 != 0)){
 
 
+		$pdo->query("INSERT INTO tbfasenotaaluno SET IdTurma = '$turma', IdDisciplina = '$disciplina', IdAluno = '$aluno', IdFaseNota = '$id_fase4'");
 
-		$res4 = $pdo->prepare("INSERT INTO tbfasenotaaluno SET IdTurma = :turma, IdDisciplina = :disciplina, IdAluno = :aluno, IdFaseNota = :fasenota4");
-
-		$res4->bindValue(":disciplina", $disciplina);
-		$res4->bindValue(":turma", $turma);
-		$res4->bindValue(":fasenota4", $id_fase4);
-		$res4->bindValue(":aluno", $aluno);
-
-		$res4->execute();
-
+		echo ' E Média Parcial Atualizada!';
 
 	}
 
 
+
 }
 
-$res->bindValue(":nota01", $nota1);
-$res->bindValue(":nota02", $nota2);
-$res->bindValue(":nota03", $nota3);
-$res->bindValue(":disciplina", $disciplina);
-$res->bindValue(":turma", $turma);
-$res->bindValue(":fasenota", $idfasenota);
-$res->bindValue(":aluno", $aluno);
+//Atualizar situação do aluno na disciplina
+$query6 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdTurma = '$turma' and IdAluno = '$aluno' and IdDisciplina = '$disciplina'");
+$res6 = $query6->fetchAll(PDO::FETCH_ASSOC);
+$id_fase_atual = $res6[0]['IdFaseNotaAtual'];
+
+if (($id_fase_atual != $idfasenota) ) {
+	$pdo->query("UPDATE tbsituacaoalunodisciplina SET IdFaseNotaAtual = '$idfasenota' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'"); 
+}
 
 
 
 
-$res->execute();
 
 
 
-echo 'Salvo com Sucesso!';
-
-
+/*
 //Verificar se ja existem 3 fases cadastradas com notas e fazer a média
 $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$serie' and (NumeroFase = 1 or NumeroFase = 2 or NumeroFase = 3)");
 $res1 = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -154,33 +157,31 @@ if ($contadorFases == 3) {
 }
 
 $query6 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdTurma = '$turma' and IdAluno = '$aluno' and IdDisciplina = '$disciplina'");
-	$res6 = $query6->fetchAll(PDO::FETCH_ASSOC);
-	$id_fase_atual = $res6[0]['IdFaseNotaAtual'];
+$res6 = $query6->fetchAll(PDO::FETCH_ASSOC);
+$id_fase_atual = $res6[0]['IdFaseNotaAtual'];
 
-	if ($id_fase_atual != $id_fase) {
-		$pdo->query("UPDATE tbsituacaoalunodisciplina SET IdFaseNotaAtual = '$idfasenota' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'"); 
+if (($id_fase_atual != $id_fase) ) {
+	$pdo->query("UPDATE tbsituacaoalunodisciplina SET IdFaseNotaAtual = '$idfasenota' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'"); 
+}
+
+if (isset($mediaParcialF)) {
+	# code...
+
+
+	if ($mediaParcialF >= $media_aprovacao) {
+
+		$pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Aprovado' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'"); 
+
+	}else if($mediaParcialF < $media_reprovacao){
+
+		$pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Reprovado' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'"); 
+	}else{
+		$pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Recuperação Anual' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'");
 	}
 
 
-/*$content = http_build_query(array(
-'disciplina' => $disciplina,
-'turma' => $turma,
-'aluno' => $aluno,
-'serie' => $serie,
+} */
 
-
-));
-
-
-$context = stream_context_create(array(
-'http' => array(
-'method' => 'POST',
-'content' => $content,
-)
-));
-
-$result = file_get_contents('http://localhost/informar/painel-professor/turma/inserir-mediaParcial.php', null, $context);
-
-header("Location: inserir-mediaParcial.php");*/
 
 ?>
+

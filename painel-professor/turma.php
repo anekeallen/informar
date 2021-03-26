@@ -15,6 +15,8 @@ $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
 
 $nome_disciplina = $res_2[0]['NomeDisciplina'];
 
+
+
 $query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' ");
 $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
 $id_serie = $res_2[0]['IdSerie'];
@@ -79,19 +81,21 @@ if($data_final < date('Y-m-d')){
  $concluido = 'Não';
 }
 
+$encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
+
+
 ?>
 
-<h6><b><?php echo strtoupper($nome_disciplina) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?> - TURNO: <?php echo $turno ?></h6></b>
+<h6><b><?php echo mb_strtoupper($nome_disciplina, $encoding) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?></h6></b>
 <hr>
 
 <small>
   <div class="mb-3">
    <span class="mr-3"><i><b>Aulas Concluídas:</b> <?php echo $total_aulas ?> Aulas</i></span>
-   <span class="mr-3"><i><b>Turma Concluída </b> <?php echo $concluido ?></i></span>
+   <span class="mr-3"><i><b>Disciplina Concluída: </b> <?php echo $concluido ?></i></span>
    <span class="mr-3"><i><b>Dias de Aula </b> <?php echo $dia ?></i></span>
-   <span class="mr-3"><i><b>Horário Aula </b> <?php echo $horario ?></i></span>
-   <span class="mr-3"><i><b>Ano Início </b> <?php echo $ano ?></i></span>
-   <span class="mr-3"><i><b>Data da Conclusão </b> <?php echo $data_finalF ?></i></span>
+   <span class="mr-3"><i><b>Horário Aula: </b> <?php echo $turno ?></i></span>
+   
  </div>
 </small>
 
@@ -167,7 +171,7 @@ if($data_final < date('Y-m-d')){
 
 <!--
 <div class="col-xl-3 col-md-6 mb-4">
-  <a class="text-dark" href="index.php?pag=periodos&id=<?php echo $id_turma ?>" title="Cadastro de Períodos">
+  <a class="text-dark" href="index.php?pag=periodos&id=<?php  $id_turma ?>" title="Cadastro de Períodos">
     <div class="card text-dark shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -205,7 +209,7 @@ if($data_final < date('Y-m-d')){
         <div class="row">
           <div class="col-md-7">
 
-            <span class=""><b>Aulas da Turma</b></span>
+            <span class=""><b>Aulas da Disciplina</b></span>
             <small><div id="listar-aulas" class="mt-2">
 
 
@@ -214,7 +218,7 @@ if($data_final < date('Y-m-d')){
           </div>
           <div class="col-md-5">
 
-            <span class="mb-2"><b>Inserir nova Aula</b></span>
+            <span class="mb-2"><b>Inserir nova aula</b></span>
 
 
             <form id="form" method="POST" class="mt-2">
@@ -226,7 +230,7 @@ if($data_final < date('Y-m-d')){
              </div>
 
              <div class="form-group">
-               <textarea placeholder="Descrição do conteúdo da aula caso tenha" class="form-control" id="descricao" name="descricao"></textarea>  
+               <textarea placeholder="Descrição do conteúdo da aula (caso tenha)" class="form-control" id="descricao" name="descricao"></textarea>  
              </div>
              <div class="form-group">
                <input required type="date" class="form-control" id="data_aula" name="data_aula" >
@@ -400,7 +404,7 @@ if($data_final < date('Y-m-d')){
                   <tr>
                     <th>Nome</th>
 
-                    <th>Situação</th>
+                    <th>Situação na disciplina</th>
 
                     <th>Foto</th>
                     <th>Ações</th>
@@ -445,10 +449,10 @@ if($data_final < date('Y-m-d')){
                   $foto = $res_r[0]['foto'];
                   $id_aluno = $res_r[0]['IdAluno'];
 
-                  $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunoturma where IdSituacaoAlunoTurma = '$id_situacao'");
+                  $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
                   $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
 
-                  $situacao = $res_r1[0]['SituacaoAlunoTurma'];
+                  $situacao = $res_r1[0]['SituacaoAtual'];
 
 
                   ?>
@@ -1095,7 +1099,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
     </script>
 
-   
+
 
     <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
     <script type="text/javascript">
@@ -1127,18 +1131,36 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
               $('#mensagem-notas').addClass('text-success')
 
 
-            } else {
+            } else if(mensagem.trim() == "Salvo com Sucesso!!") {
 
-              $('#mensagem-notas').addClass('text-danger')
-            }
+             var iddisciplina = document.getElementById('disciplina').value;
+             var idaluno = document.getElementById('txtidaluno').value;
+             var numerofase = document.getElementById('fase').value;
+
+             
+             $('#btn-salvar-nota').click();
+
+             console.log("dsadsd");
+
+              $('#mensagem-notas').text(mensagem);
+              $('#mensagem-notas').addClass('text-success')
+              window.location.reload();
+              listarDadosNotas(idaluno, iddisciplina, numerofase );
+
+           }else{
+
+            $('#mensagem-notas').addClass('text-danger')
+            $('#mensagem-notas').text(mensagem);
+
+          }
 
 
 
-          },
+        },
 
-          cache: false,
-          contentType: false,
-          processData: false,
+        cache: false,
+        contentType: false,
+        processData: false,
             xhr: function () {  // Custom XMLHttpRequest
               var myXhr = $.ajaxSettings.xhr();
                 if (myXhr.upload) { // Avalia se tem suporte a propriedade upload

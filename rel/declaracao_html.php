@@ -6,7 +6,10 @@ $id = $_GET['id'];
 
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
-$data_hoje = strtoupper(utf8_encode(strftime('%A, %d de %B de %Y', strtotime('today'))));
+
+$encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
+
+$data_hoje = mb_strtoupper(utf8_encode(strftime('%A, %d de %B de %Y', strtotime('today'))),$encoding);
 
 
 //DADOS DA MATRICULAS

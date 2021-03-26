@@ -17,6 +17,7 @@ $sigla = $res_2[0]['SiglaTurma'];
 $totalvagas = $res_2[0]['TotalVagas'];
 $id_sala = $res_2[0]['IdSala'];
 $data_final = $res_2[0]['DataFinal'];
+$data_inicio = $res_2[0]['DataInicial'];
 $turno = $res_2[0]['TurnoPrincipal'];
 
 
@@ -28,12 +29,13 @@ $turno = $res_2[0]['TurnoPrincipal'];
 //$meses = $intervalo->m + ($anos * 12);
 
 $data_finalF = implode('/', array_reverse(explode('-', $data_final)));
+$data_inicioF = implode('/', array_reverse(explode('-', $data_inicio)));
 
 $query_resp = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_serie' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
 $nome_disc = $res_resp[0]['NomeSerie'];
 $id_curso = $res_resp[0]['IdCurso'];
-$id_periodo = $res_resp[0]['IdPeriodo'];
+//$id_periodo = $res_resp[0]['IdPeriodo'];
 
 $query_resp = $pdo->query("SELECT * FROM tbcurso where IdCurso = '$id_curso' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC); 
@@ -71,16 +73,16 @@ if($data_final < date('Y-m-d')){
 
 ?>
 
-<h6><b><?php echo strtoupper($nome_curso) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?> - TURNO: <?php echo $turno ?> </h6></b>
+<h6><b><?php echo strtoupper($nome_curso) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?> </h6></b>
 <hr>
 
 <small>
 	<div class="mb-3">
-		<span class="mr-3"><i><b>Aulas Concluídas:</b> <?php echo $total_aulas ?> Aulas</i></span>
+		
 		<span class="mr-3"><i><b>Turma Concluída </b> <?php echo $concluido ?></i></span>
 		<span class="mr-3"><i><b>Dias de Aula </b> <?php echo $dia ?></i></span>
-		<span class="mr-3"><i><b>Horário Aula </b> <?php echo $horario ?></i></span>
-		<span class="mr-3"><i><b>Ano Início </b> <?php echo $ano ?></i></span>
+		<span class="mr-3"><i><b>Horário Aula: </b> <?php echo $turno ?></i></span>
+		<span class="mr-3"><i><b>Data Início: </b> <?php echo $data_inicioF?></i></span>
 		<span class="mr-3"><i><b>Data da Conclusão </b> <?php echo $data_finalF ?></i></span>
 	</div>
 </small>

@@ -467,6 +467,14 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
                   $situacao = $res_r1[0]['SituacaoAtual'];
 
+                  if ($situacao == "Aprovado") {
+                    $classe_sit = "text-success";
+                  }else if($situacao == "Recuperação Anual"){
+                    $classe_sit = "text-danger";
+                  }else{
+                    $classe_sit = "text-dark";
+                  }
+
 
                   ?>
 
@@ -476,7 +484,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                       <?php echo $nome ?>
                     </td>
 
-                    <td id="situacao_disc"><?php echo  $situacao ?></td>
+                    <td id="situacao_disc" class="<?php echo $classe_sit ?>"><?php echo  $situacao ?></td>
 
                     <td><img src="../img/alunos/<?php echo $foto ?>" width="50"></td>
 

@@ -3,9 +3,11 @@ require_once("../../conexao.php");
 
 $turma = @$_POST['turma'];
 $periodo = @$_POST['periodo'];
+$fase = @$_POST['fase'];
+$disciplina = @$_POST['id_disciplina'];
 
 
-$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' order by id asc ");
+$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' and NumeroFase = '$fase' and id_disciplina = '$disciplina' order by id asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
 for ($i=0; $i < count($res); $i++) { 
@@ -21,7 +23,7 @@ for ($i=0; $i < count($res); $i++) {
 	
 
 
-	echo 'Aula '. ($i+1) . ' - '. $nome .' <a href="index.php?pag=turma&funcao=fazerchamada&id='. $turma .'&id_periodo='.$periodo .'&id_aula='. $id_aula .'" title="Fazer Chamada"><i class="far fa-calendar ml-2 text-info"></i></a> ';
+	echo 'Aula '. ($i+1) . ' - '. $nome .' <a href="index.php?pag=turma&funcao=fazerchamada&id='. $turma .'&id_periodo='.$periodo .'&id_aula='. $id_aula .'&id_disciplina='. $disciplina .'&numero_fase='. $fase .'" title="Fazer Chamada"><i class="far fa-calendar ml-2 text-info"></i></a> ';
 
 	 $query2 = $pdo->query("SELECT * FROM chamadas where aula = '$id_aula' ");
      $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);

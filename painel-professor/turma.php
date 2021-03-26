@@ -64,7 +64,7 @@ $email_prof = $res_resp[0]['email'];
 $imagem_prof = $res_resp[0]['foto'];
 
 
-$query_resp2 = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma' ");
+$query_resp2 = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma' ");
 $res_resp2 = $query_resp2->fetchAll(PDO::FETCH_ASSOC);                    
 $total_alunos = count(@$res_resp2);
 
@@ -106,7 +106,8 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 <div class="row">
 
   <div class="col-xl-3 col-md-6 mb-4">
-   <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&chamada=sim" title="Fazer Chamada">
+    <?php $id_periodo = @$_GET['id_periodo'] ?>
+    <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>&id_disciplina=<?php echo $id_disciplina ?>&chamada=sim" title="Fazer Chamada">
      <div class="card text-danger shadow h-100 py-2">
       <div class="card-body">
        <div class="row no-gutters align-items-center">
@@ -294,6 +295,11 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
           $res = $query->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        if(@$_GET['chamada'] != ""){
+          $query = $pdo->query("SELECT * FROM tbfases_ano where NumeroFase >=1 and NumeroFase <=3 order by NumeroFase asc ");
+          $res = $query->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         if(@count($res)==0){
           echo "<span class='text-danger'><small>Não existem períodos cadastrados, por favor cadastre os períodos da turma!</small></span>";
 
@@ -313,12 +319,12 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
 
           <?php if(@$_GET['notas'] != ""){ ?>
-            <a href="index.php?pag=turma&funcao=notas&id=<?php echo $id_turma ?>&numero_fase=<?php echo $numeroFase ?>&id_prof=<?php echo $id_prof ?>&id_periodo=<?php echo $id_periodo ?>&id_disciplina=<?php echo $id_disciplina ?>" name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
+            <a href="index.php?pag=turma&funcao=notas&id=<?php echo $id_turma ?>&numero_fase=<?php echo $numeroFase ?>&id_prof=<?php echo $id_prof ?>&id_periodo=<?php echo $id_periodo ?>&id_disciplina=<?php echo $id_disciplina ?>" name="btn-salvar-notas" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
           <?php } ?>
 
 
           <?php if(@$_GET['chamada'] != ""){ ?>
-            <a href="index.php?pag=turma&funcao=chamada&id=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
+            <a href="index.php?pag=turma&funcao=chamada&id=<?php echo $id_turma ?>&numero_fase=<?php echo $numeroFase ?>&id_prof=<?php echo $id_prof ?>&id_periodo=<?php echo $id_periodo ?>&id_disciplina=<?php echo $id_disciplina ?>" name="btn-salvar-chamada" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
           <?php } ?>
 
 
@@ -579,16 +585,23 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_periodo ?> - <?php echo $total_aulas ?> Aulas</h5>
+        <h5 class="modal-title"><?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> - Aulas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
+        <?php  
+        $numerofase = $_GET['numero_fase'];
+
+        $query_r11 = $pdo->query("SELECT * FROM tbfases_ano where NumeroFase = '$numerofase'");
+        $res_r11= $query_r11->fetchAll(PDO::FETCH_ASSOC);
+        $nomefase = $res_r11[0]['NomeFase'];
+        ?>
 
 
-        <span class=""><b>Aulas do Curso</b></span>
+        <span class=""><b>Aulas da Disciplina - <?php echo $nomefase ?></b></span>
         <small><div id="listar-aulas-chamada" class="mt-2">
 
         </div></small>
@@ -644,14 +657,16 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
                  <?php 
 
-                 $query = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma' order by id asc ");
+                 
+
+                 $query = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma'");
                  $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
                  for ($i=0; $i < count($res); $i++) { 
                   foreach ($res[$i] as $key => $value) {
                   }
 
-                  $aluno = $res[$i]['aluno'];
+                  $aluno = $res[$i]['IdAluno'];
 
                   $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' order by NomeAluno asc");
                   $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
@@ -689,12 +704,12 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
 
                     <td>
-                     <a href="index.php?pag=<?php echo $pag ?>&funcao=presenca&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-success mr-1' title='Presente'><i class='far fa-check-circle'></i></a>
+                     <a href="index.php?pag=<?php echo $pag ?>&funcao=presenca&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>&numero_fase=<?php echo $_GET['numero_fase'] ?>&id_disciplina=<?php echo $_GET['id_disciplina'] ?>" class='text-success mr-1' title='Presente'><i class='far fa-check-circle'></i></a>
 
-                     <a href="index.php?pag=<?php echo $pag ?>&funcao=falta&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-danger mr-1' title='Falta'><i class="fas fa-times-circle"></i></a>
+                     <a href="index.php?pag=<?php echo $pag ?>&funcao=falta&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>&numero_fase=<?php echo $_GET['numero_fase'] ?>&id_disciplina=<?php echo $_GET['id_disciplina'] ?>" class='text-danger mr-1' title='Falta'><i class="fas fa-times-circle"></i></a>
 
 
-                     <a href="index.php?pag=<?php echo $pag ?>&funcao=justificado&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class='text-info mr-1' title='Justificar Falta'><i class='fas fa-question-circle fa-1x'></i></a>
+                     <a href="index.php?pag=<?php echo $pag ?>&funcao=justificado&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>&numero_fase=<?php echo $_GET['numero_fase'] ?>&id_disciplina=<?php echo $_GET['id_disciplina'] ?>" class='text-info mr-1' title='Justificar Falta'><i class='fas fa-question-circle fa-1x'></i></a>
 
                      <?php if($presenca != ""){ ?>
                       - <span class="<?php echo $classe_chamada ?>"><?php echo $presenca ?></span>
@@ -762,17 +777,21 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "presenca") {
   $id_aluno_chamada = $_GET['id_aluno'];
   $id_aula_chamada = $_GET['id_aula'];
   $id_periodo_chamada = $_GET['id_periodo'];
+  $numerofase_chamada = $_GET['numero_fase'];
+  $disciplina_chamada = $_GET['id_disciplina'];
 
   $query = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma_chamada' and aluno = '$id_aluno_chamada' and aula = '$id_aula_chamada' ");
   $res = $query->fetchAll(PDO::FETCH_ASSOC);
+  
+
   if(@count($res) > 0){
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'P' where id = '$id_chamada'");
   }else{
-    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate(), periodo = '$id_periodo_chamada'");
+    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate(), periodo = '$id_periodo_chamada', NumeroFase = '$numerofase_chamada'");
   }
 
-  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
+  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada&id_disciplina=$disciplina_chamada&numero_fase=$numerofase_chamada';</script>";
 
 
 }
@@ -785,6 +804,8 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
   $id_aluno_chamada = $_GET['id_aluno'];
   $id_aula_chamada = $_GET['id_aula'];
   $id_periodo_chamada = $_GET['id_periodo'];
+  $numerofase_chamada = $_GET['numero_fase'];
+  $disciplina_chamada = $_GET['id_disciplina'];
 
   $query = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma_chamada' and aluno = '$id_aluno_chamada' and aula = '$id_aula_chamada' ");
   $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -792,10 +813,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'F' where id = '$id_chamada'");
   }else{
-    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'F', data = curDate(), periodo = '$id_periodo_chamada'");
+    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'F', data = curDate(), periodo = '$id_periodo_chamada', NumeroFase = '$numerofase_chamada'");
   }
 
-  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
+  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada&id_disciplina=$disciplina_chamada&numero_fase=$numerofase_chamada';</script>";
 
 
 }
@@ -808,6 +829,8 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
   $id_aluno_chamada = $_GET['id_aluno'];
   $id_aula_chamada = $_GET['id_aula'];
   $id_periodo_chamada = $_GET['id_periodo'];
+  $numerofase_chamada = $_GET['numero_fase'];
+  $disciplina_chamada = $_GET['id_disciplina'];
 
   $query = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma_chamada' and aluno = '$id_aluno_chamada' and aula = '$id_aula_chamada' ");
   $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -815,10 +838,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     $id_chamada = $res[0]['id'];
     $pdo->query("UPDATE chamadas SET presenca = 'J' where id = '$id_chamada'");
   }else{
-    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'J', data = curDate(), periodo = '$id_periodo_chamada'");
+    $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'J', data = curDate(), periodo = '$id_periodo_chamada', NumeroFase = '$numerofase_chamada'");
   }
 
-  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada';</script>";
+  echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada&id_disciplina=$disciplina_chamada&numero_fase=$numerofase_chamada';</script>";
 
 
 }
@@ -867,11 +890,13 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     var pag = "<?=$pag?>";
     var turma = "<?=$id_turma?>";
     var periodo = "<?=$id_per?>";
+    var fase = "<?=$fase?>";
+    var id_disciplina = "<?=$_GET['id_disciplina']?>";
     //console.log(periodo)
     $.ajax({
      url: pag + "/listar-aulas-chamada.php",
      method: "post",
-     data: {turma, periodo},
+     data: {turma, periodo, fase, id_disciplina},
      dataType: "html",
      success: function(result){
       $('#listar-aulas-chamada').html(result)
@@ -1142,10 +1167,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
              console.log("dsadsd");
 
-              $('#mensagem-notas').text(mensagem);
-              $('#mensagem-notas').addClass('text-success')
-              window.location.reload();
-              listarDadosNotas(idaluno, iddisciplina, numerofase );
+             $('#mensagem-notas').text(mensagem);
+             $('#mensagem-notas').addClass('text-success')
+             window.location.reload();
+             listarDadosNotas(idaluno, iddisciplina, numerofase );
 
            }else{
 
@@ -1234,6 +1259,18 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     <script type="text/javascript">
       $(document).ready(function () {
         $('#dataTable-alunos').dataTable({
+          "ordering": false,
+          "stateSave": true,
+          "stateDuration": 60 * 60 * 24,
+          "autoWidth": false
+        })
+
+      });
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#dataTable2').dataTable({
           "ordering": false,
           "stateSave": true,
           "stateDuration": 60 * 60 * 24,

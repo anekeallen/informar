@@ -519,7 +519,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
 
 
-<div class="modal" id="modal-lancar-notas" tabindex="-1" role="dialog">
+<div class="modal" id="modal-lancar-notas" tabindex="-1" role="dialog" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-light">
       <div class="modal-header">

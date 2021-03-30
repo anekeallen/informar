@@ -59,8 +59,8 @@ $id_prof = $res[0]['IdProfessor'];
 
 $query_resp = $pdo->query("SELECT * FROM tbprofessor where IdProfessor = '$id_prof' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
-$nome_prof = $res_resp[0]['nome'];
-$email_prof = $res_resp[0]['email'];
+$nome_prof = $res_resp[0]['NomeProfessor'];
+$email_prof = $res_resp[0]['Email'];
 $imagem_prof = $res_resp[0]['foto'];
 
 
@@ -200,7 +200,16 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> <?php echo $nome_turma?> - Aulas</h5>
+        <?php 
+        $numerofase = $_GET['numero_fase'];
+
+        $query_r11 = $pdo->query("SELECT * FROM tbfases_ano where NumeroFase = '$numerofase'");
+        $res_r11= $query_r11->fetchAll(PDO::FETCH_ASSOC);
+        $nomefase = $res_r11[0]['NomeFase'];
+
+
+        ?>
+        <h5 class="modal-title">Disciplina: <?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> <?php echo $nome_turma?> - <?php echo $nomefase ?></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -274,7 +283,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> <?php echo $nome_turma?> </h5>
+        <h5 class="modal-title">Disciplina: <?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> <?php echo $nome_turma?> </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -392,7 +401,16 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Lançar Notas - Disciplina: <?php echo $nome_disciplina ?></h5>
+        <?php 
+
+        $numerofase = $_GET['numero_fase'];
+
+        $query_r11 = $pdo->query("SELECT * FROM tbfases_ano where NumeroFase = '$numerofase'");
+        $res_r11= $query_r11->fetchAll(PDO::FETCH_ASSOC);
+        $nomefase = $res_r11[0]['NomeFase'];
+
+        ?>
+        <h5 class="modal-title">Lançar Notas - Disciplina: <?php echo $nome_disciplina ?> - <?php echo $nomefase ?></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -413,8 +431,9 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
                     <th>Situação na disciplina</th>
 
-                    <th>Foto</th>
+                    <th>Média Trimestral</th>
                     <th>Ações</th>
+
                   </tr>
                 </thead>
 
@@ -435,85 +454,124 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                  $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
                  $disciplina = $res_3[0]['NomeDisciplina'];
 
+                 if ($numeroFase != 5) {
 
 
-                 $query = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma' ");
-                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+                   $query = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma' ");
+                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                 for ($i=0; $i < count($res); $i++) { 
-                  foreach ($res[$i] as $key => $value) {
-                  }
+                   for ($i=0; $i < count($res); $i++) { 
+                    foreach ($res[$i] as $key => $value) {
+                    }
 
-                  $aluno = $res[$i]['IdAluno'];
-                  $id_situacao = $res[$i]['IdSituacaoAlunoTurma'];
+                    $aluno = $res[$i]['IdAluno'];
+                    $id_situacao = $res[$i]['IdSituacaoAlunoTurma'];
 
-                  $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' order by NomeAluno");
-                  $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
+                    $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' order by NomeAluno");
+                    $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
-                  $nome = $res_r[0]['NomeAluno'];
+                    $nome = $res_r[0]['NomeAluno'];
                   //$telefone = $res_r[0]['telefone'];
-                  $email = $res_r[0]['Email'];
-                  $id_endereco = $res_r[0]['IdEndereco'];
-                  $cpf = $res_r[0]['CPF'];
-                  $foto = $res_r[0]['foto'];
-                  $id_aluno = $res_r[0]['IdAluno'];
+                    $email = $res_r[0]['Email'];
+                    $id_endereco = $res_r[0]['IdEndereco'];
+                    $cpf = $res_r[0]['CPF'];
+                    $foto = $res_r[0]['foto'];
+                    $id_aluno = $res_r[0]['IdAluno'];
+
+                    $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
+                    $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
+
+                    $situacao = $res_r1[0]['SituacaoAtual'];
+
+                    if ($situacao == "Aprovado") {
+                      $classe_sit = "text-success";
+                    }else if($situacao == "Recuperação Anual"){
+                      $classe_sit = "text-danger";
+                    }else{
+                      $classe_sit = "text-dark";
+                    }
 
 
-
-                  
-
-                  $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
-                  $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
-
-                  $situacao = $res_r1[0]['SituacaoAtual'];
-
-                  if ($situacao == "Aprovado") {
-                    $classe_sit = "text-success";
-                  }else if($situacao == "Recuperação Anual"){
-                    $classe_sit = "text-danger";
-                  }else{
-                    $classe_sit = "text-dark";
-                  }
+                    ?>
 
 
-                  ?>
+                    <tr>
+                      <td>
+                        <?php echo $nome ?>
+                      </td>
+
+                      <td id="situacao_disc" class="<?php echo $classe_sit ?>"><?php echo  $situacao ?></td>
+
+                      <td></td>
 
 
-                  <tr>
-                    <td>
-                      <?php echo $nome ?>
-                    </td>
+                      <td>
+                        <a onclick="lancarNotas(<?php echo  $id_aluno; ?>, '<?php echo $nome ?>', <?php echo $maximo_nota ?>, '<?php echo $disciplina ?>', <?php echo $id_disciplina ?>,<?php echo $numeroFase ?>)" href="" class='text-info mr-1' title='Lançar Notas'><i class='fas fa-sticky-note fa-1x'></i></a>
+                      </td>
+                    </tr>
+                  <?php } } elseif ($numeroFase == 5) {
 
-                    <td id="situacao_disc" class="<?php echo $classe_sit ?>"><?php echo  $situacao ?></td>
+                    $query_r11 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and SituacaoAtual = 'Recuperação Anual'");
+                    $res_r11 = $query_r11->fetchAll(PDO::FETCH_ASSOC);
+                    for ($i=0; $i < count($res_r11); $i++) { 
+                      foreach ($res_r11[$i] as $key => $value) {
+                      }
+                      $aluno_rec = $res_r11[$i]['IdAluno'];
+                      $situacao = $res_r11[$i]['SituacaoAtual'];
 
-                    <td><img src="../img/alunos/<?php echo $foto ?>" width="50"></td>
+                      $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno_rec' order by NomeAluno");
+                      $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
+
+                      $nome = $res_r[0]['NomeAluno'];
+                      $email = $res_r[0]['Email'];
+                      $id_endereco = $res_r[0]['IdEndereco'];
+                      $cpf = $res_r[0]['CPF'];
+                      $foto = $res_r[0]['foto'];
+
+                      if ($situacao == "Aprovado") {
+                        $classe_sit = "text-success";
+                      }else if($situacao == "Recuperação Anual"){
+                        $classe_sit = "text-danger";
+                      }else{
+                        $classe_sit = "text-dark";
+                      }
+
+                      ?>
+
+                      <tr>
+                        <td>
+                          <?php echo $nome ?>
+                        </td>
+
+                        <td id="" class="<?php echo $classe_sit ?>"><?php echo  $situacao ?></td>
+
+                        <td><img src="../img/alunos/<?php echo $foto ?>" width="50"></td>
 
 
-                    <td>
-                      <a onclick="lancarNotas(<?php echo  $id_aluno; ?>, '<?php echo $nome ?>', <?php echo $maximo_nota ?>, '<?php echo $disciplina ?>', <?php echo $id_disciplina ?>,<?php echo $numeroFase ?>)" href="" class='text-info mr-1' title='Lançar Notas'><i class='fas fa-sticky-note fa-1x'></i></a>
-                    </td>
-                  </tr>
-                <?php } ?>
+                        <td>
+                          <a onclick="lancarNotas_rec(<?php echo  $aluno_rec; ?>, '<?php echo $nome ?>', <?php echo $maximo_nota_rec ?>, '<?php echo $disciplina ?>', <?php echo $id_disciplina ?>,<?php echo $numeroFase ?>)" href="" class='text-info mr-1' title='Lançar nota Recuperação Anual'><i class='fas fa-sticky-note fa-1x'></i></a>
+                        </td>
+                      </tr>
 
 
+                    <?php } } ?>  
 
 
-
-              </tbody>
-            </table>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
+
+
+
         </div>
-      </div>
 
 
+      </form>
 
     </div>
-
-
-  </form>
-
-</div>
-</div>
+  </div>
 </div>
 
 
@@ -595,12 +653,76 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
   </div>
 </div>
 
+<div class="modal" id="modal-lancar-notas-rec" tabindex="-1" role="dialog" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_turma ?> - <span id="txtnomealuno_rec"></span> - <span id="txtdisciplina_rec"></span></h5>
+        <button type="button" onclick="atualizarPagina()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <span class=""><b>Notas do Aluno </b></span>
+        - <span id="total_notas_rec">  </span> de <span id="maximonota_rec"> <?php echo $maximo_nota_rec ?></span> Pontos
+        <div id="listar-notas_rec" class="mt-2">
+
+        </div>
+
+        <?php  
+        $id_turma = $_GET['id'];
+        $id_disciplina = $_GET['id_disciplina'];
+
+           // $query_4 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$id_turma' and IdProfessor = '$id_prof'");
+           // $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+
+
+        ?>
+
+
+        <form id="form-notas_rec" method="POST" class="mt-2">
+
+
+          <div class="form-group">
+            <label>Nota Recuperação Anual</label>
+            <input type="number"  min=0 step="0.01" max="<?php echo $maximo_nota_rec ?>" class="form-control" id="nota_rec" name="nota_rec" placeholder="Nota recuperação anual">
+          </div>
+
+
+          <div align="right">
+            <button type="submit" name="btn-salvar-nota_rec" id="btn-salvar-nota_rec" class="btn btn-primary mb-4">Salvar</button>
+          </div>
+
+          <input type="hidden" name="turma_rec" value="<?php echo $_GET['id'] ?>">
+          <input type="hidden" name="periodo_rec" value="<?php echo $_GET['id_periodo'] ?>">
+          <input type="hidden" id="fase_rec" name="fase_rec" value="<?php echo $_GET['numero_fase'] ?>">
+          <input type="hidden" id="txtidaluno_rec" name="aluno_rec"> 
+          <input type="hidden" id="disciplina_rec" name="disciplina_rec" value="<?php echo $_GET['id_disciplina'] ?>"> 
+
+          <input type="hidden" name="serie_rec" value="<?php echo $id_serie ?>">
+
+
+
+        </form>
+        
+
+
+        <small> <div align="center" id="mensagem-notas_rec" class=""></div></small>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <div class="modal" id="modal-chamada-aulas" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> - Aulas</h5>
+        <h5 class="modal-title">Disciplina: <?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> - Aulas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -617,9 +739,9 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
 
         <span class=""><b>Aulas da Disciplina - <?php echo $nomefase ?></b></span>
-        <small><div id="listar-aulas-chamada" class="mt-2">
+        <div id="listar-aulas-chamada" class="mt-2">
 
-        </div></small>
+        </div>
 
 
         <div align="center" id="mensagem_chamada" class="">
@@ -643,7 +765,16 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Fazer Chamada </h5>
+
+        <?php  
+        $numerofase = @$_GET['numero_fase'];
+
+        $query_r11 = $pdo->query("SELECT * FROM tbfases_ano where NumeroFase = '$numerofase'");
+        $res_r11= $query_r11->fetchAll(PDO::FETCH_ASSOC);
+        $nomefase = $res_r11[0]['NomeFase'];
+
+        ?>
+        <h5 class="modal-title">Fazer Chamada - Disciplina: <?php echo $nome_disciplina ?> / <?php echo $nomefase ?></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1143,30 +1274,116 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
     </script>
 
-
-
-    <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
     <script type="text/javascript">
-      $("#form-notas").submit(function () {
+      function lancarNotas_rec(idaluno, nomealuno, maximonota, disciplina, iddisciplina, numerofase) {
+        event.preventDefault();
+
+
         var pag = "<?=$pag?>";
         
-        event.preventDefault();
-        var formData = new FormData(this);
 
-        $.ajax({
-          url: pag + "/inserir-nota.php",
-          type: 'POST',
-          data: formData,
+        $("#txtnomealuno_rec").text(nomealuno);
+        document.getElementById('txtidaluno_rec').value = idaluno;
+        
+        //document.getElementById('txtiddisciplina').value = iddisciplina;
 
-          success: function (mensagem) {
+        //$("#txtnomealuno").text(nomealuno);
+        $("#maximonota_rec").text(maximonota);
+        $("#txtdisciplina_rec").text(disciplina);
+        
 
-            $('#mensagem-notas').removeClass()
 
-            if (mensagem.trim() == "Salvo com Sucesso!") {
+       // listarDadosNotas(idaluno, iddisciplina, numerofase);
 
-              var iddisciplina = document.getElementById('disciplina').value;
-              var idaluno = document.getElementById('txtidaluno').value;
-              var numerofase = document.getElementById('fase').value;
+       $('#modal-lancar-notas-rec').modal('show');
+     }
+
+
+   </script>
+
+   <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+   <script type="text/javascript">
+    $("#form-notas_rec").submit(function () {
+      var pag = "<?=$pag?>";
+
+      event.preventDefault();
+      var formData = new FormData(this);
+
+      $.ajax({
+        url: pag + "/inserir-nota-rec.php",
+        type: 'POST',
+        data: formData,
+
+        success: function (mensagem) {
+
+          $('#mensagem-notas_rec').removeClass()
+
+          if (mensagem.trim() == "Salvo com Sucesso!") {
+
+            var iddisciplina = document.getElementById('disciplina_rec').value;
+            var idaluno = document.getElementById('txtidaluno_rec').value;
+            var numerofase = document.getElementById('fase_rec').value;
+
+              //console.log(iddisciplina);
+              
+              listarDadosNotas(idaluno, iddisciplina, numerofase );
+              
+              $('#mensagem-notas_rec').addClass('text-success')
+              $('#mensagem-notas_rec').text(mensagem);
+              
+             // window.location.reload();
+
+
+           }else{
+            $('#mensagem-notas_rec').addClass('text-danger')
+            $('#mensagem-notas_rec').text(mensagem);
+
+          } 
+
+
+
+        },
+
+        cache: false,
+        contentType: false,
+        processData: false,
+            xhr: function () {  // Custom XMLHttpRequest
+              var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
+                  myXhr.upload.addEventListener('progress', function () {
+                    /* faz alguma coisa durante o progresso do upload */
+                  }, false);
+                }
+                return myXhr;
+              }
+            });
+    });
+  </script>
+
+
+
+  <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+  <script type="text/javascript">
+    $("#form-notas").submit(function () {
+      var pag = "<?=$pag?>";
+
+      event.preventDefault();
+      var formData = new FormData(this);
+
+      $.ajax({
+        url: pag + "/inserir-nota.php",
+        type: 'POST',
+        data: formData,
+
+        success: function (mensagem) {
+
+          $('#mensagem-notas').removeClass()
+
+          if (mensagem.trim() == "Salvo com Sucesso!") {
+
+            var iddisciplina = document.getElementById('disciplina').value;
+            var idaluno = document.getElementById('txtidaluno').value;
+            var numerofase = document.getElementById('fase').value;
 
               //console.log(iddisciplina);
               
@@ -1231,20 +1448,20 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
                 return myXhr;
               }
             });
-      });
-    </script>
+    });
+  </script>
 
-    <script type="text/javascript">
-      function atualizarMedia(iddisciplina, idaluno, numerofase, turma ){
-        var pag = "<?=$pag?>";
-        var turma = "<?=$id_turma?>";
-        var periodo = "<?=$id_per?>"
-        $.ajax({
-         url: pag + "/atualizar-media.php",
-         method: "post",
-         data: {iddisciplina, idaluno, numerofase, turma, periodo},
-         dataType: "html",
-         success: function(result){
+  <script type="text/javascript">
+    function atualizarMedia(iddisciplina, idaluno, numerofase, turma ){
+      var pag = "<?=$pag?>";
+      var turma = "<?=$id_turma?>";
+      var periodo = "<?=$id_per?>"
+      $.ajax({
+       url: pag + "/atualizar-media.php",
+       method: "post",
+       data: {iddisciplina, idaluno, numerofase, turma, periodo},
+       dataType: "html",
+       success: function(result){
           //window.location.reload();
 
         },
@@ -1252,100 +1469,99 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
       })
 
-      }
+    }
 
-    </script>
+  </script>
 
-    <script type="text/javascript">
-      function atualizarPagina(){
+  <script type="text/javascript">
+    function atualizarPagina(){
 
-        window.location.reload();
+      window.location.reload();
 
 
-      }
-    </script>
+    }
+  </script>
 
-    
 
-    <script type="text/javascript">
-      function listarDadosNotas(aluno, disciplina, numerofase){
-        var pag = "<?=$pag?>";
-        var turma = "<?=$id_turma?>";
-        var periodo = "<?=$id_per?>";
-        
-        
-        $.ajax({
-         url: pag + "/listar-notas.php",
-         method: "post",
-         data: {turma, periodo, aluno, disciplina, numerofase},
-         dataType: "html",
-         success: function(result){
-          $('#listar-notas').html(result)
+
+  <script type="text/javascript">
+    function listarDadosNotas(aluno, disciplina, numerofase){
+      var pag = "<?=$pag?>";
+      var turma = "<?=$id_turma?>";
+      var periodo = "<?=$id_per?>";
+
+
+      $.ajax({
+       url: pag + "/listar-notas.php",
+       method: "post",
+       data: {turma, periodo, aluno, disciplina, numerofase},
+       dataType: "html",
+       success: function(result){
+        $('#listar-notas').html(result)
+
+      },
+
+
+    })
+    }
+  </script>
+
+  <script type="text/javascript">
+    function deletarNota(idnota) {
+      event.preventDefault();
+      var pag = "<?=$pag?>";
+
+      $.ajax({
+        url: pag + "/excluir-nota.php",
+        method: "post",
+        data: {idnota},
+        dataType: "text",
+        success: function (mensagem) {
+
+          if (mensagem.trim() === 'Excluído com Sucesso!') {
+
+
+            listarDadosNotas(document.getElementById('txtidaluno').value);
+          }
+
+
 
         },
 
-
       })
-      }
-    </script>
+    }
 
-    <script type="text/javascript">
-      function deletarNota(idnota) {
-        event.preventDefault();
-        var pag = "<?=$pag?>";
-        
-        $.ajax({
-          url: pag + "/excluir-nota.php",
-          method: "post",
-          data: {idnota},
-          dataType: "text",
-          success: function (mensagem) {
+  </script>
+  <script type="text/javascript">
+    $('#modal-lancar-notas').on('hidden.bs.modal', function(e){
+      $("body").addClass("modal-open");
+    });
 
-            if (mensagem.trim() === 'Excluído com Sucesso!') {
+  </script>
 
 
-              listarDadosNotas(document.getElementById('txtidaluno').value);
-            }
 
-            
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#dataTable-alunos').dataTable({
+        "ordering": false,
+        "stateSave": true,
+        "stateDuration": 60 * 60 * 24,
+        "autoWidth": false
+      })
 
-          },
+    });
+  </script>
 
-        })
-      }
-      
-    </script>
-    <script type="text/javascript">
-      $('#modal-lancar-notas').on('hidden.bs.modal', function(e){
-        $("body").addClass("modal-open");
-      });
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#dataTable2').dataTable({
+        "ordering": false,
+        "stateSave": true,
+        "stateDuration": 60 * 60 * 24,
+        "autoWidth": false
+      })
 
-    </script>
+    });
+  </script>
 
-    
-
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#dataTable-alunos').dataTable({
-          "ordering": false,
-          "stateSave": true,
-          "stateDuration": 60 * 60 * 24,
-          "autoWidth": false
-        })
-
-      });
-    </script>
-
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#dataTable2').dataTable({
-          "ordering": false,
-          "stateSave": true,
-          "stateDuration": 60 * 60 * 24,
-          "autoWidth": false
-        })
-
-      });
-    </script>
-
-    

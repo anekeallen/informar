@@ -3,28 +3,44 @@
 @session_start();
 require_once("../conexao.php"); 
 
-$cpf_usuario = @$_SESSION['cpf_usuario'];
+$id_turma = $_GET['id'];
+$id_disciplina = $_GET['id_disciplina'];
+$id_periodo = $_GET['id_periodo'];
+
+
 
 $query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usuario'  order by IdAluno asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_aluno = $res[0]['IdAluno'];
 
-$id_mat = $_GET['id'];
-$id_per = @$_GET['id_periodo'];
 
-$query = $pdo->query("SELECT * FROM matriculas where id = '$id_mat' order by id desc ");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$id_turma = $res[0]['turma'];
-
-$query_2 = $pdo->query("SELECT * FROM turmas where id = '$id_turma' ");
+$query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma' ");
 $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
-$disciplina = $res_2[0]['disciplina'];
-$horario = $res_2[0]['horario'];
-$dia = $res_2[0]['dia'];
-$ano = $res_2[0]['ano'];
-$data_final = $res_2[0]['data_final'];
-$data_inicio = $res_2[0]['data_inicio'];
-$professor = $res_2[0]['professor'];
+$id_serie = $res_2[0]['IdSerie'];
+
+$nome_turma = $res_2[0]['NomeTurma'];
+$sigla = $res_2[0]['SiglaTurma'];
+$totalvagas = $res_2[0]['TotalVagas'];
+$id_sala = $res_2[0]['IdSala'];
+$data_final = $res_2[0]['DataFinal'];
+$turno = $res_2[0]['TurnoPrincipal'];
+
+$query_resp = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_serie' ");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
+$nome_disc = $res_resp[0]['NomeSerie'];
+$id_curso = $res_resp[0]['IdCurso'];
+$id_periodo = $res_resp[0]['IdPeriodo'];
+
+$query_resp = $pdo->query("SELECT * FROM tbcurso where IdCurso = '$id_curso' ");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC); 
+$nome_curso = $res_resp[0]['NomeCurso'];
+
+$query_resp = $pdo->query("SELECT * FROM tbperiodo where IdPeriodo = '$id_periodo' ");
+$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC); 
+$nome_periodo = $res_resp[0]['SiglaPeriodo'];
+
+
+
 
 
 //RECUPERAR O TOTAL DE MESES ENTRE DATAS
@@ -36,15 +52,24 @@ $meses = $intervalo->m + ($anos * 12);
 
 $data_finalF = implode('/', array_reverse(explode('-', $data_final)));
 
-$query_resp = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
-$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
-$nome_disc = $res_resp[0]['nome'];
+$query_2 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplina' ");
+$res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
+
+$nome_disciplina = $res_2[0]['NomeDisciplina'];
 
 
-$query_resp = $pdo->query("SELECT * FROM professores where id = '$professor' ");
+
+$query_prof = $pdo->query("SELECT * FROM tbturmaprofessor where IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' ");
+$res_prof = $query_prof->fetchAll(PDO::FETCH_ASSOC); 
+
+$id_professor = $res_prof[0]['IdProfessor'];
+
+
+
+$query_resp = $pdo->query("SELECT * FROM tbprofessor where IdProfessor = '$id_professor' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
-$nome_prof = $res_resp[0]['nome'];
-$email_prof = $res_resp[0]['email'];
+$nome_prof = $res_resp[0]['NomeProfessor'];
+$email_prof = $res_resp[0]['Email'];
 $imagem_prof = $res_resp[0]['foto'];
 
 
@@ -124,7 +149,7 @@ for ($i=0; $i < count($res); $i++) {
   }
 }
 
-$totalPorcentagemSoma = $totalPorcentagemSoma / $contador . ' ' ;
+//$totalPorcentagemSoma = $totalPorcentagemSoma / $contador . ' ' ;
 $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 if($totalPorcentagemSoma < $media_porcentagem_presenca){
@@ -163,10 +188,11 @@ for ($i=0; $i < count($res); $i++) {
   $total_notas_curso = $total_notas_curso + $total_notas_periodo;
   
 }
+$encoding = mb_internal_encoding();
 
 ?>
 
-<h6><?php echo strtoupper($nome_disc) ?>
+<h6><b><?php echo mb_strtoupper($nome_disciplina, $encoding) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?></b>
 <?php if($total_pontos_curso >= $media_pontos_minimo_aprovacao){
 
   ?>
@@ -194,7 +220,7 @@ for ($i=0; $i < count($res); $i++) {
 
 <small>
   <div class="mb-3">
-   <span class="mr-3"><img src="../img/professores/<?php echo $imagem_prof ?>" width="40px"></i></span>
+   <span class="mr-3"><img src="../img/professores/<?php echo $imagem_prof ?>" width="70px"></i></span>
    <span class="mr-3"><i><b>Professor:</b> <?php echo $nome_prof ?></i></span>
    <span class="mr-3"><i><b>Email Professor </b> <?php echo $email_prof ?></i></span>
 
@@ -278,7 +304,7 @@ for ($i=0; $i < count($res); $i++) {
      <div class="row no-gutters align-items-center">
       <div class="col mr-2">
        <div class="text-xs font-weight-bold  text-info text-uppercase">AULAS</div>
-       <div class="text-xs text-secondary"> GRADE DO CURSO</div>
+       <div class="text-xs text-secondary"> GRADE DA DISCIPLINA</div>
      </div>
      <div class="col-auto" align="center">
        <i class="fas fa-video fa-2x  text-info"></i><br>
@@ -292,10 +318,6 @@ for ($i=0; $i < count($res); $i++) {
 
 
 </div>
-
-
-
-
 
 
 
@@ -598,7 +620,7 @@ for ($i=0; $i < count($res); $i++) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_periodo ?> - <?php echo $total_aulas ?> Aulas</h5>
+        <h5 class="modal-title"><?php echo $nome_disciplina ?> - <?php echo $nome_periodo ?> - <?php echo $total_aulas ?> Aulas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

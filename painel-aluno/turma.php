@@ -9,7 +9,7 @@ $id_periodo = $_GET['id_periodo'];
 
 
 
-$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usuario'  order by IdAluno asc ");
+$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usu'  order by IdAluno asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_aluno = $res[0]['IdAluno'];
 
@@ -38,8 +38,6 @@ $nome_curso = $res_resp[0]['NomeCurso'];
 $query_resp = $pdo->query("SELECT * FROM tbperiodo where IdPeriodo = '$id_periodo' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC); 
 $nome_periodo = $res_resp[0]['SiglaPeriodo'];
-
-
 
 
 
@@ -79,51 +77,32 @@ if($data_final < date('Y-m-d')){
  $concluido = 'Não';
 }
 
-$query_resp = $pdo->query("SELECT * FROM matriculas where turma = '$id_turma' ");
-$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
-$total_alunos = @count($res_resp);
+
 
 $id_get_periodo = @$_GET['id_periodo'];
-
-$query_resp = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_get_periodo'");
-$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                 
-$total_aulas = @count($res_resp);
-
-
-
-$query_resp = $pdo->query("SELECT * FROM periodos where id = '$id_get_periodo' ");
-$res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                 
-$nome_periodo = $res_resp[0]['nome'];
-$maximo_nota = $res_resp[0]['total_pontos'];  
-
 
 
 //RECUPERAR A % DE FREQUENCIA DO ALUNO
 $contador = 0;
-$query = $pdo->query("SELECT * FROM periodos where turma = '$id_turma' order by id asc ");
+$query = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_get_periodo' and id_disciplina = '$id_disciplina' order by id asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_aulas2 = count($res);
 $totalPorcentagemSoma = 0;
 $totalPorcentagemSomaF = 0;
 for ($i=0; $i < count($res); $i++) { 
   foreach ($res[$i] as $key => $value) {
   }
 
-  $nome = $res[$i]['nome'];
-  $id_periodo = $res[$i]['id'];
-
-
-  
-  $query_p = $pdo->query("SELECT * FROM aulas where periodo = '$id_periodo' ");
-  $res_p = $query_p->fetchAll(PDO::FETCH_ASSOC);
-  if(@count($res_p) > 0){
+  if(@count($res) > 0){
     $contador = $contador + 1;
-
+    $nome = $res[$i]['nome'];
+    $id_aula = $res[$i]['id'];
 
           //CALCULAR FREQUÊNCIA
-    $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and periodo = '$id_periodo'");
+    $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and aula = '$id_aula'");
     $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
     $total_presencas2 = 0;
-    $total_chamadas2 = 0;
+    //$total_chamadas2 = 0;
     $porcentagem2 = 0;
     $totalPorcentagem = 0;
     
@@ -138,7 +117,7 @@ for ($i=0; $i < count($res); $i++) {
         $total_presencas2 = $total_presencas2 + 1;
       }
 
-      $porcentagem2 = ($total_presencas2 * 100) / $total_chamadas2;
+      $porcentagem2 = ($total_presencas2 * 100) / $total_aulas2;
       
     }
 
@@ -193,21 +172,21 @@ $encoding = mb_internal_encoding();
 ?>
 
 <h6><b><?php echo mb_strtoupper($nome_disciplina, $encoding) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?></b>
-<?php if($total_pontos_curso >= $media_pontos_minimo_aprovacao){
+  <?php if($total_pontos_curso >= $media_pontos_minimo_aprovacao){
 
-  ?>
-  <a title="Retirar Certificado" href="../rel/certificado.php?id_turma=<?php echo $id_turma ?>&id_aluno=<?php echo $id_aluno ?>" target="_blank"> 
-    <img src="../img/ico-certificado.png" width="30px">
-  </a>
-  
-<?php } ?>
+    ?>
+    <a title="Retirar Certificado" href="../rel/certificado.php?id_turma=<?php echo $id_turma ?>&id_aluno=<?php echo $id_aluno ?>" target="_blank"> 
+      <img src="../img/ico-certificado.png" width="30px">
+    </a>
+
+  <?php } ?>
 
 </h6>
 <hr>
 
 <small>
   <div class="mb-3">
-   
+
    <span class="mr-3"><i><b>Disciplina Concluída </b> <?php echo $concluido ?></i></span>
    <span class="mr-3"><i><b>Dias de Aula </b> <?php echo $dia ?></i></span>
    <span class="mr-3"><i><b>Horário Aula </b> <?php echo $horario ?></i></span>
@@ -222,7 +201,7 @@ $encoding = mb_internal_encoding();
   <div class="mb-3">
    <span class="mr-3"><img src="../img/professores/<?php echo $imagem_prof ?>" width="70px"></i></span>
    <span class="mr-3"><i><b>Professor:</b> <?php echo $nome_prof ?></i></span>
-   <span class="mr-3"><i><b>Email Professor </b> <?php echo $email_prof ?></i></span>
+   <span class="mr-3"><i><b>Email Professor: </b> <?php echo $email_prof ?></i></span>
 
 
  </div>
@@ -254,7 +233,8 @@ $encoding = mb_internal_encoding();
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&frequencia=sim" title="Informações da Turma">
+  <?php $id_periodo = @$_GET['id_periodo'] ?>
+  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&id_disciplina=<?php echo $id_disciplina ?>&id_periodo=<?php echo $id_periodo ?>&frequencia=sim" title="Frequência na disciplina">
    <div class="card text-dark shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -276,7 +256,8 @@ $encoding = mb_internal_encoding();
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&boletim=sim" title="Informações da Turma">
+  <?php $id_periodo = @$_GET['id_periodo'] ?>
+  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&id_disciplina=<?php echo $id_disciplina ?>&id_periodo=<?php echo $id_periodo ?>&boletim=sim" title="Boletim da Disciplina">
    <div class="card text-primary shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -298,7 +279,8 @@ $encoding = mb_internal_encoding();
 
 
 <div class="col-xl-3 col-md-6 mb-4">
-  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&aulas=sim" title="Aulas do Curso">
+  <?php $id_periodo = @$_GET['id_periodo'] ?>
+  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&id_disciplina=<?php echo $id_disciplina ?>&id_periodo=<?php echo $id_periodo ?>&aulas=sim" title="Aulas da Disciplina">
    <div class="card text-info shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -342,9 +324,9 @@ $encoding = mb_internal_encoding();
 
         $query = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
-        $nome_disciplina = $res[0]['nome'];
+       // $nome_disciplina = $res[0]['nome'];
         ?>
-        <h6 class="modal-title"><?php echo $nome_disciplina ?></h6>
+        <h6 class="modal-title"></h6>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -366,6 +348,8 @@ $encoding = mb_internal_encoding();
             </tr>
           </thead>
           <tbody>
+
+
 
             <?php 
 
@@ -450,120 +434,66 @@ $encoding = mb_internal_encoding();
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disc ?>
-        <?php if(@$_GET['boletim'] != ""){ ?>
-         - <small><small>Mínimo para Aprovação <?php echo $media_pontos_minimo_aprovacao ?> Pontos</small></small>
-       <?php } ?>
-     </h5>
-     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
+        <h5 class="modal-title">Disciplina: <?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> <?php echo $nome_turma?>
+      </h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
 
-    <?php 
-    $query = $pdo->query("SELECT * FROM periodos where turma = '$id_turma' order by id asc ");
-    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-    $total_notas_curso = 0;
-    for ($i=0; $i < count($res); $i++) { 
-      foreach ($res[$i] as $key => $value) {
+      <?php 
+
+      $id_turma = @$_GET['id'];
+      $id_periodo = @$_GET['id_periodo'];
+      $id_disciplina = @$_GET['id_disciplina'];
+
+
+      if(@$_GET['aulas'] != ""){
+        $query = $pdo->query("SELECT * FROM tbfases_ano where NumeroFase >=1 and NumeroFase <=3 order by NumeroFase asc ");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
       }
 
-      $nome = $res[$i]['nome'];
-      $id_periodo = $res[$i]['id'];
-      $minimo_media = $res[$i]['minimo_media'];
+      if(@$_GET['notas'] != ""){
+        $query = $pdo->query("SELECT * FROM tbfases_ano where FaseInformada = 1 order by NumeroFase asc ");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+      }
 
-      //RECUPERAR AS NOTAS POR PERIODO
-      $query_n = $pdo->query("SELECT * FROM notas where periodo = '$id_periodo' and aluno = '$id_aluno'");
-      $res_n = $query_n->fetchAll(PDO::FETCH_ASSOC);
-      $total_notas_periodo = 0;
+      if(@$_GET['frequencia'] != ""){
+        $query = $pdo->query("SELECT * FROM tbfases_ano where NumeroFase >=1 and NumeroFase <=3 order by NumeroFase asc ");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+      }
 
-      for ($in=0; $in < count($res_n); $in++) { 
-        foreach ($res_n[$in] as $key => $value) {
-        }
-
-        $total_notas_periodo = $total_notas_periodo + $res_n[$in]['nota'];
-
-
-
-        if($total_notas_periodo < $minimo_media){
-          $cor_nota = 'text-danger';
-        }else{
-          $cor_nota = 'text-primary';
-        }
-
+      if(@count($res)==0){
+        echo "<span class='text-danger'><small>Não existem períodos cadastrados, por favor cadastre os períodos da turma!</small></span>";
 
       }
 
-      $total_notas_curso = $total_notas_curso + $total_notas_periodo;
-
-      if($total_notas_curso < $media_pontos_minimo_aprovacao){
-        $classe_media_nota = 'text-danger';
-      }else{
-        $classe_media_nota = 'text-primary';
-      }
-
-
-      $query_p = $pdo->query("SELECT * FROM aulas where periodo = '$id_periodo' ");
-      $res_p = $query_p->fetchAll(PDO::FETCH_ASSOC);
-
-      if(@count($res_p) > 0){
-
-
-          //CALCULAR FREQUÊNCIA
-        $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and periodo = '$id_periodo'");
-        $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-        $total_presencas = 0;
-        $total_chamadas = 0;
-        $porcentagem = 0;
-        $porcentagemF = 0;
-        for ($i2=0; $i2 < count($res2); $i2++) { 
-          foreach ($res2[$i2] as $key => $value) {
-          }
-          $total_chamadas = count($res2);
-          $presenca = @$res2[$i2]['presenca'];
-
-          if($presenca == 'P'){
-            $total_presencas = $total_presencas + 1;
-          }
-
-          $porcentagem = ($total_presencas * 100) / $total_chamadas;
-          $porcentagemF = number_format($porcentagem, 2, ',', '.');
-          
-
-          if($porcentagem < $media_porcentagem_presenca){
-            $cor_presenca = 'text-danger';
-          }else{
-            $cor_presenca = 'text-success';
-          }
-
+      for ($i=0; $i < count($res); $i++) { 
+        foreach ($res[$i] as $key => $value) {
         }
 
-
-
+        $nome = $res[$i]['NomeFase'];
+        $numeroFase = $res[$i]['NumeroFase'];
 
         ?>
 
-        <?php if(@$_GET['frequencia'] != ""){ ?>
-          <a title="Clique para Ver as Frequências" href="index.php?pag=turma&funcao=frequencias&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" name="btn-salvar-aula" class="text-dark"><?php echo $nome ?> - <span class="<?php echo $cor_presenca ?>"><?php echo $porcentagemF ?></span> % de Frequência. </a>
-          <hr>
-        <?php } ?>
-
-        <?php if(@$_GET['boletim'] != ""){ ?>
-          <a title="Gerar Boletim do Período" href="../rel/boletim_periodo.php?id_turma=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" target="_blank" class="text-dark"><?php echo $nome ?> - <span class="<?php echo $cor_nota ?>"><?php echo $total_notas_periodo ?></span> pontos. </a>
-          <hr>
-        <?php } ?>
-
         <?php if(@$_GET['aulas'] != ""){ ?>
-          <a title="Ver Grade do Curso" href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_mat ?>&id_turma=<?php echo $id_turma ?>&id_periodo=<?php echo $id_periodo ?>" class="text-dark"><?php echo $nome ?> - <?php echo @count($res_p) ?> Aulas </a>
-          <hr>
+          <a href="index.php?pag=turma&funcao=aulas&id=<?php echo $id_turma ?>&numero_fase=<?php echo $numeroFase ?>&id_aluno=<?php echo $id_aluno?>&id_periodo=<?php echo $id_periodo ?>&id_disciplina=<?php echo $id_disciplina ?>" name="btn-salvar-aula" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
         <?php } ?>
 
 
+        <?php if(@$_GET['notas'] != ""){ ?>
+          <a href="index.php?pag=turma&funcao=notas&id=<?php echo $id_turma ?>&numero_fase=<?php echo $numeroFase ?>&id_aluno=<?php echo $id_aluno?>&id_periodo=<?php echo $id_periodo ?>&id_disciplina=<?php echo $id_disciplina ?>" name="btn-salvar-notas" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
+        <?php } ?>
 
 
+        <?php if(@$_GET['frequencia'] != ""){ ?>
+          <a href="index.php?pag=turma&funcao=frequencias&id=<?php echo $id_turma ?>&numero_fase=<?php echo $numeroFase ?>&id_aluno=<?php echo $id_aluno?>&id_periodo=<?php echo $id_periodo ?>&id_disciplina=<?php echo $id_disciplina ?>" name="btn-salvar-chamada" class="btn btn-primary text-light m-1"><?php echo $nome ?></a>
+        <?php } ?>
 
-      <?php } }?>
+
+      <?php } ?>
 
       <?php if(@$_GET['boletim'] != ""){ ?>
         <div class="row">
@@ -588,82 +518,204 @@ $encoding = mb_internal_encoding();
 </div>
 
 <div class="modal" id="modal-aulas" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disc ?> - <?php echo $nome_periodo ?> - <?php echo $total_aulas ?> Aulas</h5>
+        <?php  
+        $id_turma = @$_GET['id'];
+        $id_periodo = @$_GET['id_periodo'];
+        $id_disciplina = @$_GET['id_disciplina'];
+        $numerofase = @$_GET['numero_fase'];
+
+        $query = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_periodo' and id_disciplina = '$id_disciplina' and NumeroFase = '$numerofase' order by id asc ");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC); 
+        $total_aulas = count($res);
+
+
+        ?>
+        <h5 class="modal-title">Disciplina: <?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> <?php echo $nome_turma?> - <?php echo $total_aulas ?> Aulas </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
+        <?php if ($total_aulas == 0){?>
+          <div class="text-danger text-center">Ainda não foi lançada a frequência para esse trimestre!</div>
+        <?php }else{ ?>
 
+          <span class=""><b>Aulas do Curso</b></span>
+          <div id="listar-aulas" class="mt-2">
 
-        <span class=""><b>Aulas do Curso</b></span>
-        <small><div id="listar-aulas" class="mt-2">
-
-        </div></small>
-
-
-
-      </div>
-
-
-    </div>
-
-  </div>
-</div>
-</div>
-
-<div class="modal" id="modal-aulas-grade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><?php echo $nome_disciplina ?> - <?php echo $nome_periodo ?> - <?php echo $total_aulas ?> Aulas</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+          </div>
 
 
 
-        <span class=""><b>Aulas do Curso</b></span> <br><br>
-
+        </div>
         <?php 
 
-        $query = $pdo->query("SELECT * FROM aulas where turma = '$_GET[id_turma]' and periodo = '$_GET[id_periodo]' order by id asc ");
+        $id_turma = @$_GET['id'];
+        $id_periodo = @$_GET['id_periodo'];
+        $id_disciplina = @$_GET['id_disciplina'];
+        $id_aluno = @$_GET['id_aluno'];
+        $numerofase = @$_GET['numero_fase'];
+       //CALCULAR FREQUÊNCIA
+        $query = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_periodo' and id_disciplina = '$id_disciplina' and NumeroFase = '$numerofase' order by id asc ");
+
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        for ($i=0; $i < count($res); $i++) { 
-          foreach ($res[$i] as $key => $value) {
+        $total_presencas = 0;
+        $total_aulas = 0;
+        $porcentagem = 0;
+        $porcentagemF = 0;
+        for ($i2=0; $i2 < count($res); $i2++) { 
+          foreach ($res[$i2] as $key => $value) {
+          }
+          $total_aulas = count($res);
+         // $presenca = @$res2[$i2]['presenca'];
+          $id_aula = $res[$i2]['id'];
+
+          $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and aula = '$id_aula'");
+          $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+
+          $presenca = @$res2[0]['presenca'];
+
+
+
+
+          if($presenca == 'P'){
+            $total_presencas = $total_presencas + 1;
           }
 
-          $nome = $res[$i]['nome'];
-          $descricao = $res[$i]['descricao'];
-          $arquivo = $res[$i]['arquivo'];
-          $id_aula = $res[$i]['id'];
+          $porcentagem = ($total_presencas * 100) / $total_aulas;
+          $porcentagemF = number_format($porcentagem, 2, ',', '.');
 
-          echo 'Aula '. ($i+1) . ' - '. $nome;
 
-          if($arquivo != ""){
-            echo '<span class="ml-1" ><a href="../img/arquivos-aula/'.$arquivo.'" target="_blank" class="text-primary"> Ver Arquivo </a> <br></span>';
-          }else{ 
-            echo '<br>';
+          if($porcentagem < $media_porcentagem_presenca){
+            $cor_presenca = 'text-danger';
+          }else{
+            $cor_presenca = 'text-success';
           }
 
         }
 
+
         ?>
 
 
-      </div>
 
+        <div class="modal-footer">
+         <small> <div class="text-primary">Porcentagem de Frequência:</div></small> <small><span class="<?php echo $cor_presenca ?>"><?php echo $porcentagemF ?>%</span>
+
+         </div>
+
+       <?php } ?>
+
+
+     </div>
+
+   </div>
+ </div>
+</div>
+
+<div class="modal" id="modal-aulas-grade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <?php 
+
+        $id_turma = @$_GET['id'];
+        $id_periodo = @$_GET['id_periodo'];
+        $id_disciplina = @$_GET['id_disciplina'];
+        $numerofase = @$_GET['numero_fase'];
+
+        $query = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_periodo' and id_disciplina = '$id_disciplina' and NumeroFase = '$numerofase' order by id asc ");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC); 
+        $total_aulas = count($res);
+
+
+        ?>
+
+
+        <h5 class="modal-title"><?php echo $nome_disciplina ?> - <?php echo $nome_disc ?> <?php echo $nome_turma?> - <?php echo $total_aulas ?> Aulas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <?php if ($total_aulas == 0){ ?>
+
+          <div class="text-danger text-center">Ainda não foram lançadas aulas para esse trimestre!</div>
+          
+        <?php }else{ ?>
+
+          <span class=""><b>Aulas do Curso</b></span> <br><br>
+
+          <small>
+           <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Aula</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Data</th>
+                <th scope="col">Arquivo da aula</th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <?php 
+
+
+              for ($i=0; $i < count($res); $i++) { 
+                foreach ($res[$i] as $key => $value) {
+                }
+
+                $nome = $res[$i]['nome'];
+                $descricao = $res[$i]['descricao'];
+                $arquivo = $res[$i]['arquivo'];
+                $id_aula = $res[$i]['id'];
+                $data = $res[$i]['data'];
+
+                $dataF = implode('/', array_reverse(explode('-', $data)));
+
+
+                ?>
+
+                <tr>
+                  <td><?php echo ($i+1) ?></td>
+                  <td><?php echo $nome ?></td>
+                  <td><?php echo $descricao ?></td>
+                  <td><?php echo $dataF ?></td>
+                  <td>
+                    <?php if ($arquivo != ""): ?>
+
+
+                      <span class="ml-1" ><a href="../img/arquivos-aula/<?php echo $arquivo ?>" target="_blank" class="text-primary"> Ver Arquivo </a></span>
+                    <?php endif ?>
+                  </td>  
+
+
+
+                </tr>
+
+              <?php } ?> 
+
+
+            </tbody>
+          </table>
+        </small>
+
+      <?php } ?>
 
     </div>
 
+
   </div>
+
+</div>
 </div>
 </div>
 
@@ -701,13 +753,18 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
 <script type="text/javascript">
   function listarDados(){
     var pag = "<?=$pag?>";
-    var turma = "<?=$id_turma?>";
-    var periodo = "<?=$id_per?>";
+    var turma = "<?=$_GET['id']?>";
+    var periodo = "<?=$_GET['id_periodo']?>";
+    var disciplina = "<?=$_GET['id_disciplina']?>";
+    var aluno = "<?=$_GET['id_aluno']?>";
+    var numerofase = "<?=$_GET['numero_fase']?>";
+
+    console.log(turma)
 
     $.ajax({
      url: pag + "/listar-aulas.php",
      method: "post",
-     data: {turma, periodo},
+     data: {turma, periodo, disciplina, aluno, numerofase},
      dataType: "html",
      success: function(result){
       $('#listar-aulas').html(result)

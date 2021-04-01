@@ -56,7 +56,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
           $sigla_turma = $res[$i]['SiglaTurma'];
           $turno = $res[$i]['TurnoPrincipal'];
           $vagas = $res[$i]['TotalVagas'];
-         
+          
           $id_sala = $res[$i]['IdSala'];
           $id = $res[$i]['IdTurma'];
 
@@ -846,99 +846,116 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
       </div>
       <div class="modal-body">
 
-        <small>
-         <table class="table table-bordered">
-          <form method="post" id="form-prof">
-            <thead>
-              <tr>
-                <th scope="col">Disciplinas</th>
-                <th scope="col">Escolher Professor</th>
+        <?php  
 
-              </thead>
-              <tbody>
+        $id_turma = $_GET['id_turma'];
 
-                <?php 
+        $query_5 = $pdo->query("SELECT * FROM tbturma where Idturma = '$id_turma'");
+        $res_5 = $query_5->fetchAll(PDO::FETCH_ASSOC);
 
-                $id_turma = $_GET['id_turma'];
-
-                $query_5 = $pdo->query("SELECT * FROM tbturma where Idturma = '$id_turma'");
-                $res_5 = $query_5->fetchAll(PDO::FETCH_ASSOC);
-
-                $id_serie = $res_5[0]['IdSerie'];
-                $id_ano = $res_5[0]['IdPeriodo'];
+        $id_serie = $res_5[0]['IdSerie'];
+        $id_ano = $res_5[0]['IdPeriodo'];
 
                         //VERIFICAR Disciplinas
-                $query_3 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo = '$id_ano'");
-                $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
+        $query_3 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo = '$id_ano'");
+        $res_3 = $query_3->fetchAll(PDO::FETCH_ASSOC);
 
-                for ($i2=0; $i2 < count($res_3); $i2++) { 
-                  foreach ($res_3[$i2] as $key => $value) {
-                  }
-
-                  $id_disciplinas = $res_3[$i2]['IdDisciplina'];
+        if (count($res_3) == 0) {
+          echo "<span class='text-danger'>Cadastre ou renove a Grade Curricular!</span>";
 
 
-                  $query_4 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplinas' ");
-                  $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
-
-                  $nome_disciplina = $res_4[0]['NomeDisciplina'];
-
-                  ?>
-
-                  <input type="hidden" id="id_disc"  name="id_disc[]" value="<?php echo @$id_disciplinas ?>">
-                  <tr>
-
-                    <td><?php echo @$nome_disciplina ?></td>
-
-                    <td>
-                      <select name="id_profe[]" class="form-control" id="">
-                        <option selected value="">Selecione o Professor</option>
-                        <?php 
-                        $query = $pdo->query("SELECT * FROM tbprofessordisciplina where IdDisciplina = '$id_disciplinas' ");
-                        $res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-                        for ($i=0; $i < count($res); $i++) { 
-                          foreach ($res[$i] as $key => $value) {
-                          }
-
-                          $id_professor = $res[$i]['IdProfessor'];
-
-                          $query11 = $pdo->query("SELECT * FROM tbprofessor where IdProfessor = '$id_professor'");
-                          $res11 = $query11->fetchAll(PDO::FETCH_ASSOC);
-
-                          $nome_professor = $res11[0]['NomeProfessor'];
-
-                          $query12 = $pdo->query("SELECT * FROM tbturmaprofessor where IdProfessor = '$id_professor' and IdDisciplina = '$id_disciplinas' and IdTurma = '$id_turma'");
-                          $res12 = $query12->fetchAll(PDO::FETCH_ASSOC);
-
-
-                          ?>
-
-                          <?php if (@count($res12) != 0){ ?>
-                            <option selected value="<?php echo $id_professor ?>"><?php echo @$nome_professor ?></option>
-
-                            <?php 
-                            continue;
-                          }else{ ?>
-
-                            <option value="<?php echo $id_professor ?>"><?php echo @$nome_professor ?></option>
-
-
-                          <?php }}?>
-
-                        </select>
-
-                      </td>
+        }
 
 
 
-                    </tr>
+        ?>
+        <?php if (count($res_3) != 0): ?>
 
-                  <?php  }  ?>
 
-                </tbody>
-              </table>
-            </small>
+          <small>
+           <table class="table table-bordered">
+            <form method="post" id="form-prof">
+              <thead>
+                <tr>
+                  <th scope="col">Disciplinas</th>
+                  <th scope="col">Escolher Professor</th>
+
+                </thead>
+                <tbody>
+
+                  <?php 
+
+
+
+                  for ($i2=0; $i2 < count($res_3); $i2++) { 
+                    foreach ($res_3[$i2] as $key => $value) {
+                    }
+
+                    $id_disciplinas = $res_3[$i2]['IdDisciplina'];
+
+
+                    $query_4 = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplinas' ");
+                    $res_4 = $query_4->fetchAll(PDO::FETCH_ASSOC);
+
+                    $nome_disciplina = $res_4[0]['NomeDisciplina'];
+
+                    ?>
+
+                    <input type="hidden" id="id_disc"  name="id_disc[]" value="<?php echo @$id_disciplinas ?>">
+                    <tr>
+
+                      <td><?php echo @$nome_disciplina ?></td>
+
+                      <td>
+                        <select name="id_profe[]" class="form-control" id="">
+                          <option selected value="">Selecione o Professor</option>
+                          <?php 
+                          $query = $pdo->query("SELECT * FROM tbprofessordisciplina where IdDisciplina = '$id_disciplinas' ");
+                          $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                          for ($i=0; $i < count($res); $i++) { 
+                            foreach ($res[$i] as $key => $value) {
+                            }
+
+                            $id_professor = $res[$i]['IdProfessor'];
+
+                            $query11 = $pdo->query("SELECT * FROM tbprofessor where IdProfessor = '$id_professor'");
+                            $res11 = $query11->fetchAll(PDO::FETCH_ASSOC);
+
+                            $nome_professor = $res11[0]['NomeProfessor'];
+
+                            $query12 = $pdo->query("SELECT * FROM tbturmaprofessor where IdProfessor = '$id_professor' and IdDisciplina = '$id_disciplinas' and IdTurma = '$id_turma'");
+                            $res12 = $query12->fetchAll(PDO::FETCH_ASSOC);
+
+
+                            ?>
+
+                            <?php if (@count($res12) != 0){ ?>
+                              <option selected value="<?php echo $id_professor ?>"><?php echo @$nome_professor ?></option>
+
+                              <?php 
+                              continue;
+                            }else{ ?>
+
+                              <option value="<?php echo $id_professor ?>"><?php echo @$nome_professor ?></option>
+
+
+                            <?php }}?>
+
+                          </select>
+
+                        </td>
+
+
+
+                      </tr>
+
+                    <?php  }  ?>
+
+                  </tbody>
+                </table>
+              </small>
+            <?php endif ?>
 
 
           </div>
@@ -947,8 +964,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
 
             <input type="hidden" id="id-turma"  name="id-turma" value="<?php echo @$_GET['id_turma'] ?>" required>
-
-            <button type="submit" id="btn-salvar-prof" name="btn-salvar-prof" class="btn btn-primary">Salvar</button>
+            <?php if (count($res_3) != 0): ?>
+              <button type="submit" id="btn-salvar-prof" name="btn-salvar-prof" class="btn btn-primary">Salvar</button>
+            <?php endif ?>
           </form>
         </div>
         <div align="center" id="mensagem-prof" class="">
@@ -987,55 +1005,80 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
       $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
       if (@count($res_r) == 0) {
-        $res = $pdo->query("INSERT INTO tbalunoturma SET IdTurma = '$id_turma', IdAluno = '$id_aluno', DataSituacaoAtivo = curDate(),  IdSituacaoAlunoTurma = 5, IdResponsavelFinanceiro = '$id_resp' ");
+        $res = $pdo->query("INSERT INTO tbalunoturma SET IdTurma = '$id_turma', IdAluno = '$id_aluno', DataSituacaoAtivo = curDate(),  IdSituacaoAlunoTurma = 1, IdResponsavelFinanceiro = '$id_resp' ");
 
+        //Select para pegar id da serie e do periodo
+        $query = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma'");
+        $res2 = $query->fetchAll(PDO::FETCH_ASSOC);
+        $id_serieRES = $res2[0]['IdSerie'];
+        $id_periodoRES = $res2[0]['IdPeriodo'];
+
+        $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodoRES' and IdSerie = '$id_serieRES' and NumeroFase = 1");
+        $res2 = $query->fetchAll(PDO::FETCH_ASSOC);
+        $id_fase_nota = $res2[0]['IdFaseNota'];
+
+
+      //Selecionar as disciplinas
+        $query3 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serieRES' and IdPeriodo = '$id_periodoRES'");
+        $res3 = $query3->fetchAll(PDO::FETCH_ASSOC);
+
+        for ($i=0; $i < count($res3); $i++) { 
+          foreach ($res3[$i] as $key => $value) {
+          }
+
+          $id_disciplina2 = $res3[$i]['IdDisciplina'];
+
+          $pdo->query("INSERT INTO tbsituacaoalunodisciplina SET IdTurma = '$id_turma', IdAluno ='$id_aluno', SituacaoAtual ='Cursando', IdFaseNotaAtual = '$id_fase_nota', IdDisciplina = '$id_disciplina2'");
+
+        }
+
+        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
+
+      } }
+
+      if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
+        echo "<script>$('#modal-matriculados').modal('show');</script>";
       }
 
-      echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
+      if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
+        $id_aluno2 = $_GET['id_aluno'];
+        $id_turma2 = $_GET['id_turma'];
 
-    }
+        $res = $pdo->query("DELETE FROM tbalunoturma WHERE IdAluno = '$id_aluno2' and IdTurma = '$id_turma2'");
 
-    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
-      echo "<script>$('#modal-matriculados').modal('show');</script>";
-    }
-
-    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
-      $id_aluno2 = $_GET['id_aluno'];
-      $id_turma2 = $_GET['id_turma'];
-
-      $res = $pdo->query("DELETE FROM tbalunoturma WHERE IdAluno = '$id_aluno2' and IdTurma = '$id_turma2'");
+        $res = $pdo->query("DELETE FROM tbsituacaoalunodisciplina WHERE IdAluno = '$id_aluno2' and IdTurma = '$id_turma2'");
 
 
-      echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma2&id_aluno=$id_aluno&funcao=matriculados';</script>";
+        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma2&id_aluno=$id_aluno&funcao=matriculados';</script>";
 
-    } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "professores") {
-      echo "<script>$('#modal-professores').modal('show');</script>";
-    }
+      } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "professores") {
+        echo "<script>$('#modal-professores').modal('show');</script>";
+      }
 
-    ?>
+      ?>
 
 
 
 
 
 
-    <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
-    <script type="text/javascript">
-      $("#form").submit(function () {
-        var pag = "<?=$pag?>";
-        event.preventDefault();
-        var formData = new FormData(this);
+      <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+      <script type="text/javascript">
+        $("#form").submit(function () {
+          var pag = "<?=$pag?>";
+          event.preventDefault();
+          var formData = new FormData(this);
 
-        $.ajax({
-          url: pag + "/inserir.php",
-          type: 'POST',
-          data: formData,
+          $.ajax({
+            url: pag + "/inserir.php",
+            type: 'POST',
+            data: formData,
 
-          success: function (mensagem) {
+            success: function (mensagem) {
 
-            $('#mensagem').removeClass()
+              $('#mensagem').removeClass()
 
-            if (mensagem.trim() == "Salvo com Sucesso!!") {
+              if (mensagem.trim() == "Salvo com Sucesso!!") {
 
                     //$('#nome').val('');
                     //$('#cpf').val('');
@@ -1064,26 +1107,26 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                 return myXhr;
               }
             });
-      });
-    </script>
+        });
+      </script>
 
-    <!--AJAX PARA INSERÇÃO de professores nas turmas -->
-    <script type="text/javascript">
-      $("#form-prof").submit(function () {
-        var pag = "<?=$pag?>";
-        event.preventDefault();
-        var formData = new FormData(this);
+      <!--AJAX PARA INSERÇÃO de professores nas turmas -->
+      <script type="text/javascript">
+        $("#form-prof").submit(function () {
+          var pag = "<?=$pag?>";
+          event.preventDefault();
+          var formData = new FormData(this);
 
-        $.ajax({
-          url: pag + "/inserir-professores.php",
-          type: 'POST',
-          data: formData,
+          $.ajax({
+            url: pag + "/inserir-professores.php",
+            type: 'POST',
+            data: formData,
 
-          success: function (mensagem) {
+            success: function (mensagem) {
 
-            $('#mensagem-prof').removeClass()
+              $('#mensagem-prof').removeClass()
 
-            if (mensagem.trim() == "Salvo com Sucesso!!") {
+              if (mensagem.trim() == "Salvo com Sucesso!!") {
 
                     //$('#nome').val('');
                     //$('#cpf').val('');
@@ -1112,106 +1155,106 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                 return myXhr;
               }
             });
-      });
-    </script>
+        });
+      </script>
 
 
 
 
 
-    <!--AJAX PARA EXCLUSÃO DOS DADOS -->
-    <script type="text/javascript">
-      $(document).ready(function () {
-        var pag = "<?=$pag?>";
-        $('#btn-deletar').click(function (event) {
-          event.preventDefault();
+      <!--AJAX PARA EXCLUSÃO DOS DADOS -->
+      <script type="text/javascript">
+        $(document).ready(function () {
+          var pag = "<?=$pag?>";
+          $('#btn-deletar').click(function (event) {
+            event.preventDefault();
 
-          $.ajax({
-            url: pag + "/excluir.php",
-            method: "post",
-            data: $('form').serialize(),
-            dataType: "text",
-            success: function (mensagem) {
+            $.ajax({
+              url: pag + "/excluir.php",
+              method: "post",
+              data: $('form').serialize(),
+              dataType: "text",
+              success: function (mensagem) {
 
-              if (mensagem.trim() === 'Excluído com Sucesso!!') {
-
-
-                $('#btn-cancelar-excluir').click();
-                window.location = "index.php?pag=" + pag;
-              }
-
-              $('#mensagem_excluir').addClass('text-danger')
-              $('#mensagem_excluir').text(mensagem)
+                if (mensagem.trim() === 'Excluído com Sucesso!!') {
 
 
+                  $('#btn-cancelar-excluir').click();
+                  window.location = "index.php?pag=" + pag;
+                }
 
-            },
+                $('#mensagem_excluir').addClass('text-danger')
+                $('#mensagem_excluir').text(mensagem)
 
+
+
+              },
+
+            })
           })
         })
-      })
-    </script>
+      </script>
 
 
 
-    <!--SCRIPT PARA CARREGAR IMAGEM -->
-    <script type="text/javascript">
+      <!--SCRIPT PARA CARREGAR IMAGEM -->
+      <script type="text/javascript">
 
-      function carregarImg() {
+        function carregarImg() {
 
-        var target = document.getElementById('target');
-        var file = document.querySelector("input[type=file]").files[0];
-        var reader = new FileReader();
+          var target = document.getElementById('target');
+          var file = document.querySelector("input[type=file]").files[0];
+          var reader = new FileReader();
 
-        reader.onloadend = function () {
-          target.src = reader.result;
-        };
+          reader.onloadend = function () {
+            target.src = reader.result;
+          };
 
-        if (file) {
-          reader.readAsDataURL(file);
+          if (file) {
+            reader.readAsDataURL(file);
 
 
-        } else {
-          target.src = "";
+          } else {
+            target.src = "";
+          }
         }
-      }
 
-    </script>
-
+      </script>
 
 
 
 
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#dataTable').dataTable({
-          "ordering": false,
-          "stateSave": true,
-          "stateDuration": 60 * 60 * 24,
-          "autoWidth": false
-        })
-        $('#dataTable2').dataTable({
-          "ordering": false,
-          "stateSave": true,
-          "stateDuration": 60 * 60 * 24,
-          "autoWidth": false
-        })
 
-      });
-    </script>
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $('#dataTable').dataTable({
+            "ordering": false,
+            "stateSave": true,
+            "stateDuration": 60 * 60 * 24,
+            "autoWidth": false
+          })
+          $('#dataTable2').dataTable({
+            "ordering": false,
+            "stateSave": true,
+            "stateDuration": 60 * 60 * 24,
+            "autoWidth": false
+          })
+
+        });
+      </script>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
 
-    <script src="../js/mascaras.js"></script>
+      <script src="../js/mascaras.js"></script>
 
-    <script>
-      function maiuscula(string){
-        res = string.value.toUpperCase();
+      <script>
+        function maiuscula(string){
+          res = string.value.toUpperCase();
 
-        string.value=res;
-      }
-    </script>
+          string.value=res;
+        }
+      </script>
 
 
 

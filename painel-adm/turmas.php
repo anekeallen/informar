@@ -56,7 +56,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
           $sigla_turma = $res[$i]['SiglaTurma'];
           $turno = $res[$i]['TurnoPrincipal'];
           $vagas = $res[$i]['TotalVagas'];
-          $codigo = $res[$i]['CodigoAgrupamento'];
+          //$codigo = $res[$i]['CodigoAgrupamento'];
           $id_sala = $res[$i]['IdSala'];
           $id = $res[$i]['IdTurma'];
 

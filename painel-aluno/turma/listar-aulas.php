@@ -6,14 +6,31 @@ $cpf_usuario = @$_SESSION['cpf_usuario'];
 
 
 
-$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usuario'  order by IdAluno asc ");
+$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usuario' order by IdAluno asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_aluno = $res[0]['IdAluno'];
 
 $turma = @$_POST['turma'];
 $periodo = @$_POST['periodo'];
+$disciplina = @$_POST['disciplina'];
+$numerofase = @$_POST['numerofase'];
 
-$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' order by id asc ");
+echo " <small>
+<table class='table table-bordered'>
+<thead>
+<tr>
+<th scope='col'>Aula</th>
+<th scope='col'>Nome</th>
+<th scope='col'>Data</th>
+<th scope='col'>Chamada</th>
+
+
+
+</tr>
+</thead>
+<tbody>";
+
+$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' and id_disciplina = '$disciplina' and NumeroFase = '$numerofase' order by id asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
 for ($i=0; $i < count($res); $i++) { 
@@ -24,26 +41,41 @@ for ($i=0; $i < count($res); $i++) {
 	$descricao = $res[$i]['descricao'];
 	$arquivo = $res[$i]['arquivo'];
 	$id_aula = $res[$i]['id'];
+  $data = $res[$i]['data'];
 
-	echo 'Aula '. ($i+1) . ' - '. $nome;
 
-	 $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$turma' and aluno = '$id_aluno' and aula = '$id_aula' ");
-                  $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-                  $presenca = @$res2[0]['presenca'];
 
-                  if($presenca == 'P'){
-                    $classe_chamada = 'text-success';
-                  }else{
-                    $classe_chamada = 'text-danger';
-                  }
+  $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$turma' and aluno = '$id_aluno' and aula = '$id_aula' ");
+  $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+  $presenca = @$res2[0]['presenca'];
+  $classe_chamada = 'text-danger';
+  
 
-             if($presenca != ""){ ?>
-                        - <span class="<?php echo @$classe_chamada ?>"><?php echo @$presenca ?></span><br>
-                         <?php } else{
-                         	echo ' - Próximas Aulas <br>';
-                         }
+  if($presenca == 'P'){
+    $frequencia = "Presente";
+    $classe_chamada = 'text-success';
+  }else if($presenca == ""){
+    $frequencia = "Professor não realizou a chamada!";
+    $classe_chamada = 'text-warning';
+    
+  }else{
+    $frequencia = "Faltou";
+    $classe_chamada = 'text-danger';
+  }
+
+  echo "<tr>
+    <td>". ($i+1)."</td>
+    <td>".$nome."</td>
+    <td>".$data."</td>
+    <td class='".$classe_chamada."'>".$frequencia."</td>
+    
+  
+
+  </tr>";
+
+
 
 
 }
-	?>
+?>
 

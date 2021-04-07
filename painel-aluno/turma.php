@@ -137,36 +137,7 @@ if($totalPorcentagemSoma < $media_porcentagem_presenca){
   $cor_presenca2 = 'text-success';
 }
 
-//RECUPERAR AS NOTAS POR PERIODO
-$query = $pdo->query("SELECT * FROM periodos where turma = '$id_turma' order by id asc ");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$total_notas_curso = 0;
-for ($i=0; $i < count($res); $i++) { 
-  foreach ($res[$i] as $key => $value) {
-  }
 
-  $nome = $res[$i]['nome'];
-  $id_periodo = $res[$i]['id'];
-  $minimo_media = $res[$i]['minimo_media'];
-
-
-  
-  $query_n = $pdo->query("SELECT * FROM notas where periodo = '$id_periodo' and aluno = '$id_aluno'");
-  $res_n = $query_n->fetchAll(PDO::FETCH_ASSOC);
-  $total_notas_periodo = 0;
-
-  for ($in=0; $in < count($res_n); $in++) { 
-    foreach ($res_n[$in] as $key => $value) {
-    }
-
-    $total_notas_periodo = $total_notas_periodo + $res_n[$in]['nota'];
-
-
-  }
-
-  $total_notas_curso = $total_notas_curso + $total_notas_periodo;
-  
-}
 $encoding = mb_internal_encoding();
 
 ?>
@@ -517,6 +488,7 @@ $encoding = mb_internal_encoding();
   </div>
 </div>
 
+
 <div class="modal" id="modal-aulas" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -759,7 +731,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
     var aluno = "<?=$_GET['id_aluno']?>";
     var numerofase = "<?=$_GET['numero_fase']?>";
 
-    console.log(turma)
+    
 
     $.ajax({
      url: pag + "/listar-aulas.php",
@@ -774,4 +746,4 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
 
   })
   }
-</script>s
+</script>

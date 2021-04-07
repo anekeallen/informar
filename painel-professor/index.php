@@ -2,6 +2,12 @@
 @session_start();
 require_once("../conexao.php"); 
 
+$cpf_usuario = @$_SESSION['cpf_usuario'];
+if(@$_SESSION['nivel_usuario'] == null || @$_SESSION['nivel_usuario'] != 'professor'){
+    echo "<script language='javascript'> window.location='../index.php' </script>";
+    exit();
+}
+
     //variaveis para o menu
 $pag = @$_GET["pag"];
 $menu1 = "matriculas";

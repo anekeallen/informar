@@ -511,8 +511,12 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                   $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
                   $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
 
+
+
                   $situacao = $res_r1[0]['SituacaoAtual'];
                   $idfasenotaatual = $res_r1[0]['IdFaseNotaAtual'];
+
+                  
 
                   if ($situacao == "Aprovado" or $situacao == "Aprovado por REC" or $situacao == "Aprovado Prova Final") {
                     $classe_sit = "text-success";
@@ -732,7 +736,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
           {
 
-            $query_r11 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and SituacaoAtual = 'Recuperação Prova Final' or SituacaoAtual = 'Aprovado Prova Final' or SituacaoAtual = 'Reprovado Prova Final'");
+            $query_r11 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and (SituacaoAtual = 'Recuperação Prova Final' or SituacaoAtual = 'Aprovado Prova Final' or SituacaoAtual = 'Reprovado Prova Final')");
             $res_r11 = $query_r11->fetchAll(PDO::FETCH_ASSOC);
             for ($i=0; $i < count($res_r11); $i++) { 
               foreach ($res_r11[$i] as $key => $value) {

@@ -80,7 +80,7 @@ if (count($res5) == 0) {
 }
 
 
-if (isset($mediaParcialF)) {
+if (isset($mediaParcialF) and ($notaFase[2] != null)) {
 
 	if ($mediaParcialF >= $media_aprovacao) {
 
@@ -165,11 +165,8 @@ if (isset($mediaParcialF)) {
 
 			if ((count($res) == 0) and ($id_fases != 0) and ($id_fases != null)) {
 
-				$pdo1->query("INSERT INTO tbfasenotaaluno SET IdTurma = '$turma', IdDisciplina = '$disciplina', IdAluno = '$aluno', IdFaseNota = '$id_fases', NotaFase = NULL");
+				$pdo1->query("INSERT INTO tbfasenotaaluno SET IdTurma = '$turma', IdDisciplina = '$disciplina', IdAluno = '$aluno', IdFaseNota = '$id_fases'");
 
-			}else{
-
-				$pdo1->query("UPDATE tbfasenotaaluno SET NotaFase = NULL where IdTurma = '$turma', IdDisciplina = '$disciplina', IdAluno = '$aluno', IdFaseNota = '$id_fases' ");
 			}
 
 			$pdo1->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Recuperação Anual', IdFaseNotaAtual = '$id_fase5' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'");

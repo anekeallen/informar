@@ -110,8 +110,32 @@ if (isset($mediaParcialF) and ($notaFase[2] != null)) {
 			}
 
 
+
+
 			$pdo1->query("UPDATE tbsituacaoalunodisciplina SET IdFaseNotaAtual = '$id_fase_aprovacao' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'");
 
+		}
+
+
+		//Verificar o id da fase nota do NumeroFase = 5 e NumeroFase = 7
+		$query = $pdo1->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$id_serie' and (NumeroFase = 5 or NumeroFase = 7)");
+		$res66 = $query->fetchAll(PDO::FETCH_ASSOC);
+		for ($i=0; $i < count($res66); $i++) { 
+			foreach ($res55[$i] as $key => $value) {
+			}
+
+			$id_fase_nula = $res66[$i]['IdFaseNota'];
+
+			$query2 = $pdo1->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and IdAluno = '$aluno' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase_nula'");
+			$res = $query2->fetchAll(PDO::FETCH_ASSOC);
+
+			if ((count($res) == 0) and ($id_fase_nula != 0) and ($id_fase_nula != null)) {
+
+				$pdo1->query("INSERT INTO tbfasenotaaluno SET IdTurma = '$turma', IdDisciplina = '$disciplina', IdAluno = '$aluno', IdFaseNota = '$id_fase_nula'");
+
+			}
+
+			
 		}
 
 
@@ -146,6 +170,29 @@ if (isset($mediaParcialF) and ($notaFase[2] != null)) {
 			$pdo1->query("UPDATE tbsituacaoalunodisciplina SET IdFaseNotaAtual = '$id_fase_reprovado' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdAluno = '$aluno'");
 
 		}
+
+		//Verificar o id da fase nota do NumeroFase = 5 e NumeroFase = 7
+		$query = $pdo1->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$id_serie' and (NumeroFase = 5 or NumeroFase = 7)");
+		$res66 = $query->fetchAll(PDO::FETCH_ASSOC);
+		for ($i=0; $i < count($res66); $i++) { 
+			foreach ($res55[$i] as $key => $value) {
+			}
+
+			$id_fase_nula = $res66[$i]['IdFaseNota'];
+
+			$query2 = $pdo1->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and IdAluno = '$aluno' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase_nula'");
+			$res = $query2->fetchAll(PDO::FETCH_ASSOC);
+
+			if ((count($res) == 0) and ($id_fase_nula != 0) and ($id_fase_nula != null)) {
+
+				$pdo1->query("INSERT INTO tbfasenotaaluno SET IdTurma = '$turma', IdDisciplina = '$disciplina', IdAluno = '$aluno', IdFaseNota = '$id_fase_nula'");
+
+			}
+
+			
+		}
+
+
 	}else{
 
 

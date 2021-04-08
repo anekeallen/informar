@@ -217,7 +217,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
       <div class="modal-body">
 
         <div class="row">
-          <div class="col-md-7">
+          <div class="col-md-8">
 
             <span class=""><b>Aulas da Disciplina</b></span>
             <small><div id="listar-aulas" class="mt-2">
@@ -226,7 +226,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
             </div></small>
 
           </div>
-          <div class="col-md-5">
+          <div class="col-md-4">
 
             <span class="mb-2"><b>Inserir nova aula</b></span>
 
@@ -340,10 +340,352 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
         <?php } ?>
 
       </div>
+      <?php if(@$_GET['notas'] != ""){ ?>
+        <div class="modal-footer">
 
+          <div class="container">
+            <div class="row">
+
+              <a href="index.php?pag=turma&funcao=notasgerais&id=<?php echo $id_turma ?>&id_prof=<?php echo $id_prof ?>&id_periodo=<?php echo $id_periodo ?>&id_disciplina=<?php echo $id_disciplina ?>" title="Gerar Boletim">
+                <i class='fas fa-clipboard text-primary mr-1'></i>Notas Gerais </a>
+
+
+              </div>
+            </div>
+
+          </div>
+        <?php } ?>
+
+
+      </div>
     </div>
   </div>
+
+  <div class="modal" id="modal-notas-gerais" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <h5 class="modal-title">Notas - Disciplina: <?php echo $nome_disciplina ?></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+         <!-- DataTales Example -->
+         <div class="card shadow mb-4">
+
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable-notas-gerais" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th><small><b>Nome</b></small></th>
+
+                    <th><small><b>1º TRIM</b></small></th>
+                    <th><small><b>2º TRIM</b></small></th>
+                    <th><small><b>3º TRIM</b></small></th>
+                    <th><small><b>MP</small></b> </th>
+                    <th><small><b>REC</b></small></th>
+                    <th><small><b>MA</b></small></th>  
+                    <th><small><b>REC_FIN</b></small></th>
+                    <th><small><b>MF</b></small></th>
+                    <th><small><b>Situação</b></small></th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                 <?php 
+                 $id_turma = $_GET['id'];
+                 $id_prof = $_GET['id_prof'];
+                 $id_disciplina = $_GET['id_disciplina'];
+                 $numeroFase = $_GET['numero_fase'];
+                 $id_periodo = $_GET['id_periodo'];
+
+                 $query = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma' ");
+                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                 for ($i=0; $i < count($res); $i++) { 
+                  foreach ($res[$i] as $key => $value) {
+                  }
+                  $nota_trim1 = null;
+                  $nota_trim2 = null;
+                  $nota_trim3 = null;
+                  $media_parcial = null;
+                  $recuperacao = null;
+                  $media_anual = null;
+                  $recuperacao_final = null;
+                  $media_final = null;
+
+                  $aluno = $res[$i]['IdAluno'];
+                  $id_situacao = $res[$i]['IdSituacaoAlunoTurma'];
+
+                  $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno' order by NomeAluno");
+                  $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
+
+                  $nome = $res_r[0]['NomeAluno'];
+                  //$telefone = $res_r[0]['telefone'];
+                  $email = $res_r[0]['Email'];
+                  $id_endereco = $res_r[0]['IdEndereco'];
+                  $cpf = $res_r[0]['CPF'];
+                  $foto = $res_r[0]['foto'];
+                  $id_aluno = $res_r[0]['IdAluno'];
+
+                  $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
+                  $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
+
+                  $situacao = $res_r1[0]['SituacaoAtual'];
+                  $idfasenotaatual = $res_r1[0]['IdFaseNotaAtual'];
+
+                  
+
+                  if ($situacao == "Aprovado" or $situacao == "Aprovado por REC" or $situacao == "Aprovado Prova Final") {
+                    $classe_sit = "text-success";
+                  }else if($situacao == "Cursando"){
+                    $classe_sit = "text-dark";
+                  }else{
+                    $classe_sit = "text-danger";
+                  }
+
+                  
+                  $query11 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' order by IdFaseNota asc");
+                  $res11 = $query11->fetchAll(PDO::FETCH_ASSOC);
+
+                  for ($j=0; $j < count($res11); $j++) { 
+                  foreach ($res11[$j] as $key => $value) {
+                  }
+
+                  $notas = $res11[$j]['NotaFase'];
+                  
+                  }
+
+                  /*
+
+                  //Pegar a nota do 1º trimestre
+                  $query1 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 1");
+                  $res1 = $query1->fetchAll(PDO::FETCH_ASSOC);
+                  
+                  $id_fasenota1 = $res1[0]['IdFaseNota'];
+
+                  $query11 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota1' ");
+                  $res11 = $query11->fetchAll(PDO::FETCH_ASSOC);
+
+                  $nota_trim1 = $res11[0]['NotaFase'];
+
+                  if (isset($nota_trim1)) {
+                   $nota_trim1F = number_format($nota_trim1, 2, ',', '.');
+
+                   if ($nota_trim2 >= 7) {
+                    $classe_notafase = "text-success";
+                  }else{
+                    $classe_notafase = "text-danger";
+                  }
+                }
+
+                   //Pegar a nota do 2º trimestre
+                $query2 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 2");
+                $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+
+                $id_fasenota2 = $res2[0]['IdFaseNota'];
+
+                $query21 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota2' ");
+                $res21 = $query21->fetchAll(PDO::FETCH_ASSOC);
+
+                $nota_trim2 = $res21[0]['NotaFase'];
+
+                if (isset($nota_trim2)) {
+                 $nota_trim2F = number_format($nota_trim2, 2, ',', '.');
+
+                 if ($nota_trim2 >= 7) {
+                  $classe_notafase = "text-success";
+                }else{
+                  $classe_notafase = "text-danger";
+                }
+              }
+
+              //Pegar a nota do 3º trimestre
+                $query3 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 3");
+                $res3 = $query3->fetchAll(PDO::FETCH_ASSOC);
+
+                $id_fasenota3 = $res3[0]['IdFaseNota'];
+
+                $query31 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota3' ");
+                $res31 = $query31->fetchAll(PDO::FETCH_ASSOC);
+
+                $nota_trim3 = $res31[0]['NotaFase'];
+
+                if (isset($nota_trim3)) {
+                 $nota_trim3F = number_format($nota_trim3, 2, ',', '.');
+
+                 if ($nota_trim3 >= 7) {
+                  $classe_notafase = "text-success";
+                }else{
+                  $classe_notafase = "text-danger";
+                }
+              }
+
+              //Pegar a nota do Media Parcial
+                $query4 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 4");
+                $res4 = $query4->fetchAll(PDO::FETCH_ASSOC);
+
+                $id_fasenota4 = $res4[0]['IdFaseNota'];
+
+                $query41 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota4' ");
+                $res41 = $query41->fetchAll(PDO::FETCH_ASSOC);
+
+                $media_parcial = $res41[0]['NotaFase'];
+
+                if (isset($media_parcial)) {
+                 $media_parcialF = number_format($media_parcial, 2, ',', '.');
+
+                 if ($media_parcial >= 7) {
+                  $classe_notafase = "text-success";
+                }else{
+                  $classe_notafase = "text-danger";
+                }
+              }
+
+              //Pegar a nota do Recuperação
+                $query5 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 5");
+                $res5 = $query5->fetchAll(PDO::FETCH_ASSOC);
+
+                $id_fasenota5 = $res5[0]['IdFaseNota'];
+
+                $query51 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota5' ");
+                $res51 = $query51->fetchAll(PDO::FETCH_ASSOC);
+
+                $recuperacao = $res51[0]['NotaFase'];
+
+                if (isset($recuperacao)) {
+                 $recuperacaoF = number_format($recuperacao, 2, ',', '.');
+
+                 if ($recuperacao >= 7) {
+                  $classe_rec= "text-primary";
+                }else{
+                  $classe_rec = "text-danger";
+                }
+              } else{
+                $recuperacaoF = null;
+              }
+
+              //Pegar a nota do Media Anual
+                $query6 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 6");
+                $res6 = $query6->fetchAll(PDO::FETCH_ASSOC);
+
+                $id_fasenota6 = $res6[0]['IdFaseNota'];
+
+                $query61 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota6' ");
+                $res61 = $query61->fetchAll(PDO::FETCH_ASSOC);
+
+                $media_anual = $res61[0]['NotaFase'];
+
+                if (isset($media_anual)) {
+                 $media_anualF = number_format($media_anual, 2, ',', '.');
+
+                 if ($media_anual >= 7) {
+                  $classe_anual= "text-success";
+                }else{
+                  $classe_anual = "text-danger";
+                }
+              } else{
+                $media_anualF = null;
+              }
+
+               //Pegar a nota do Recuperação Final
+                $query7 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 7");
+                $res7 = $query7->fetchAll(PDO::FETCH_ASSOC);
+
+                $id_fasenota7 = $res7[0]['IdFaseNota'];
+
+                $query71 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota7' ");
+                $res71 = $query71->fetchAll(PDO::FETCH_ASSOC);
+
+                $recuperacao_final = $res71[0]['NotaFase'];
+
+                if (isset($recuperacao_final)) {
+                 $recuperacao_finalF = number_format($recuperacao_final, 2, ',', '.');
+
+                 if ($recuperacao_final >= 7) {
+                  $classe_rec_final= "text-primary";
+                }else{
+                  $classe_rec_final = "text-danger";
+                }
+              } else{
+                $recuperacao_finalF = null;
+              }
+
+
+              //Pegar a nota do Media Final
+                $query8 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 8");
+                $res8 = $query8->fetchAll(PDO::FETCH_ASSOC);
+
+                $id_fasenota8 = $res8[0]['IdFaseNota'];
+
+                $query81 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota8' ");
+                $res81 = $query81->fetchAll(PDO::FETCH_ASSOC);
+
+                $media_final = $res81[0]['NotaFase'];
+
+                if (isset($media_final)) {
+                 $media_finalF = number_format($media_final, 2, ',', '.');
+
+                 if ($media_final >= 5) {
+                  $classe_final= "text-success";
+                }else{
+                  $classe_final = "text-danger";
+                }
+              } else{
+                $media_finalF = null;
+              }
+                
+                */
+
+
+
+              ?>
+
+
+              <tr>
+                <td><small><?php echo $nome ?></small></td>
+
+                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim1F ?></small></td>
+
+                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim2F ?></small></td>
+
+                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim3F ?></small></td>
+
+                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $media_parcialF ?></small> </td>
+                <td class="text-center <?php echo $classe_rec ?>"><small><?php echo $recuperacaoF ?> </small></td>
+                <td class="text-center <?php echo $classe_anual ?>"><small><?php echo $media_anualF ?></small> </td>
+                <td class="text-center <?php echo $classe_rec_final ?>"><small><?php echo $recuperacao_finalF ?></small> </td>
+                <td class="text-center <?php echo $classe_final ?>"><small><?php echo $media_finalF ?></small> </td>
+                
+                <td class="<?php echo $classe_sit ?>"><small><?php echo $situacao  ?></small></td>
+              </tr>
+
+
+
+            <?php } ?>
+
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
 </div>
+
+</div>
+</div>
+</div>
+
 
 
 <div class="modal" id="modal-upload" tabindex="-1" role="dialog">
@@ -376,7 +718,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
           </div>
         </small> 
-        
+
 
       </div>
 
@@ -385,7 +727,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
 
         <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtidaula" id="txtidaula">
-        
+
 
         <button type="button" id="btn-cancelar-upload" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         <button type="submit" name="btn-salvar-upload" id="btn-salvar-upload" class="btn btn-primary">Salvar</button>
@@ -1087,7 +1429,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
 
 <div class="modal" id="modal-chamada-aulas" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Disciplina: <?php echo $nome_disciplina ?> / <?php echo $nome_disc ?> - Aulas</h5>
@@ -1276,6 +1618,10 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "chamada") {
 
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "fazerchamada") {
   echo "<script>$('#modal-chamada').modal('show');</script>";
+}
+
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "notasgerais") {
+  echo "<script>$('#modal-notas-gerais').modal('show');</script>";
 }
 
 
@@ -2051,6 +2397,18 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     <script type="text/javascript">
       $(document).ready(function () {
         $('#dataTable2').dataTable({
+          "ordering": false,
+          "stateSave": true,
+          "stateDuration": 60 * 60 * 24,
+          "autoWidth": false
+        })
+
+      });
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#dataTable-notas-gerais').dataTable({
           "ordering": false,
           "stateSave": true,
           "stateDuration": 60 * 60 * 24,

@@ -10,6 +10,29 @@ $id_disciplina = @$_POST['id_disciplina'];
 $query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' and NumeroFase = '$fase' and id_disciplina = '$id_disciplina' order by id asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
+if (count($res) == 0) {
+	echo "<span class='text-danger'>Não existem aulas cadastradas. Insira uma aula!</span>";
+
+	exit();
+}
+
+echo " <small>
+<table class='table table-bordered'>
+<thead>
+<tr>
+<th scope='col'>Aula</th>
+<th scope='col'>Nome</th>
+<th scope='col'>Data</th>
+<th scope='col'>Arquivo</th>
+<th scope='col'>Ações</th>
+
+
+
+
+</tr>
+</thead>
+<tbody>";
+
 for ($i=0; $i < count($res); $i++) { 
 	foreach ($res[$i] as $key => $value) {
 	}
@@ -27,13 +50,32 @@ for ($i=0; $i < count($res); $i++) {
 	$res1 = $query1->fetchAll(PDO::FETCH_ASSOC);
 	$nome_disc = $res1[0]['NomeDisciplina'];
 
-	echo 'Aula '. ($i+1) . ' - '.$nome_disc.' - '. $nome .' - '.$dataF.' <a onclick="deletarAula('.$id_aula.')" href="#" title="deletar aula"><i class="far fa-trash-alt ml-2 text-danger"></i></a> <a onclick="upload('.$id_aula.')" href="#" title="Carregar Arquivo"><i class="far fa-file ml-2 text-primary"></i></a>';
+	
 
-	if($arquivo != ""){
+	echo "<tr>
+    <td>".($i+1)."</td>
+    <td>".$nome."</td>
+    <td>".$dataF."</td>
+    <td>";
+
+    if($arquivo != ""){
 		echo '<span class="ml-1" ><a href="../img/arquivos-aula/'.$arquivo.'" target="_blank" class="text-primary"> Ver Arquivo </a> <br></span>';
-	}else{ 
-		echo '<br>';
-	}
+	} 
+
+	echo "
+
+
+
+    </td>
+
+    <td class=''><a onclick='deletarAula(".$id_aula.")' href='#' title='Deletar Aula'><i class='far fa-trash-alt ml-2 text-danger'></i></a> <a onclick='upload(".$id_aula.")' href='#' title='Enviar Arquivo'><i class='far fa-file ml-2 text-primary'></i></a>
+
+    </td>
+
+   
+
+  </tr>";
+
 
 }
 ?>

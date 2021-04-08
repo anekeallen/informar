@@ -14,6 +14,7 @@ $id_usu = $res_id[0]['id'];
 
 $pdo->query("DELETE FROM tbprofessor WHERE IdProfessor = '$id'");
 $pdo->query("DELETE FROM usuarios WHERE id = '$id_usu'");
+$pdo->query("DELETE FROM tbprofessordisciplina WHERE IdProfessor = '$id'");
 
 echo 'Excluído com Sucesso!!';
 

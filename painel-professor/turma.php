@@ -451,51 +451,30 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                     $classe_sit = "text-danger";
                   }
 
-                  
+
                   $query11 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' order by IdFaseNota asc");
                   $res11 = $query11->fetchAll(PDO::FETCH_ASSOC);
 
-                  for ($j=0; $j < count($res11); $j++) { 
-                  foreach ($res11[$j] as $key => $value) {
-                  }
-
-                  $notas = $res11[$j]['NotaFase'];
-                  
-                  }
-
-                  /*
-
-                  //Pegar a nota do 1º trimestre
-                  $query1 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 1");
-                  $res1 = $query1->fetchAll(PDO::FETCH_ASSOC);
-                  
-                  $id_fasenota1 = $res1[0]['IdFaseNota'];
-
-                  $query11 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota1' ");
-                  $res11 = $query11->fetchAll(PDO::FETCH_ASSOC);
-
                   $nota_trim1 = $res11[0]['NotaFase'];
+                  $nota_trim2 = $res11[1]['NotaFase'];
+                  $nota_trim3 = $res11[2]['NotaFase'];
+                  $media_parcial = $res11[3]['NotaFase'];
+                  $recuperacao = $res11[4]['NotaFase'];
+                  $media_anual = $res11[5]['NotaFase'];
+                  $recuperacao_final = $res11[6]['NotaFase'];
+                  $media_final = $res11[7]['NotaFase'];
 
                   if (isset($nota_trim1)) {
                    $nota_trim1F = number_format($nota_trim1, 2, ',', '.');
 
-                   if ($nota_trim2 >= 7) {
+                   if ($nota_trim1 >= 7) {
                     $classe_notafase = "text-success";
                   }else{
                     $classe_notafase = "text-danger";
                   }
+                } else{
+                  $nota_trim1F = null;
                 }
-
-                   //Pegar a nota do 2º trimestre
-                $query2 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 2");
-                $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-
-                $id_fasenota2 = $res2[0]['IdFaseNota'];
-
-                $query21 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota2' ");
-                $res21 = $query21->fetchAll(PDO::FETCH_ASSOC);
-
-                $nota_trim2 = $res21[0]['NotaFase'];
 
                 if (isset($nota_trim2)) {
                  $nota_trim2F = number_format($nota_trim2, 2, ',', '.');
@@ -505,178 +484,113 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                 }else{
                   $classe_notafase = "text-danger";
                 }
+              } else{
+                $nota_trim2F = null;
               }
 
-              //Pegar a nota do 3º trimestre
-                $query3 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 3");
-                $res3 = $query3->fetchAll(PDO::FETCH_ASSOC);
+              if (isset($nota_trim3)) {
+                $nota_trim3F = number_format($nota_trim3, 2, ',', '.');
 
-                $id_fasenota3 = $res3[0]['IdFaseNota'];
-
-                $query31 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota3' ");
-                $res31 = $query31->fetchAll(PDO::FETCH_ASSOC);
-
-                $nota_trim3 = $res31[0]['NotaFase'];
-
-                if (isset($nota_trim3)) {
-                 $nota_trim3F = number_format($nota_trim3, 2, ',', '.');
-
-                 if ($nota_trim3 >= 7) {
+                if ($nota_trim3 >= 7) {
                   $classe_notafase = "text-success";
                 }else{
                   $classe_notafase = "text-danger";
                 }
-              }
-
-              //Pegar a nota do Media Parcial
-                $query4 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 4");
-                $res4 = $query4->fetchAll(PDO::FETCH_ASSOC);
-
-                $id_fasenota4 = $res4[0]['IdFaseNota'];
-
-                $query41 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota4' ");
-                $res41 = $query41->fetchAll(PDO::FETCH_ASSOC);
-
-                $media_parcial = $res41[0]['NotaFase'];
-
-                if (isset($media_parcial)) {
-                 $media_parcialF = number_format($media_parcial, 2, ',', '.');
-
-                 if ($media_parcial >= 7) {
-                  $classe_notafase = "text-success";
-                }else{
-                  $classe_notafase = "text-danger";
-                }
-              }
-
-              //Pegar a nota do Recuperação
-                $query5 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 5");
-                $res5 = $query5->fetchAll(PDO::FETCH_ASSOC);
-
-                $id_fasenota5 = $res5[0]['IdFaseNota'];
-
-                $query51 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota5' ");
-                $res51 = $query51->fetchAll(PDO::FETCH_ASSOC);
-
-                $recuperacao = $res51[0]['NotaFase'];
-
-                if (isset($recuperacao)) {
-                 $recuperacaoF = number_format($recuperacao, 2, ',', '.');
-
-                 if ($recuperacao >= 7) {
-                  $classe_rec= "text-primary";
-                }else{
-                  $classe_rec = "text-danger";
-                }
               } else{
-                $recuperacaoF = null;
+                $nota_trim3F = null;
               }
 
-              //Pegar a nota do Media Anual
-                $query6 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 6");
-                $res6 = $query6->fetchAll(PDO::FETCH_ASSOC);
+              if (isset($media_parcial)) {
+               $media_parcialF = number_format($media_parcial, 2, ',', '.');
 
-                $id_fasenota6 = $res6[0]['IdFaseNota'];
-
-                $query61 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota6' ");
-                $res61 = $query61->fetchAll(PDO::FETCH_ASSOC);
-
-                $media_anual = $res61[0]['NotaFase'];
-
-                if (isset($media_anual)) {
-                 $media_anualF = number_format($media_anual, 2, ',', '.');
-
-                 if ($media_anual >= 7) {
-                  $classe_anual= "text-success";
-                }else{
-                  $classe_anual = "text-danger";
-                }
-              } else{
-                $media_anualF = null;
+               if ($media_parcial >= 7) {
+                $classe_notafase = "text-success";
+              }else{
+                $classe_notafase = "text-danger";
               }
+            }else{
+              $media_parcialF = null;
+            }
+            if (isset($recuperacao)) {
+             $recuperacaoF = number_format($recuperacao, 2, ',', '.');
 
-               //Pegar a nota do Recuperação Final
-                $query7 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 7");
-                $res7 = $query7->fetchAll(PDO::FETCH_ASSOC);
+             if ($recuperacao >= 7) {
+              $classe_rec= "text-primary";
+            }else{
+              $classe_rec = "text-danger";
+            }
+          } else{
+            $recuperacaoF = null;
+          }
 
-                $id_fasenota7 = $res7[0]['IdFaseNota'];
+          if (isset($media_anual)) {
+           $media_anualF = number_format($media_anual, 2, ',', '.');
 
-                $query71 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota7' ");
-                $res71 = $query71->fetchAll(PDO::FETCH_ASSOC);
+           if ($media_anual >= 7) {
+            $classe_anual= "text-success";
+          }else{
+            $classe_anual = "text-danger";
+          }
+        } else{
+          $media_anualF = null;
+        }
 
-                $recuperacao_final = $res71[0]['NotaFase'];
+        if (isset($recuperacao_final)) {
+         $recuperacao_finalF = number_format($recuperacao_final, 2, ',', '.');
 
-                if (isset($recuperacao_final)) {
-                 $recuperacao_finalF = number_format($recuperacao_final, 2, ',', '.');
+         if ($recuperacao_final >= 7) {
+          $classe_rec_final= "text-primary";
+        }else{
+          $classe_rec_final = "text-danger";
+        }
+      } else{
+        $recuperacao_finalF = null;
+      }
+      if (isset($media_final)) {
+       $media_finalF = number_format($media_final, 2, ',', '.');
 
-                 if ($recuperacao_final >= 7) {
-                  $classe_rec_final= "text-primary";
-                }else{
-                  $classe_rec_final = "text-danger";
-                }
-              } else{
-                $recuperacao_finalF = null;
-              }
+       if ($media_final >= 5) {
+        $classe_final= "text-success";
+      }else{
+        $classe_final = "text-danger";
+      }
+    } else{
+      $media_finalF = null;
+    }
 
+    
 
-              //Pegar a nota do Media Final
-                $query8 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = 8");
-                $res8 = $query8->fetchAll(PDO::FETCH_ASSOC);
-
-                $id_fasenota8 = $res8[0]['IdFaseNota'];
-
-                $query81 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fasenota8' ");
-                $res81 = $query81->fetchAll(PDO::FETCH_ASSOC);
-
-                $media_final = $res81[0]['NotaFase'];
-
-                if (isset($media_final)) {
-                 $media_finalF = number_format($media_final, 2, ',', '.');
-
-                 if ($media_final >= 5) {
-                  $classe_final= "text-success";
-                }else{
-                  $classe_final = "text-danger";
-                }
-              } else{
-                $media_finalF = null;
-              }
-                
-                */
-
-
-
-              ?>
-
-
-              <tr>
-                <td><small><?php echo $nome ?></small></td>
-
-                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim1F ?></small></td>
-
-                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim2F ?></small></td>
-
-                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim3F ?></small></td>
-
-                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $media_parcialF ?></small> </td>
-                <td class="text-center <?php echo $classe_rec ?>"><small><?php echo $recuperacaoF ?> </small></td>
-                <td class="text-center <?php echo $classe_anual ?>"><small><?php echo $media_anualF ?></small> </td>
-                <td class="text-center <?php echo $classe_rec_final ?>"><small><?php echo $recuperacao_finalF ?></small> </td>
-                <td class="text-center <?php echo $classe_final ?>"><small><?php echo $media_finalF ?></small> </td>
-                
-                <td class="<?php echo $classe_sit ?>"><small><?php echo $situacao  ?></small></td>
-              </tr>
+    ?>
 
 
+    <tr>
+      <td><small><?php echo $nome ?></small></td>
 
-            <?php } ?>
+      <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim1F ?></small></td>
+
+      <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim2F ?></small></td>
+
+      <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim3F ?></small></td>
+
+      <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $media_parcialF ?></small> </td>
+      <td class="text-center <?php echo $classe_rec ?>"><small><?php echo $recuperacaoF ?> </small></td>
+      <td class="text-center <?php echo $classe_anual ?>"><small><?php echo $media_anualF ?></small> </td>
+      <td class="text-center <?php echo $classe_rec_final ?>"><small><?php echo $recuperacao_finalF ?></small> </td>
+      <td class="text-center <?php echo $classe_final ?>"><small><?php echo $media_finalF ?></small> </td>
+      
+      <td class="<?php echo $classe_sit ?>"><small><?php echo $situacao  ?></small></td>
+    </tr>
 
 
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+
+  <?php } ?>
+
+
+</tbody>
+</table>
+</div>
+</div>
+</div>
 
 
 
@@ -955,12 +869,14 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                 }
                 $aluno_rec = $res_r11[$i]['IdAluno'];
                 $situacao = $res_r11[$i]['SituacaoAtual'];
+                
                 $notafase_rec = null;
-                $notafase_media_parcial = null;
                 $notafase_recF = null;
+                $notafase_media_parcial = null; 
                 $notafase_media_parcialF = null;
                 $mediaAnualF = null;
                 $mediaAnual = null;
+                
 
                 $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno_rec' order by NomeAluno");
                 $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
@@ -1091,6 +1007,8 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
               $mediaParcial = null;
               $mediaFinal = null;
               $mediaFinalF = null;
+              $provaFinalF = null;
+              $provaFinal = null;
 
                 //selecionar os alinos na prova final
               $query_r = $pdo->query("SELECT * FROM tbaluno where IdAluno = '$aluno_recFinal' order by NomeAluno");

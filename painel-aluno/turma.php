@@ -540,6 +540,7 @@ $encoding = mb_internal_encoding();
         $total_aulas = 0;
         $porcentagem = 0;
         $porcentagemF = 0;
+        $total_faltas = 0;
         for ($i2=0; $i2 < count($res); $i2++) { 
           foreach ($res[$i2] as $key => $value) {
           }
@@ -557,6 +558,9 @@ $encoding = mb_internal_encoding();
 
           if($presenca == 'P'){
             $total_presencas = $total_presencas + 1;
+          }
+          if($presenca == 'F'){
+            $total_faltas = $total_faltas + 1;
           }
 
           $porcentagem = ($total_presencas * 100) / $total_aulas;
@@ -577,17 +581,26 @@ $encoding = mb_internal_encoding();
 
 
         <div class="modal-footer">
-         <small> <div class="text-primary">Porcentagem de Frequência:</div></small> <small><span class="<?php echo $cor_presenca ?>"><?php echo $porcentagemF ?>%</span>
 
-         </div>
+          <div class="container">
+            <div class="row justify-content-end">
+             <small> <div class="text-primary">Porcentagem de Frequência:</div></small> <small><span class="<?php echo $cor_presenca ?> ml-1 p-0"><?php echo $porcentagemF ?>%</span></small>
+           </div>
 
-       <?php } ?>
+           <div class="row justify-content-end">
+            <small> <div class="text-danger">Total faltas: </div></small> <small><span class="ml-1"><?php echo $total_faltas ?></span></small><br>
+          </div>
+        </div>
+      </div>
 
 
-     </div>
+    <?php } ?>
 
-   </div>
- </div>
+
+  </div>
+
+</div>
+</div>
 </div>
 
 <div class="modal" id="modal-aulas-grade" tabindex="-1" role="dialog">
@@ -632,7 +645,7 @@ $encoding = mb_internal_encoding();
                 <th scope="col">Nome</th>
                 <th scope="col">Descrição</th>
                 <th scope="col">Data</th>
-                <th scope="col">Arquivo da aula</th>
+                <th scope="col">Arquivo</th>
 
               </tr>
             </thead>

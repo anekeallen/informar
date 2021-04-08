@@ -43,6 +43,8 @@ for ($i=0; $i < count($res); $i++) {
 	$id_aula = $res[$i]['id'];
   $data = $res[$i]['data'];
 
+  $dataF = implode('/', array_reverse(explode('-', $data)));
+
 
 
   $query2 = $pdo->query("SELECT * FROM chamadas where turma = '$turma' and aluno = '$id_aluno' and aula = '$id_aula' ");
@@ -66,7 +68,7 @@ for ($i=0; $i < count($res); $i++) {
   echo "<tr>
     <td>". ($i+1)."</td>
     <td>".$nome."</td>
-    <td>".$data."</td>
+    <td>".$dataF."</td>
     <td class='".$classe_chamada."'>".$frequencia."</td>
     
   

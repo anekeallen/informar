@@ -31,6 +31,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                         <th >Descrição</th>
                         <th >Portaria de Autorização</th>
                         <th >Horário Matutino</th>
+                        <th >Carga Horária Anual</th>
                         <th >Horário Vespertino</th>
                         
                         
@@ -54,6 +55,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                       $descricao = $res[$i]['descricao'];
                       $horario_M = $res[$i]['horarioManha'];
                       $horario_T = $res[$i]['horarioTarde'];
+                      $cargahoraria = $res[$i]['CargaHorariaAnual'];
 
 
 
@@ -69,7 +71,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                         <td><?php echo $portaria ?></td>
                         <td><?php echo $horario_M ?></td>
+                        <td><?php echo $cargahoraria ?></td>
                         <td><?php echo $horario_T ?></td>
+
 
 
 
@@ -115,6 +119,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                     $descricao2 = $res[0]['descricao'];
                     $horario_M2 = $res[0]['horarioManha'];
                     $horario_T2 = $res[0]['horarioTarde'];
+                    $cargahoraria2 = $res[0]['CargaHorariaAnual'];
 
 
                 } else {
@@ -153,6 +158,11 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                      <div class="form-group">
                         <label >Horário Vespertino</label>
                         <input value="<?php echo @$horario_T2 ?>" type="text" class="form-control" id="vespertino-cat" name="vespertino-cat" placeholder="Ex: 13h às 17h">
+                    </div>
+
+                    <div class="form-group">
+                        <label >Carga Horária Anual</label>
+                        <input value="<?php echo @$cargahoraria2 ?>" type="number" class="form-control" id="cargahoraria-cat" name="cargahoraria-cat" placeholder="Ex: 1000 horas">
                     </div>
 
 

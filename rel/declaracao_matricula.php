@@ -6,7 +6,7 @@ require_once("../conexao.php");
 $id = $_GET['id'];
 
 
-$html = file_get_contents($url."/rel/declaracao_html.php?id=$id");
+$html = file_get_contents($url."/rel/declaracao_matricula_html.php?id=$id");
 echo $html;
 
 

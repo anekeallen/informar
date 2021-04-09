@@ -1,0 +1,14 @@
+{
+    "name": "aneke/informar",
+    "description": "Gerenciador de dependencias",
+    "authors": [
+        {
+            "name": "Aneke Allen",
+            "email": "anekeapj@gmail.com"
+        }
+    ],
+    "require": {
+        "mpdf/mpdf": "^8.0"
+        
+    }
+}

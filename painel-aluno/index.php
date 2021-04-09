@@ -92,7 +92,7 @@ $senha_usu = @$res[0]['senha'];
 
             $query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usu' ");
             $res = $query->fetchAll(PDO::FETCH_ASSOC);
-            $id_aluno = $res[0]['IdAluno'];
+            $id_aluno = @$res[0]['IdAluno'];
 
             $antigo = 0;
 
@@ -104,7 +104,7 @@ $senha_usu = @$res[0]['senha'];
               foreach ($res[$i] as $key => $value) {
               }
 
-              $id_turma = $res[$i]['IdTurma'];
+              $id_turma = @$res[$i]['IdTurma'];
               
 
 

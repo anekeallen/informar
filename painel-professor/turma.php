@@ -1563,6 +1563,26 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "presenca") {
     $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate(), periodo = '$id_periodo_chamada', NumeroFase = '$numerofase_chamada'");
   }
 
+  $query = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma_chamada' and periodo = '$id_periodo_chamada' and NumeroFase = '$numerofase_chamada' and aluno = '$id_aluno_chamada' and presenca = 'F'");
+  $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+  $total_faltas = count($res);
+
+  $query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma_chamada' ");
+  $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
+  $serie = $res_2[0]['IdSerie'];
+
+
+  $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo_chamada' and IdSerie = '$serie' and NumeroFase = '$numerofase_chamada'");
+  $res4 = $query->fetchAll(PDO::FETCH_ASSOC);
+  $id_fase = $res4[0]['IdFaseNota'];
+
+  $pdo->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas' where IdTurma = '$id_turma_chamada' and IdDisciplina = '$disciplina_chamada' and IdFaseNota = '$id_fase' and IdAluno = '$id_aluno_chamada'");
+
+
+
+
+
   echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada&id_disciplina=$disciplina_chamada&numero_fase=$numerofase_chamada';</script>";
 
 
@@ -1586,7 +1606,26 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
     $pdo->query("UPDATE chamadas SET presenca = 'F' where id = '$id_chamada'");
   }else{
     $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'F', data = curDate(), periodo = '$id_periodo_chamada', NumeroFase = '$numerofase_chamada'");
+
+
   }
+
+
+  $query = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma_chamada' and periodo = '$id_periodo_chamada' and NumeroFase = '$numerofase_chamada' and aluno = '$id_aluno_chamada' and presenca = 'F'");
+  $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+  $total_faltas = count($res);
+
+  $query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma_chamada' ");
+  $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
+  $serie = $res_2[0]['IdSerie'];
+
+
+  $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo_chamada' and IdSerie = '$serie' and NumeroFase = '$numerofase_chamada'");
+  $res4 = $query->fetchAll(PDO::FETCH_ASSOC);
+  $id_fase = $res4[0]['IdFaseNota'];
+
+  $pdo->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas' where IdTurma = '$id_turma_chamada' and IdDisciplina = '$disciplina_chamada' and IdFaseNota = '$id_fase' and IdAluno = '$id_aluno_chamada'");
 
   echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada&id_disciplina=$disciplina_chamada&numero_fase=$numerofase_chamada';</script>";
 
@@ -1756,6 +1795,14 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
           listarDados();
           window.location.reload();
+        }else{
+          //listarDados();
+          $('#mensagem_aulas').addClass('text-danger')
+          $('#mensagem_aulas').text(mensagem);
+
+
+
+
         }
 
 

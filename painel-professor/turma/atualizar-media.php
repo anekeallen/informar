@@ -32,12 +32,12 @@ for ($i=0; $i < count($res5); $i++) {
 	foreach ($res5[$i] as $key => $value) {
 	}
 
-$id_fase = $res5[$i]['IdFaseNota'];
+	$id_fase = $res5[$i]['IdFaseNota'];
 
 
 
-$query2 = $pdo1->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and IdAluno = '$aluno' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+	$query2 = $pdo1->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and IdAluno = '$aluno' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase'");
+	$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 //$contador_de_fases = 0;
 
 
@@ -45,18 +45,18 @@ $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 	//$contador_de_fases = $contador_de_fases + 1;
 	
 }
-	
 
-	$aux=0;
 
-	for ($i=0; $i < count($notaFase); $i++) {
+$aux=0;
 
-		$aux = $aux + $notaFase[$i];
-	}
+for ($i=0; $i < count($notaFase); $i++) {
 
-	$mediaParcial = $aux / 3 ;
+	$aux = $aux + $notaFase[$i];
+}
 
-	$mediaParcialF = number_format($mediaParcial, 2, '.', '');
+$mediaParcial = $aux / 3 ;
+
+$mediaParcialF = number_format($mediaParcial, 2, '.', '');
 
 
 
@@ -224,7 +224,33 @@ if (isset($mediaParcialF) and ($notaFase[2] != null)) {
 	}
 
 }
+//Atualizar total de aulas na fase da media final
+$query = $pdo1->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo'   and id_disciplina = '$disciplina' order by id asc ");
+$res2 = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_aulas_geral = count($res2);
 
+$query = $pdo1->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$id_serie' and NumeroFase = 8");
+$res4 = $query->fetchAll(PDO::FETCH_ASSOC);
+$id_fase_final = $res4[0]['IdFaseNota'];
+
+$pdo1->query("UPDATE tbfasenotaaluno SET  QuantAulasDadas = '$total_aulas_geral' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase_final'");
+
+//Atualizar total de faltas na media final
+$query = $pdo1->query("SELECT * FROM chamadas where turma = '$turma' and periodo = '$periodo'  and aluno = '$aluno' and presenca = 'F'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$total_faltas_final = count($res);
+
+$query_2 = $pdo1->query("SELECT * FROM tbturma where IdTurma = '$turma' ");
+$res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
+$serie = $res_2[0]['IdSerie'];
+
+
+$query = $pdo1->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$serie' and NumeroFase = 8");
+$res4 = $query->fetchAll(PDO::FETCH_ASSOC);
+$id_fase = $res4[0]['IdFaseNota'];
+
+$pdo1->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas_final' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase' and IdAluno = '$aluno'");
 
 
 ?>

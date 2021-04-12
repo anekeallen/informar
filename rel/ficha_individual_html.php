@@ -469,21 +469,45 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 			Situação Final: <?php echo $situacao_turma ?>
 		</div>
 		<table id="t01" style="width:100%">
-			<tr id="linha01">
-				<th><small>Disciplina</small></th>
+
+			<?php if ($id_periodo <= 6){ ?>
+
+				<tr id="linha01">
+					<th><small>Disciplina</small></th>
 
 
-				<th class="fonte12"><small>1º TRIM</small></th>
-				<th class="fonte12"><small>2º TRIM</small></th>
-				<th class="fonte12"><small>3º TRIM</small></th>
-				<th class="fonte12"><small>MP</small> </th>
-				<th class="fonte12"><small>REC</small></th>
-				<th class="fonte12"><small>MA</small></th>  
-				<th class="fonte12"><small>REC_FIN</small></th>
-				<th class="fonte12"><small>MF</small></th>
-				<th class="fonte12"><small>CH</small></th>
-				<th class="fonte12"><small>Situação</small></th>
-			</tr>
+					<th class="fonte12"><small>1º BIM</small></th>
+					<th class="fonte12"><small>2º BIM</small></th>
+					<th class="fonte12"><small>3º BIM</small></th>
+					<th class="fonte12"><small>4º BIM</small></th>
+					<th class="fonte12"><small>MP</small> </th>
+					<th class="fonte12"><small>REC</small></th>
+					<th class="fonte12"><small>MA</small></th>  
+					<th class="fonte12"><small>REC_FIN</small></th>
+					<th class="fonte12"><small>MF</small></th>
+					<th class="fonte12"><small>CH</small></th>
+					<th class="fonte12"><small>Situação</small></th>
+				</tr>
+				
+			<?php }else{ ?>
+
+				<tr id="linha01">
+					<th><small>Disciplina</small></th>
+
+
+					<th class="fonte12"><small>1º TRIM</small></th>
+					<th class="fonte12"><small>2º TRIM</small></th>
+					<th class="fonte12"><small>3º TRIM</small></th>
+					<th class="fonte12"><small>MP</small> </th>
+					<th class="fonte12"><small>REC</small></th>
+					<th class="fonte12"><small>MA</small></th>  
+					<th class="fonte12"><small>REC_FIN</small></th>
+					<th class="fonte12"><small>MF</small></th>
+					<th class="fonte12"><small>CH</small></th>
+					<th class="fonte12"><small>Situação</small></th>
+				</tr>
+
+			<?php } ?>
 
 
 			<?php  
@@ -493,9 +517,44 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 			$query = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo = '$id_periodo' order by IdDisciplina asc ");
 			$res = $query->fetchAll(PDO::FETCH_ASSOC);
 
+			$total_faltas_turma = 0;
+			$totalPorcentagemSoma = 0;
+			$total_aulas_turma = 0;
+
 			for ($i=0; $i < count($res); $i++) { 
 				foreach ($res[$i] as $key => $value) {
 				}
+
+				$nota_trim1 = null;
+					//$idfasenota1 = null;
+
+					$nota_trim2 = null;
+					//$idfasenota2 = null;
+
+					$nota_trim3 = null;
+					//$idfasenota3 = null;
+					$nota_bim1 = null;
+					$nota_bim2 = null;
+					$nota_bim3 = null;
+					$nota_bim4 = null;
+
+					$media_parcial = null;
+					$recuperacao = null;
+					$media_anual = null;
+					$recuperacao_final = null;
+					$media_final = null;
+					//$idfasenota_final = null;
+
+					$total_aulas1 = null;
+					$total_aulas2 = null;
+					$total_aulas3 = null;
+					$total_aulas4 = null;
+					$total_aulas_final = null;
+
+					$total_faltas1 = null;
+					$total_faltas2 = null;
+					$total_faltas3 = null;
+					$total_faltas_final = null;
 
 				$id_disciplina = $res[$i]['IdDisciplina'];
 
@@ -507,139 +566,250 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 				$query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$id_aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
 				$res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
 
-				$situacao = $res_r1[0]['SituacaoAtual'];
-				$idfasenotaatual = $res_r1[0]['IdFaseNotaAtual'];
+				$situacao = @$res_r1[0]['SituacaoAtual'];
+				if ($situacao == 'A') {
+					$situacao = 'Aprovado';
+				}elseif ($situacao == 'R') {
+					$situacao = 'Reprovado';
+				}elseif ($situacao == 'C') {
+					$situacao = 'Cursando';
+				}
+				$idfasenotaatual = @$res_r1[0]['IdFaseNotaAtual'];
 
 
 
 				$query11 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdAluno = '$id_aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' order by IdFaseNota asc");
 				$res11 = $query11->fetchAll(PDO::FETCH_ASSOC);
 
-				if (count($res11) == 6) {
+				if (count($res11) == 6 and $id_periodo > 6) {
 					$nota_trim1 = @$res11[0]['NotaFase'];
 					$idfasenota1 = @$res11[0]['IdFaseNota'];
+					$total_aulas1 = @$res11[0]['QuantAulasDadas'];
+					$total_faltas1 = @$res11[0]['Faltas'];
 
 					$nota_trim2 = @$res11[1]['NotaFase'];
 					$idfasenota2 = @$res11[1]['IdFaseNota'];
+					$total_aulas2 = @$res11[1]['QuantAulasDadas'];
+					$total_faltas2 = @$res11[1]['Faltas'];
 
 					$nota_trim3 = @$res11[2]['NotaFase'];
 					$idfasenota3 = @$res11[2]['IdFaseNota'];
+					$total_aulas3 = @$res11[2]['QuantAulasDadas'];
+					$total_faltas3 = @$res11[2]['Faltas'];
 
 					$media_parcial = @$res11[3]['NotaFase'];
 					$media_anual = @$res11[4]['NotaFase'];
+
+					
 					$media_final = @$res11[5]['NotaFase'];
+					$idfasenota_final = @$res11[5]['IdFaseNota'];
+					$total_aulas_final = @$res11[5]['QuantAulasDadas'];
+					$total_faltas_final = @$res11[5]['Faltas'];
+
+					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
+					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
+					
 
 
-				}elseif(count($res11) == 8){
+
+				}elseif(count($res11) == 8 and $id_periodo > 6){
 
 					$nota_trim1 = @$res11[0]['NotaFase'];
 					$idfasenota1 = @$res11[0]['IdFaseNota'];
+					$total_aulas1 = @$res11[0]['QuantAulasDadas'];
+					$total_faltas1 = @$res11[0]['Faltas'];
 
 					$nota_trim2 = @$res11[1]['NotaFase'];
 					$idfasenota2 = @$res11[1]['IdFaseNota'];
+					$total_aulas2 = @$res11[1]['QuantAulasDadas'];
+					$total_faltas2 = @$res11[1]['Faltas'];
 
 					$nota_trim3 = @$res11[2]['NotaFase'];
 					$idfasenota3 = @$res11[2]['IdFaseNota'];
+					$total_aulas3 = @$res11[2]['QuantAulasDadas'];
+					$total_faltas3 = @$res11[2]['Faltas'];
 
 					$media_parcial = @$res11[3]['NotaFase'];
 					$recuperacao = @$res11[4]['NotaFase'];
 					$media_anual = @$res11[5]['NotaFase'];
 					$recuperacao_final = @$res11[6]['NotaFase'];
+					
 					$media_final = @$res11[7]['NotaFase'];
+					$idfasenota_final = @$res11[7]['IdFaseNota'];
+					$total_aulas_final = @$res11[7]['QuantAulasDadas'];
+					$total_faltas_final = @$res11[7]['Faltas'];
+
+					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
+					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
+
 
 
 				}elseif(count($res11) == 0){
 
 					$nota_trim1 = null;
-					$idfasenota1 = null;
+					//$idfasenota1 = null;
 
 					$nota_trim2 = null;
-					$idfasenota2 = null;
+					//$idfasenota2 = null;
 
 					$nota_trim3 = null;
-					$idfasenota3 = null;
+					//$idfasenota3 = null;
+					$nota_bim1 = null;
+					$nota_bim2 = null;
+					$nota_bim3 = null;
+					$nota_bim4 = null;
 
 					$media_parcial = null;
 					$recuperacao = null;
 					$media_anual = null;
 					$recuperacao_final = null;
 					$media_final = null;
+					//$idfasenota_final = null;
 
-				}
+					$total_aulas1 = null;
+					$total_aulas2 = null;
+					$total_aulas3 = null;
+					$total_aulas4 = null;
+					$total_aulas_final = null;
 
+					$total_faltas1 = null;
+					$total_faltas2 = null;
+					$total_faltas3 = null;
+					$total_faltas_final = null;
+
+				}elseif((count($res11) == 7) and $id_periodo <=6){
+
+					$nota_bim1 = @$res11[0]['NotaFase'];
+					$idfasenota1 = @$res11[0]['IdFaseNota'];
+					$total_aulas1 = @$res11[0]['QuantAulasDadas'];
+					$total_faltas1 = @$res11[0]['Faltas'];
+
+					$nota_bim2 = @$res11[1]['NotaFase'];
+					$idfasenota2 = @$res11[1]['IdFaseNota'];
+					$total_aulas2 = @$res11[1]['QuantAulasDadas'];
+					$total_faltas2 = @$res11[1]['Faltas'];
+
+					$nota_bim3 = @$res11[2]['NotaFase'];
+					$idfasenota3 = @$res11[2]['IdFaseNota'];
+					$total_aulas3 = @$res11[2]['QuantAulasDadas'];
+					$total_faltas3 = @$res11[2]['Faltas'];
+					
+					$nota_bim4 = @$res11[3]['NotaFase'];
+					$idfasenota4 = @$res11[3]['IdFaseNota'];
+					$total_aulas4 = @$res11[3]['QuantAulasDadas'];
+					$total_faltas4 = @$res11[3]['Faltas'];
+
+					$media_parcial = @$res11[4]['NotaFase'];
+					//$recuperacao = @$res11[4]['NotaFase'];
+					$media_anual = @$res11[5]['NotaFase'];
+					//$recuperacao_final = @$res11[6]['NotaFase'];
+					$media_final = @$res11[6]['NotaFase'];
+					$idfasenota_final = @$res11[6]['IdFaseNota'];
+					$total_aulas_final = @$res11[6]['QuantAulasDadas'];
+					$total_faltas_final = @$res11[6]['Faltas'];
+
+					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
+					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
 				
+				}elseif((count($res11) == 7) and $id_periodo>6){
 
-				//Contador de aulas para cada trimestre
+					$nota_trim1 = @$res11[0]['NotaFase'];
+					$idfasenota1 = @$res11[0]['IdFaseNota'];
+					$total_aulas1 = @$res11[0]['QuantAulasDadas'];
+					$total_faltas1 = @$res11[0]['Faltas'];
 
-				$query_aulas1 = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_periodo' and id_disciplina = '$id_disciplina' and (NumeroFase = 1) order by id asc ");
-				$res_aulas1 = $query_aulas1->fetchAll(PDO::FETCH_ASSOC);
-				$total_aulas_1trim = @count($res_aulas1);
-				$total_faltas1 = 0;
-				for ($i1=0; $i1 < count($res_aulas1); $i1++) { 
-					foreach ($res_aulas1[$i1] as $key => $value) {
-					}
-					$id_aula1 = @$res_aulas1[$i1]['id'];
+					$nota_trim2 = @$res11[1]['NotaFase'];
+					$idfasenota2 = @$res11[1]['IdFaseNota'];
+					$total_aulas2 = @$res11[1]['QuantAulasDadas'];
+					$total_faltas2 = @$res11[1]['Faltas'];
 
+					$nota_trim3 = @$res11[2]['NotaFase'];
+					$idfasenota3 = @$res11[2]['IdFaseNota'];
+					$total_aulas3 = @$res11[2]['QuantAulasDadas'];
+					$total_faltas3 = @$res11[2]['Faltas'];
 
-					$query2 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and aula = '$id_aula1' and NumeroFase = 1");
-					$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+					$media_parcial = @$res11[3]['NotaFase'];
+					$recuperacao = @$res11[4]['NotaFase'];
+					$media_anual = @$res11[5]['NotaFase'];
+					//$recuperacao_final = @$res11[6]['NotaFase'];
+					
+					$media_final = @$res11[6]['NotaFase'];
+					$idfasenota_final = @$res11[6]['IdFaseNota'];
+					$total_aulas_final = @$res11[6]['QuantAulasDadas'];
+					$total_faltas_final = @$res11[6]['Faltas'];
 
-					$presenca = @$res2[0]['presenca'];
+					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
+					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
+				
+				}elseif((count($res11) == 8) and $id_periodo <=6){
 
-					if($presenca == 'F'){
-						$total_faltas1 = $total_faltas1 + 1;
-					}
+					$nota_bim1 = @$res11[0]['NotaFase'];
+					$idfasenota1 = @$res11[0]['IdFaseNota'];
+					$total_aulas1 = @$res11[0]['QuantAulasDadas'];
+					$total_faltas1 = @$res11[0]['Faltas'];
+
+					$nota_bim2 = @$res11[1]['NotaFase'];
+					$idfasenota2 = @$res11[1]['IdFaseNota'];
+					$total_aulas2 = @$res11[1]['QuantAulasDadas'];
+					$total_faltas2 = @$res11[1]['Faltas'];
+
+					$nota_bim3 = @$res11[2]['NotaFase'];
+					$idfasenota3 = @$res11[2]['IdFaseNota'];
+					$total_aulas3 = @$res11[2]['QuantAulasDadas'];
+					$total_faltas3 = @$res11[2]['Faltas'];
+					
+					$nota_bim4 = @$res11[3]['NotaFase'];
+					$idfasenota4 = @$res11[3]['IdFaseNota'];
+					$total_aulas4 = @$res11[3]['QuantAulasDadas'];
+					$total_faltas4 = @$res11[3]['Faltas'];
+
+					$media_parcial = @$res11[4]['NotaFase'];
+					$recuperacao = @$res11[5]['NotaFase'];
+					$media_anual = @$res11[6]['NotaFase'];
+					//$recuperacao_final = @$res11[6]['NotaFase'];
+					$media_final = @$res11[7]['NotaFase'];
+					$idfasenota_final = @$res11[7]['IdFaseNota'];
+					$total_aulas_final = @$res11[7]['QuantAulasDadas'];
+					$total_faltas_final = @$res11[7]['Faltas'];
+
+					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
+					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
+				
+				}elseif((count($res11) == 9) and $id_periodo <=6){
+
+					$nota_bim1 = @$res11[0]['NotaFase'];
+					$idfasenota1 = @$res11[0]['IdFaseNota'];
+					$total_aulas1 = @$res11[0]['QuantAulasDadas'];
+					$total_faltas1 = @$res11[0]['Faltas'];
+
+					$nota_bim2 = @$res11[1]['NotaFase'];
+					$idfasenota2 = @$res11[1]['IdFaseNota'];
+					$total_aulas2 = @$res11[1]['QuantAulasDadas'];
+					$total_faltas2 = @$res11[1]['Faltas'];
+
+					$nota_bim3 = @$res11[2]['NotaFase'];
+					$idfasenota3 = @$res11[2]['IdFaseNota'];
+					$total_aulas3 = @$res11[2]['QuantAulasDadas'];
+					$total_faltas3 = @$res11[2]['Faltas'];
+					
+					$nota_bim4 = @$res11[3]['NotaFase'];
+					$idfasenota4 = @$res11[3]['IdFaseNota'];
+					$total_aulas4 = @$res11[3]['QuantAulasDadas'];
+					$total_faltas4 = @$res11[3]['Faltas'];
+
+					$media_parcial = @$res11[4]['NotaFase'];
+					$recuperacao = @$res11[5]['NotaFase'];
+					$media_anual = @$res11[6]['NotaFase'];
+					$recuperacao_final = @$res11[7]['NotaFase'];
+					$media_final = @$res11[8]['NotaFase'];
+					$idfasenota_final = @$res11[8]['IdFaseNota'];
+					$total_aulas_final = @$res11[8]['QuantAulasDadas'];
+					$total_faltas_final = @$res11[8]['Faltas'];
+
+					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
+					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
 				}
 
-
-				$query_aulas2 = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_periodo' and id_disciplina = '$id_disciplina' and (NumeroFase = 2) order by id asc ");
-				$res_aulas2 = $query_aulas2->fetchAll(PDO::FETCH_ASSOC);
-
-				$total_aulas_2trim = @count($res_aulas2);
-				$total_faltas2 = 0;
-				for ($i2=0; $i2 < count($res_aulas2); $i2++) { 
-					foreach ($res_aulas2[$i2] as $key => $value) {
-					}
-					$id_aula2 = @$res_aulas2[$i2]['id'];
-
-
-					$query2 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and aula = '$id_aula2' and NumeroFase = 2");
-					$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-
-					$presenca2 = @$res2[0]['presenca'];
-
-					if($presenca2 == 'F'){
-						$total_faltas2 = $total_faltas2 + 1;
-					}
-				}
-
-
-				$query_aulas3 = $pdo->query("SELECT * FROM aulas where turma = '$id_turma' and periodo = '$id_periodo' and id_disciplina = '$id_disciplina' and (NumeroFase = 3) order by id asc ");
-				$res_aulas3 = $query_aulas3->fetchAll(PDO::FETCH_ASSOC);
-
-				$total_aulas_3trim = @count($res_aulas3);
-
-				$total_faltas3 = 0;
-				for ($i3=0; $i3 < count($res_aulas3); $i3++) { 
-					foreach ($res_aulas3[$i3] as $key => $value) {
-					}
-					$id_aula3 = @$res_aulas3[$i3]['id'];
-
-
-					$query3 = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma' and aluno = '$id_aluno' and aula = '$id_aula3' and NumeroFase = 3");
-					$res3 = $query3->fetchAll(PDO::FETCH_ASSOC);
-
-					$presenca3 = @$res3[0]['presenca'];
-
-					if($presenca3 == 'F'){
-						$total_faltas3 = $total_faltas3 + 1;
-					}
-				}
-
-
-				$total_aulas_disciplina = @$total_aulas_1trim + @$total_aulas_2trim + @$total_aulas_3trim;
-
-				$total_faltas_disciplina = @$total_faltas1 + @$total_faltas2 + @$total_faltas3;
 
 
 
@@ -648,6 +818,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 				}else{
 					$nota_trim1F = null;
+					$nota_trim1 = null;
 				}
 
 				if (isset($nota_trim2)) {
@@ -663,6 +834,30 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 				} else{
 					$nota_trim3F = null;
 				}
+				if (isset($nota_bim1)) {
+					$nota_bim1F = number_format($nota_bim1, 1, '.', '.');
+
+				} else{
+					$nota_bim1F = null;
+				}
+				if (isset($nota_bim2)) {
+					$nota_bim2F = number_format($nota_bim2, 1, '.', '.');
+
+				} else{
+					$nota_bim2F = null;
+				}
+				if (isset($nota_bim3)) {
+					$nota_bim3F = number_format($nota_bim3, 1, '.', '.');
+
+				} else{
+					$nota_bim3F = null;
+				}
+				if (isset($nota_bim4)) {
+					$nota_bim4F = number_format($nota_bim4, 1, '.', '.');
+
+				} else{
+					$nota_bim4F = null;
+				}
 
 				if (isset($media_parcial)) {
 					$media_parcialF = number_format($media_parcial, 1, '.', '.');
@@ -674,6 +869,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 				} else{
 					$recuperacaoF = null;
+					//$recuperacao = null;
 				}
 
 				if (isset($media_anual)) {
@@ -700,66 +896,173 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 				
 				?>
 
+				<?php if ($id_periodo > 6): ?>
 
-				<tr>
-					<td width="150px" class="td_fonte" id="td01"><?php echo $nome_disciplina ?></td>
-					<td class="td_fonte td_align-direita"><?php echo $nota_trim1F ?><br>
-						
-						<?php if (isset($total_aulas_1trim) and $total_aulas_1trim != 0): ?>
-							<i><?php echo $total_aulas_1trim ?>ad</i> 
-						<?php endif ?>
 
-						
+					<tr>
+						<td width="150px" class="td_fonte" id="td01"><?php echo $nome_disciplina ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $nota_trim1F ?><br>
 
-						<?php if (isset($total_faltas1) and $total_faltas1 !=0): ?>
-							<i><?php echo $total_faltas1 ?>f</i>
-						<?php endif ?>
-						
-					</td>
-					<td class="td_fonte td_align-direita"><?php echo $nota_trim2F ?><br>
-						<?php if (isset($total_aulas_2trim) and $total_aulas_2trim != 0): ?>
-							<i><?php echo $total_aulas_2trim ?>ad</i> 
-						<?php endif ?>
-						<?php if (isset($total_faltas2) and $total_faltas2 !=0): ?>
-							<i><?php echo $total_faltas2 ?>f</i>
-						<?php endif ?>
+							<?php if (isset($total_aulas1) and $total_aulas1 != 0): ?>
+								<i><?php echo $total_aulas1 ?>ad</i> 
+							<?php endif ?>
 
-					</td>
-					<td class="td_fonte td_align-direita"><?php echo $nota_trim3F ?><br>
 
-						<?php if (isset($total_aulas_3trim) and $total_aulas_3trim != 0): ?>
-							<i><?php echo $total_aulas_3trim ?>ad</i> 
-						<?php endif ?>
-						<?php if (isset($total_faltas3) and $total_faltas3 !=0): ?>
-							<i><?php echo $total_faltas3 ?>f</i>
-						<?php endif ?>
-					</td>
-					<td class="td_fonte td_align-direita"><?php echo $media_parcialF ?></td>
-					<td class="td_fonte td_align-direita"><?php echo $recuperacaoF ?></td>
-					<td class="td_fonte td_align-direita"><?php echo $media_anualF ?></td>
-					<td class="td_fonte td_align-direita"><?php echo $recuperacao_finalF ?></td>
-					<td class="td_fonte td_align-direita"><?php echo $media_finalF ?><br>
-						<?php if (isset($total_aulas_disciplina) and $total_aulas_disciplina != 0): ?>
-							<i><?php echo $total_aulas_disciplina ?>ad</i> 
-						<?php endif ?> 
-						<?php if (isset($total_faltas_disciplina) and $total_faltas_disciplina !=0): ?>
-							<i><?php echo $total_faltas_disciplina ?>f</i>
-						<?php endif ?>
-					</td>
-					<td class="td_fonte td_align-centro">Jill</td>
-					<td width="100px" class="td_fonte td_align-centro"><?php echo $situacao ?></td>
 
-				</tr>
+							<?php if (isset($total_faltas1) and $total_faltas1 !=0): ?>
+								<i><?php echo $total_faltas1 ?>f</i>
+							<?php endif ?>
+
+						</td>
+						<td class="td_fonte td_align-direita"><?php echo $nota_trim2F ?><br>
+
+							<?php if (isset($total_aulas2) and $total_aulas2 != 0): ?>
+								<i><?php echo $total_aulas2 ?>ad</i> 
+							<?php endif ?>
+							<?php if (isset($total_faltas2) and $total_faltas2 !=0): ?>
+								<i><?php echo $total_faltas2 ?>f</i>
+							<?php endif ?>
+
+						</td>
+						<td class="td_fonte td_align-direita"><?php echo $nota_trim3F ?><br>
+
+							<?php if (isset($total_aulas3) and $total_aulas3 != 0): ?>
+								<i><?php echo $total_aulas3 ?>ad</i> 
+							<?php endif ?>
+							<?php if (isset($total_faltas3) and $total_faltas3 !=0): ?>
+								<i><?php echo $total_faltas3 ?>f</i>
+							<?php endif ?>
+						</td>
+						<td class="td_fonte td_align-direita"><?php echo $media_parcialF ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $recuperacaoF ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $media_anualF ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $recuperacao_finalF ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $media_finalF ?><br>
+
+							<?php if (isset($total_aulas_final) and $total_aulas_final != 0): ?>
+								<i><?php echo $total_aulas_final ?>ad</i> 
+							<?php endif ?> 
+							<?php if (isset($total_faltas_final) and $total_faltas_final !=0): ?>
+								<i><?php echo $total_faltas_final ?>f</i>
+							<?php endif ?>
+						</td>
+						<td class="td_fonte td_align-centro">Jill</td>
+						<td width="100px" class="td_fonte td_align-centro"><?php echo $situacao ?></td>
+
+					</tr>
+
+				<?php endif ?>
+
+				<?php if ($id_periodo <= 6): ?>
+
+					<tr>
+						<td width="150px" class="td_fonte" id="td01"><?php echo $nome_disciplina ?></td>
+						<td class="td_fonte td_align-direita"><?php echo @$nota_bim1F ?><br>
+
+							<?php if (isset($total_aulas1) and $total_aulas1 != 0): ?>
+								<i><?php echo $total_aulas1 ?>ad</i> 
+							<?php endif ?>
+
+
+
+							<?php if (isset($total_faltas1) and $total_faltas1 !=0): ?>
+								<i><?php echo $total_faltas1 ?>f</i>
+							<?php endif ?>
+
+						</td>
+						<td class="td_fonte td_align-direita"><?php echo @$nota_bim2F ?><br>
+
+							<?php if (isset($total_aulas2) and $total_aulas2 != 0): ?>
+								<i><?php echo $total_aulas2 ?>ad</i> 
+							<?php endif ?>
+							<?php if (isset($total_faltas2) and $total_faltas2 !=0): ?>
+								<i><?php echo $total_faltas2 ?>f</i>
+							<?php endif ?>
+
+						</td>
+						<td class="td_fonte td_align-direita"><?php echo @$nota_bim3F ?><br>
+
+							<?php if (isset($total_aulas3) and $total_aulas3 != 0): ?>
+								<i><?php echo $total_aulas3 ?>ad</i> 
+							<?php endif ?>
+							<?php if (isset($total_faltas3) and $total_faltas3 !=0): ?>
+								<i><?php echo $total_faltas3 ?>f</i>
+							<?php endif ?>
+						</td>
+						<td class="td_fonte td_align-direita"><?php echo @$nota_bim4F ?><br>
+
+							<?php if (isset($total_aulas4) and $total_aulas4 != 0): ?>
+								<i><?php echo $total_aulas4 ?>ad</i> 
+							<?php endif ?>
+							<?php if (isset($total_faltas4) and $total_faltas4 !=0): ?>
+								<i><?php echo $total_faltas4 ?>f</i>
+							<?php endif ?>
+						</td>
+						<td class="td_fonte td_align-direita"><?php echo $media_parcialF ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $recuperacaoF ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $media_anualF ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $recuperacao_finalF ?></td>
+						<td class="td_fonte td_align-direita"><?php echo $media_finalF ?><br>
+							<?php if (isset($total_aulas_final) and $total_aulas_final != 0): ?>
+								<i><?php echo $total_aulas_final ?>ad</i> 
+							<?php endif ?> 
+							<?php if (isset($total_faltas_final) and $total_faltas_final !=0): ?>
+								<i><?php echo $total_faltas_final ?>f</i>
+							<?php endif ?>
+						</td>
+						<td class="td_fonte td_align-centro">Jill</td>
+						<td width="100px" class="td_fonte td_align-centro"><?php echo $situacao ?></td>
+
+					</tr>
+					
+				<?php endif ?>
 
 
 			<?php } ?>
 
 		</table>
 
-		<div  style="border: 0.4mm solid black; margin-top: 5px; text-align: center; font-size: 12px">Carga horária total: <?php echo $cargahoraria_anual ?> - Total de faltas: <?php echo $total_faltas_turma?> - Frequência: <?php echo $totalPorcentagemSomaF ?>%</div>
+		<?php  
+			//Frequencia de presença
+
+		
+		if(isset($total_aulas_turma) and $total_aulas_turma != 0){
+			$porcentagem = (($total_aulas_turma - $total_faltas_turma) * 100) / $total_aulas_turma;
+
+			$totalPorcentagem = number_format($porcentagem, 2, ',', '.');
+		}
+
+		?>
+
+		<div  style="border: 0.4mm solid black; margin-top: 5px; text-align: center; font-size: 12px">
+			Carga horária total: <?php echo @$cargahoraria_anual ?>  
+			<?php if ($total_faltas_turma != null): ?>
+				
+			
+			- Total de faltas: <?php echo @$total_faltas_turma?> - 
+			<?php endif ?>
+			<?php if (isset($totalPorcentagem)): ?>
+			Frequência: <?php echo @$totalPorcentagem ?>%
+			<?php endif ?>
+
+		</div>
 
 		<span class="td_fonte ">(ad): aulas dadas; (f): faltas</span>
 
+		<br><br><br>
+
+		<div class="container">
+
+			<div class="esquerda">
+				_____________________<br>
+				dsdsads
+			</div>
+			<div class="direita">
+				______________________
+			</div>
+			
+
+		</div>
 
 
 

@@ -56,7 +56,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
           $sigla_turma = $res[$i]['SiglaTurma'];
           $turno = $res[$i]['TurnoPrincipal'];
           $vagas = $res[$i]['TotalVagas'];
-          
+          //$codigo = $res[$i]['CodigoAgrupamento'];
           $id_sala = $res[$i]['IdSala'];
           $id = $res[$i]['IdTurma'];
 
@@ -526,7 +526,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
           $sigla_turma3 = $res[0]['SiglaTurma'];
           $turno3 = $res[0]['TurnoPrincipal'];
           $vagas3 = $res[0]['TotalVagas'];
-          $codigo3 = $res[0]['CodigoAgrupamento'];
+         
           $id_sala3 = $res[0]['IdSala'];
           $id = $res[0]['IdTurma'];
           $dataInicial3 = $res[0]['DataInicial'];

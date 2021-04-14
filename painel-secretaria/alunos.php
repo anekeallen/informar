@@ -24,9 +24,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable_aluno" width="100%" cellspacing="0">
+      <table class="table table-hover" id="dataTable_aluno" width="100%" cellspacing="0">
         <thead>
-          <tr>
+          <tr class="bg-primary text-white">
             <th >Nome do Aluno</th>
             
             <th class="classe-nova ">Responsável</th>
@@ -68,7 +68,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
           ?>
 
 
-          <tr>
+          <tr class="table-light">
             <td><a title="Ver Turmas" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=matriculas&id=<?php echo $id ?>"><?php echo @$nome ?></a></td>
 
             <td class="classe-nova "><?php echo @$nome_responsavel ?></td>
@@ -773,9 +773,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable_turmas" width="100%" cellspacing="0">
+              <table class="table table-hover table-sm" id="dataTable_turmas" width="100%" cellspacing="0">
                 <thead>
-                  <tr>
+                  <tr class="bg-primary text-white">
                     <th >Série</th>
                     <th class="classe-nova">Turma</th>
                     
@@ -834,7 +834,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                   ?>
 
 
-                  <tr>
+                  <tr class="table-light">
                     <td><?php echo @$nome_serie ?></td>
                     <td class="classe-nova"><?php echo @$nome_turma ?></td> 
                     <td class="classe-nova classe-nova-tel"><?php echo @$turno ?></td>
@@ -852,7 +852,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                       
                       <?php if ($situacao == 'Aprovado') { ?>
 
-                        <a target="_blank" title="Gerar Declaração de Aprovação" href="../rel/declaracao_aprovacao.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a> 
+                        <a target="_blank" title="Gerar Declaração de Aprovação" href="../rel/declaracao_aprovacao_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a> 
                         
                       <?php } ?>
                       
@@ -1027,7 +1027,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculas") {
 <script type="text/javascript">
   $(document).ready(function () {
     $('#dataTable_aluno').dataTable({
-     "ordering": false,
+     "ordering": true,
      "stateSave": true,
      "stateDuration": 60 * 60 * 24,
      "autoWidth": false

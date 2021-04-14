@@ -24,9 +24,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
         <thead>
-          <tr>
+          <tr class="bg-primary text-white">
             <th >Turma</th>
             <th class="classe-nova">Série</th>
             <th class="classe-nova classe-nova-tel">Sigla</th>
@@ -91,7 +91,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
           ?>
 
 
-          <tr>
+          <tr class="table-light">
             <td><?php echo @$nome_turma ?></td> 
             <td class="classe-nova"><?php echo @$serie ?></td>
             <td class="classe-nova "><?php echo @$sigla_turma ?></td>

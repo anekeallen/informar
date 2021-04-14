@@ -25,6 +25,11 @@ $id_sala = $res_2[0]['IdSala'];
 $data_final = $res_2[0]['DataFinal'];
 $turno = $res_2[0]['TurnoPrincipal'];
 
+$query_orc = $pdo->query("SELECT * FROM tbalunoturma where IdAluno = '$id_aluno' and IdTurma='$id_turma'");
+$res_orc = $query_orc->fetchAll(PDO::FETCH_ASSOC);
+
+$id_matricula = @$res_orc[0]['IdAlunoTurma'];
+
 $query_resp = $pdo->query("SELECT * FROM tbserie where IdSerie = '$id_serie' ");
 $res_resp = $query_resp->fetchAll(PDO::FETCH_ASSOC);                    
 $nome_disc = $res_resp[0]['NomeSerie'];
@@ -228,7 +233,7 @@ $encoding = mb_internal_encoding();
 
 <div class="col-xl-3 col-md-6 mb-4">
   <?php $id_periodo = @$_GET['id_periodo'] ?>
-  <a class="text-dark" href="index.php?pag=turma&funcao=periodos&id=<?php echo $id_turma ?>&id_disciplina=<?php echo $id_disciplina ?>&id_periodo=<?php echo $id_periodo ?>&boletim=sim" title="Boletim da Disciplina">
+  <a class="text-dark" href="index.php?pag=turma&funcao=notas&id=<?php echo $id_turma ?>&id_disciplina=<?php echo $id_disciplina ?>&id_periodo=<?php echo $id_periodo ?>&boletim=sim" title="Boletim da Disciplina">
    <div class="card text-primary shadow h-100 py-2">
     <div class="card-body">
      <div class="row no-gutters align-items-center">
@@ -293,8 +298,8 @@ $encoding = mb_internal_encoding();
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
         $disciplina = $res[0]['disciplina'];
 
-        $query = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
-        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+        //$query = $pdo->query("SELECT * FROM disciplinas where id = '$disciplina' ");
+       // $res = $query->fetchAll(PDO::FETCH_ASSOC);
        // $nome_disciplina = $res[0]['nome'];
         ?>
         <h6 class="modal-title"></h6>
@@ -469,7 +474,7 @@ $encoding = mb_internal_encoding();
       <?php if(@$_GET['boletim'] != ""){ ?>
         <div class="row">
           <div class="col-md-6">
-            <a href="../rel/boletim_geral.php?id_turma=<?php echo $id_turma ?>" target="_blank" title="Gerar Boletim">
+            <a href="../rel/ficha_individual_html.php?id=<?php echo $id_matricula ?>" target="_blank" title="Gerar Boletim">
               <i class='fas fa-clipboard text-primary mr-1'></i>Boletim Geral </a>
             </div>
 
@@ -487,6 +492,188 @@ $encoding = mb_internal_encoding();
     </div>
   </div>
 </div>
+
+
+<div class="modal" id="modal-notas" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">Notas - Disciplina: <?php echo $nome_disciplina ?></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <small>
+         <table class="table table-bordered table-hover">
+          <thead class="">
+            <tr class="text-center">
+              <th class="bg-primary text-white"><small><b>Fase</b></small></th>
+              <th class="bg-primary text-white"><small><b>N1</b></small></th>
+              <th class="bg-primary text-white"><small><b>N2</b></small></th>
+              <th class="bg-primary text-white"><small><b>N3</b></small></th>
+              <th class="bg-primary text-white"><small><b>NOTA</b></small></th>
+
+            </tr>
+
+
+
+
+          </thead>
+          <tbody>
+
+
+           <?php 
+           $id_turma = $_GET['id'];
+
+           $id_disciplina = $_GET['id_disciplina'];
+
+           $id_periodo = $_GET['id_periodo'];
+
+           $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' order by NumeroFase asc");
+           $res5 = $query->fetchAll(PDO::FETCH_ASSOC);
+
+           for ($i=0; $i < count($res5); $i++) { 
+            foreach ($res5[$i] as $key => $value) {
+            }
+
+            $id_fase = $res5[$i]['IdFaseNota'];
+            $nome_fase = $res5[$i]['CabecBoletim'];
+            $nome_fase_title = $res5[$i]['NomeFase'];
+            $numerofase = $res5[$i]['NumeroFase'];
+
+
+            $query2 = $pdo->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$id_turma' and IdAluno = '$id_aluno' and IdDisciplina = '$id_disciplina' and IdFaseNota = '$id_fase'");
+            $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+
+         // $notas
+            $nota1 = $res2[0]['Nota01'];
+            $nota2 = $res2[0]['Nota02'];
+
+            $nota3 = $res2[0]['Nota03'];
+
+
+            $notaFase = $res2[0]['NotaFase'];
+
+            $nota1F = number_format($nota1, 1, ',', '.');
+            $nota2F = number_format($nota2, 1, ',', '.');
+            $nota3F = number_format($nota3, 1, ',', '.');
+            $notaFaseF = number_format($notaFase, 1, ',', '.');
+
+            $query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$id_aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
+            $res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
+
+            $situacao = $res_r1[0]['SituacaoAtual'];
+            $idfasenotaatual = $res_r1[0]['IdFaseNotaAtual'];
+
+            if ($notaFase >= 7 and $numerofase <= 4) {
+              $classe_nota = "text-success";
+              $classe_nota_table = "table-success";
+            }elseif($notaFase < 7 and $numerofase <= 4){
+              $classe_nota = "text-danger";
+              $classe_nota_table = "table-danger";
+            }elseif ($notaFase >= 7 and $numerofase == 6) {
+              $classe_nota = "text-success";
+              $classe_nota_table = "table-success";
+            }elseif ($notaFase < 7 and $numerofase == 6) {
+              $classe_nota = "text-danger";
+               $classe_nota_table = "table-danger";
+            }elseif ($notaFase >= 2.5 and $numerofase == 8) {
+              $classe_nota = "text-success";
+               $classe_nota_table = "table-success";
+            }elseif ($notaFase < 2.5 and $numerofase == 8) {
+              $classe_nota = "text-danger";
+               $classe_nota_table = "table-danger";
+            }else{
+              $classe_nota = "text-primary";
+               $classe_nota_table = "table-primary";
+            }
+
+
+
+            if ($situacao == "Aprovado" or $situacao == "Aprovado por REC" or $situacao == "Aprovado Prova Final") {
+              $classe_sit = "text-success";
+            }else if($situacao == "Cursando"){
+              $classe_sit = "text-dark";
+            }else{
+              $classe_sit = "text-danger";
+            }
+
+
+            ?>
+
+
+            <tr class="text-center">
+              <td class="bg-primary text-white" title="<?php echo $nome_fase_title ?>"><small><b><?php echo $nome_fase ?></b></small></td>
+
+              <?php if ($nota1 == null or $nota1 == "" ){ ?>
+                <td class="table-primary text-primary">-</td>
+              <?php }else { ?>
+                <td class="table-primary text-primary"><?php echo $nota1F ?></td>
+              <?php } ?>
+
+              <?php if ($nota2 == null or $nota2 == "" ){ ?>
+                <td class="table-primary text-primary">-</td>
+              <?php }else { ?>
+                <td class="table-primary text-primary"><?php echo $nota2F ?></td></td>
+              <?php } ?>
+
+              <?php if ($nota3 == null or $nota3 == "" ){ ?>
+                <td class="table-primary text-primary">-</td>
+              <?php }else { ?>
+               <td class="table-primary text-primary"><?php echo $nota3F ?></td></td></td>
+             <?php } ?>
+
+             <?php if ($notaFase == null or $notaFase == "" ){ ?>
+                <td class="table-primary text-primary">-</td>
+              <?php }else { ?>
+              <td class="<?php echo $classe_nota_table ?> <?php echo $classe_nota ?>"><?php echo $notaFaseF ?></td>
+             <?php } ?>
+
+               
+             
+             
+             
+
+             
+           </tr>
+
+         <?php } ?>
+
+
+       </tbody>
+     </table>
+   </small>
+
+
+
+ </div>
+ <div class="modal-footer">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-6">
+    <a href="../rel/ficha_individual_html.php?id=<?php echo $id_matricula ?>" target="_blank" title="Gerar Ficha Individual">
+      <i class='fas fa-clipboard text-primary mr-1'></i>Ficha Individual </a>
+    </div>
+
+    <div class="col-6 text-right">
+      <span class="text-primary">Situação:</span> <span class="<?php echo $classe_sit ?>"><?php echo $situacao ?></span>
+    </div>
+      
+    </div>
+  </div>
+  
+
+  </div>
+
+</div>
+</div>
+</div>
+
+
 
 
 <div class="modal" id="modal-aulas" tabindex="-1" role="dialog">
@@ -516,7 +703,7 @@ $encoding = mb_internal_encoding();
           <div class="text-danger text-center">Ainda não foi lançada a frequência para esse trimestre!</div>
         <?php }else{ ?>
 
-          <span class=""><b>Aulas do Curso</b></span>
+          <span class=""><b>Lista de chamada da disciplina</b></span>
           <div id="listar-aulas" class="mt-2">
 
           </div>
@@ -635,12 +822,12 @@ $encoding = mb_internal_encoding();
           
         <?php }else{ ?>
 
-          <span class=""><b>Aulas do Curso</b></span> <br><br>
+          <span class=""><b>Aulas da disciplina</b></span> <br><br>
 
           <small>
-           <table class="table table-bordered">
-            <thead>
-              <tr>
+           <table class="table table-hover">
+            <thead class="table-primary">
+              <tr class="text-dark">
                 <th scope="col">Aula</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Descrição</th>
@@ -678,11 +865,13 @@ $encoding = mb_internal_encoding();
                     <?php if ($arquivo != ""): ?>
 
 
-                      <span class="ml-1" ><a href="../img/arquivos-aula/<?php echo $arquivo ?>" target="_blank" class="text-primary"> Ver Arquivo </a></span>
+                      <span class="ml-1" ><a href="../img/arquivos-aula/<?php echo $arquivo ?>" target="_blank" class="text-primary text-center"> Ver Arquivo </a></span>
+                      <?php else: ?>
+                        <span class="text-center">-</span>
                     <?php endif ?>
+
                   </td>  
-
-
+                  
 
                 </tr>
 
@@ -719,6 +908,9 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "frequencias") {
 
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "aulas") {
   echo "<script>$('#modal-aulas-grade').modal('show');</script>";
+}
+if (@$_GET["funcao"] != null && @$_GET["funcao"] == "notas") {
+  echo "<script>$('#modal-notas').modal('show');</script>";
 }
 
 

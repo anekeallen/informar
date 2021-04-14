@@ -24,9 +24,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable_resp" width="100%" cellspacing="0">
+      <table class="table table-hover" id="dataTable_resp" width="100%" cellspacing="0">
         <thead>
-          <tr>
+          <tr class="bg-primary text-white">
             <th >Nome do Responsável</th>
             <th class="classe-nova">Email</th>
             <th class="classe-nova ">CPF/CNPJ</th>
@@ -59,7 +59,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
           ?>
 
 
-          <tr>
+          <tr class="table-light">
             <td><?php echo @$nome ?></td>
             <td class="classe-nova"><?php echo @$email ?></td>
             <td class="classe-nova "><?php echo @$cpf ?></td>
@@ -954,7 +954,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
       <script type="text/javascript">
         $(document).ready(function () {
           $('#dataTable_resp').dataTable({
-            "ordering": false,
+            "ordering": true,
             "stateSave": true,
              "stateDuration": 60 * 60 * 24,
              "autoWidth": false

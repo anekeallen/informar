@@ -1,6 +1,9 @@
 <?php 
 require_once("../conexao.php"); 
+require_once('../vendor/autoload.php');
 @session_start();
+
+ob_start();
 
 $id = $_GET['id'];
 
@@ -172,7 +175,8 @@ $periodo = $res_r4[0]['SiglaPeriodo'];
 			margin:0;
 			font-size:18px;
 			font-family:Arial, Helvetica, sans-serif;
-			color:#6e6d6d;
+			color:black;
+			font-weight: bold;
 
 		}
 
@@ -275,6 +279,12 @@ $periodo = $res_r4[0]['SiglaPeriodo'];
 			padding-right: 30px;
 		}
 
+		b{
+			color: black;
+			font-weight: bold;
+
+		}
+
 
 	</style>
 
@@ -337,3 +347,24 @@ $periodo = $res_r4[0]['SiglaPeriodo'];
 
 </body>
 </html>
+
+<?php  
+
+$html = ob_get_contents();
+ob_end_clean();
+
+
+$mpdf = new \Mpdf\Mpdf();
+	//$stylesheet = file_get_contents('../vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css');
+
+	//$mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
+
+
+
+$mpdf->WriteHTML($html);
+
+$mpdf->Output("declaracao_aprovacao_".$nome2.".pdf", "I");
+exit;
+
+
+?>

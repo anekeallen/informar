@@ -24,9 +24,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
+                    <tr class="bg-primary text-white">
                         <th >Nome</th>
                         <th class="classe-nova">Email</th>
                         <th class="classe-nova ">Telefone</th>
@@ -61,7 +61,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                       ?>
 
 
-                      <tr>
+                      <tr class="table-light">
                         <td><?php echo $nome ?></td>
                         <td class="classe-nova"><?php echo $email ?></td>
                         <td class="classe-nova "><?php echo $telefone ?></td>
@@ -869,7 +869,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             <div class="modal-body">
 
                 <small>
-                 <table class="table table-bordered">
+                 <table class="table table-sm table-hover">
                   <thead>
                     <tr>
                         <th></th>
@@ -1176,7 +1176,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "remover-disciplinas") {
 <script type="text/javascript">
     $(document).ready(function () {
         $('#dataTable').dataTable({
-            "ordering": false,
+            "ordering": true,
             "stateSave": true,
             "stateDuration": 60 * 60 * 24,
             "autoWidth": false

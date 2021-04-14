@@ -379,18 +379,18 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable-notas-gerais" width="100%" cellspacing="0">
-                <thead>
+              <table class="table table-sm table-hover" id="dataTable-notas-gerais" width="100%" cellspacing="0">
+                <thead class="table-primary">
                   <tr>
-                    <th><small><b>Nome</b></small></th>
+                    <th class=""><small><b>Nome</b></small></th>
 
-                    <th><small><b>1º TRIM</b></small></th>
-                    <th><small><b>2º TRIM</b></small></th>
-                    <th><small><b>3º TRIM</b></small></th>
+                    <th class="text-nowrap"><small><b>1º TRIM</b></small></th>
+                    <th class="text-nowrap"><small><b>2º TRIM</b></small></th>
+                    <th class="text-nowrap"><small><b>3º TRIM</b></small></th>
                     <th><small><b>MP</small></b> </th>
                     <th><small><b>REC</b></small></th>
                     <th><small><b>MA</b></small></th>  
-                    <th><small><b>REC_FIN</b></small></th>
+                    <th class="text-nowrap"><small><b>REC FIN</b></small></th>
                     <th><small><b>MF</b></small></th>
                     <th><small><b>Situação</b></small></th>
 
@@ -563,7 +563,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
     ?>
 
 
-    <tr>
+    <tr class="table-light">
       <td><small><?php echo $nome ?></small></td>
 
       <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $nota_trim1F ?></small></td>
@@ -680,8 +680,8 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable-alunos" width="100%" cellspacing="0">
-                <thead>
+              <table class="table table-hover" id="dataTable-alunos" width="100%" cellspacing="0">
+                <thead class="table-primary">
                   <tr>
                     <th><small><b>Nome</b></small></th>
 
@@ -771,15 +771,18 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
                   $situacao = $res_r1[0]['SituacaoAtual'];
                   $idfasenotaatual = $res_r1[0]['IdFaseNotaAtual'];
-
+                  $classe_sit_table = 'table-light';
                   
 
                   if ($situacao == "Aprovado" or $situacao == "Aprovado por REC" or $situacao == "Aprovado Prova Final") {
                     $classe_sit = "text-success";
+                    $classe_sit_table = "table-success";
                   }else if($situacao == "Cursando"){
                     $classe_sit = "text-dark";
+                    $classe_sit_table = "table-light";
                   }else{
                     $classe_sit = "text-danger";
+                    $classe_sit_table = "table-danger";
                   }
 
                   $query_r223 = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo' and IdSerie = '$id_serie' and NumeroFase = '$numeroFase'");
@@ -839,14 +842,14 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
               ?>
 
 
-              <tr>
-                <td><small><?php echo $nome ?></small>
+              <tr class="table-light">
+                <td ><small><?php echo $nome ?></small>
 
                 </td>
 
-                <td id="situacao_disc" class="<?php echo $classe_sit ?>"><small><?php echo  $situacao ?></small></td>
+                <td id="situacao_disc" class="<?php echo $classe_sit ?> "><small><?php echo  $situacao ?></small></td>
 
-                <td class="text-center <?php echo $classe_notafase ?>"><small><?php echo $notafaseF ?></small></td>
+                <td class="text-center <?php echo $classe_notafase ?> "><small><?php echo $notafaseF ?></small></td>
 
                 <?php if ($numerofase == 3): ?>
                   <th class="<?php echo  $classe_sit_media ?> text-center"><small><?php echo $notafase_media_parcialF ?></small></th>
@@ -967,12 +970,12 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
             ?>
 
-            <tr>
-              <td><small> <?php echo $nome ?></small>
+            <tr class="table-light">
+              <td ><small> <?php echo $nome ?></small>
 
               </td>
 
-              <td id="" class="<?php echo $classe_sit ?>"><small><?php echo  $situacao ?></small></td>
+              <td class="<?php echo $classe_sit ?>"><small><?php echo  $situacao ?></small></td>
 
               <td class="<?php echo $classe_sit_media ?> text-center"><small><?php echo $notafase_media_parcialF ?></small></td>
 
@@ -1409,8 +1412,8 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
-                <thead>
+              <table class="table table-hover" id="dataTable2" width="100%" cellspacing="0">
+                <thead class="table-danger">
                   <tr>
                     <th>Nome</th>
                     
@@ -1461,7 +1464,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                   ?>
 
 
-                  <tr>
+                  <tr class="table-light">
                     <td>
                       <?php echo $nome ?>
                     </td>
@@ -1563,22 +1566,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "presenca") {
     $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate(), periodo = '$id_periodo_chamada', NumeroFase = '$numerofase_chamada'");
   }
 
-  $query = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma_chamada' and periodo = '$id_periodo_chamada' and NumeroFase = '$numerofase_chamada' and aluno = '$id_aluno_chamada' and presenca = 'F'");
-  $res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-  $total_faltas = count($res);
-
-  $query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma_chamada' ");
-  $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
-  $serie = $res_2[0]['IdSerie'];
-
-
-  $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo_chamada' and IdSerie = '$serie' and NumeroFase = '$numerofase_chamada'");
-  $res4 = $query->fetchAll(PDO::FETCH_ASSOC);
-  $id_fase = $res4[0]['IdFaseNota'];
-
-  $pdo->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas' where IdTurma = '$id_turma_chamada' and IdDisciplina = '$disciplina_chamada' and IdFaseNota = '$id_fase' and IdAluno = '$id_aluno_chamada'");
-
+require('turma/atualizar-faltas.php');
 
 
 
@@ -1610,22 +1598,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
 
   }
 
-
-  $query = $pdo->query("SELECT * FROM chamadas where turma = '$id_turma_chamada' and periodo = '$id_periodo_chamada' and NumeroFase = '$numerofase_chamada' and aluno = '$id_aluno_chamada' and presenca = 'F'");
-  $res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-  $total_faltas = count($res);
-
-  $query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma_chamada' ");
-  $res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
-  $serie = $res_2[0]['IdSerie'];
-
-
-  $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$id_periodo_chamada' and IdSerie = '$serie' and NumeroFase = '$numerofase_chamada'");
-  $res4 = $query->fetchAll(PDO::FETCH_ASSOC);
-  $id_fase = $res4[0]['IdFaseNota'];
-
-  $pdo->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas' where IdTurma = '$id_turma_chamada' and IdDisciplina = '$disciplina_chamada' and IdFaseNota = '$id_fase' and IdAluno = '$id_aluno_chamada'");
+require('turma/atualizar-faltas.php');
 
   echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada&id_disciplina=$disciplina_chamada&numero_fase=$numerofase_chamada';</script>";
 
@@ -2350,7 +2323,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     <script type="text/javascript">
       $(document).ready(function () {
         $('#dataTable-alunos').dataTable({
-          "ordering": false,
+          "ordering": true,
           "stateSave": true,
           "stateDuration": 60 * 60 * 24,
           "autoWidth": false
@@ -2362,7 +2335,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     <script type="text/javascript">
       $(document).ready(function () {
         $('#dataTable2').dataTable({
-          "ordering": false,
+          "ordering": true,
           "stateSave": true,
           "stateDuration": 60 * 60 * 24,
           "autoWidth": false
@@ -2374,7 +2347,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
     <script type="text/javascript">
       $(document).ready(function () {
         $('#dataTable-notas-gerais').dataTable({
-          "ordering": false,
+          "ordering": true,
           "stateSave": true,
           "stateDuration": 60 * 60 * 24,
           "autoWidth": false

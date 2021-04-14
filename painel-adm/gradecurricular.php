@@ -37,13 +37,13 @@ $id_periodo_antigo = $res2[0]['IdPeriodo'];
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
+                    <tr class="bg-primary text-white">
                         <th >Ano</th>
                         
                         
-                        <th >Ações</th>
+                        <th class="text-center">Ações</th>
                     </tr>
                 </thead>
 
@@ -69,13 +69,11 @@ $id_periodo_antigo = $res2[0]['IdPeriodo'];
                   ?>
 
 
-                  <tr>
-                    <td><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&disciplinas=sim&id=<?php echo $id ?>"><?php echo $sigla_ano ?></a></td>
+                  <tr class="table-light">
+                    <td ><a title="Ver Séries" class="text-dark" href="index.php?pag=<?php echo $pag ?>&funcao=series&disciplinas=sim&id=<?php echo $id ?>"><?php echo $sigla_ano ?></a></td>
 
 
-                    <td class="">
-
-
+                    <td class="text-center">
 
                         <a href="index.php?pag=<?php echo $pag ?>&funcao=series&excluir=sim&id=<?php echo $id ?>" class='text-danger mr-1' title='Excluir Registro'><i class='far fa-trash-alt'></i></a>
                     </td>

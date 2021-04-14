@@ -16,9 +16,9 @@ $disciplina = @$_POST['disciplina'];
 $numerofase = @$_POST['numerofase'];
 
 echo " <small>
-<table class='table table-bordered'>
-<thead>
-<tr>
+<table class='table table-hover '>
+<thead class='table-primary'>
+<tr class='text-dark'>
 <th scope='col'>Aula</th>
 <th scope='col'>Nome</th>
 <th scope='col'>Data</th>
@@ -65,7 +65,7 @@ for ($i=0; $i < count($res); $i++) {
     $classe_chamada = 'text-danger';
   }
 
-  echo "<tr>
+  echo "<tr class='table-light'>
     <td>". ($i+1)."</td>
     <td>".$nome."</td>
     <td>".$dataF."</td>

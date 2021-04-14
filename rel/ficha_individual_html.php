@@ -198,10 +198,10 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 	<style>
 
-		@page {
-			margin: 0px;
+		
 
-			
+		* {
+			box-sizing: border-box;
 		}
 
 
@@ -214,8 +214,8 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 		.cabecalho {    
 			
-			padding-top: 50px;
-			padding-left: 50px;
+			padding-top: 0px;
+			padding-left: 20px;
 			margin-bottom:10px;
 			width:100%;
 			height:100px;
@@ -245,7 +245,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 		}
 
 		.areaTotais{
-			border : 0.5px solid #bcbcbc;
+			border : 0.5px solid black;
 			padding: 15px;
 			border-radius: 5px;
 			margin-right:25px;
@@ -276,6 +276,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 			display:inline;
 			width:20%;
 			float:left;
+
 		}
 
 		.direita{
@@ -344,6 +345,21 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 		}
 
+		.assinatura-esquerda{
+			display: inline;
+			width: 50%;
+			float: left;
+			
+		}
+
+		.assinatura-direita{
+			display: inline;
+			width: 50%;
+			float: left;
+			
+		}
+		
+
 		.esquerda-elemento{
 			display:inline;
 			width:70%;
@@ -357,7 +373,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 			float:right;
 		}
 
-		table, th, td {
+		#t01 table, th, td {
 			border: 0.1mm solid black;
 			border-collapse: collapse;
 
@@ -369,11 +385,10 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 		th, td {
 			padding: 5px;
-			white-space: -o-pre-wrap; 
-			word-wrap: break-word;
-			white-space: pre-wrap; 
-			white-space: -moz-pre-wrap; 
-			white-space: -pre-wrap; 
+			white-space: nowrap; 
+			/*word-wrap: break-word; */
+			
+			
 		}
 
 		#t01 th {
@@ -415,6 +430,19 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 			font-size: 12px;
 		}
 
+
+		.table-footer tr {
+			border: none;
+			border-collapse: collapse;
+
+		}
+
+		.table-footer th {
+			border: none;
+			border-collapse: collapse;
+
+		}
+		
 
 
 
@@ -528,33 +556,33 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 				$nota_trim1 = null;
 					//$idfasenota1 = null;
 
-					$nota_trim2 = null;
+				$nota_trim2 = null;
 					//$idfasenota2 = null;
 
-					$nota_trim3 = null;
+				$nota_trim3 = null;
 					//$idfasenota3 = null;
-					$nota_bim1 = null;
-					$nota_bim2 = null;
-					$nota_bim3 = null;
-					$nota_bim4 = null;
+				$nota_bim1 = null;
+				$nota_bim2 = null;
+				$nota_bim3 = null;
+				$nota_bim4 = null;
 
-					$media_parcial = null;
-					$recuperacao = null;
-					$media_anual = null;
-					$recuperacao_final = null;
-					$media_final = null;
+				$media_parcial = null;
+				$recuperacao = null;
+				$media_anual = null;
+				$recuperacao_final = null;
+				$media_final = null;
 					//$idfasenota_final = null;
 
-					$total_aulas1 = null;
-					$total_aulas2 = null;
-					$total_aulas3 = null;
-					$total_aulas4 = null;
-					$total_aulas_final = null;
+				$total_aulas1 = null;
+				$total_aulas2 = null;
+				$total_aulas3 = null;
+				$total_aulas4 = null;
+				$total_aulas_final = null;
 
-					$total_faltas1 = null;
-					$total_faltas2 = null;
-					$total_faltas3 = null;
-					$total_faltas_final = null;
+				$total_faltas1 = null;
+				$total_faltas2 = null;
+				$total_faltas3 = null;
+				$total_faltas_final = null;
 
 				$id_disciplina = $res[$i]['IdDisciplina'];
 
@@ -710,7 +738,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
 					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
-				
+
 				}elseif((count($res11) == 7) and $id_periodo>6){
 
 					$nota_trim1 = @$res11[0]['NotaFase'];
@@ -740,7 +768,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
 					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
-				
+
 				}elseif((count($res11) == 8) and $id_periodo <=6){
 
 					$nota_bim1 = @$res11[0]['NotaFase'];
@@ -774,7 +802,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 					$total_aulas_turma = $total_aulas_turma + $total_aulas_final;
 					$total_faltas_turma = $total_faltas_turma + $total_faltas_final;
-				
+
 				}elseif((count($res11) == 9) and $id_periodo <=6){
 
 					$nota_bim1 = @$res11[0]['NotaFase'];
@@ -900,7 +928,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 
 					<tr>
-						<td width="150px" class="td_fonte" id="td01"><?php echo $nome_disciplina ?></td>
+						<td class="td_fonte" id="td01"><?php echo $nome_disciplina ?></td>
 						<td class="td_fonte td_align-direita"><?php echo $nota_trim1F ?><br>
 
 							<?php if (isset($total_aulas1) and $total_aulas1 != 0): ?>
@@ -947,7 +975,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 							<?php endif ?>
 						</td>
 						<td class="td_fonte td_align-centro">Jill</td>
-						<td width="100px" class="td_fonte td_align-centro"><?php echo $situacao ?></td>
+						<td  class="td_fonte td_align-centro"><?php echo $situacao ?></td>
 
 					</tr>
 
@@ -1038,31 +1066,28 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 			Carga horária total: <?php echo @$cargahoraria_anual ?>  
 			<?php if ($total_faltas_turma != null): ?>
 				
-			
-			- Total de faltas: <?php echo @$total_faltas_turma?> - 
+
+				- Total de faltas: <?php echo @$total_faltas_turma?>  
 			<?php endif ?>
 			<?php if (isset($totalPorcentagem)): ?>
-			Frequência: <?php echo @$totalPorcentagem ?>%
+				- Frequência: <?php echo @$totalPorcentagem ?>%
 			<?php endif ?>
 
 		</div>
 
 		<span class="td_fonte ">(ad): aulas dadas; (f): faltas</span>
 
-		<br><br><br>
+		<br><br><br><br><br><br><br><br><br><br><br><br>
 
-		<div class="container">
 
-			<div class="esquerda">
-				_____________________<br>
-				dsdsads
-			</div>
-			<div class="direita">
-				______________________
-			</div>
-			
 
-		</div>
+	
+		<p align="center">
+			______________________________________________________
+			<br>
+			(DIREÇÃO/SECRETARIA)
+		</p>
+
 
 
 
@@ -1075,15 +1100,37 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 <?php  
 
+
+
+$mpdf = new \Mpdf\Mpdf([
+	'margin_top' => 10,
+	'margin_left' => 10,
+	'margin_right' => 10,
+	'margin_bottom' => 0,
+	'margin_header' => 9,
+    'margin_footer' => 12
+	
+]);
+$mpdf->SetHTMLFooter('
+<hr>
+<table class="table-footer" width="100%">
+
+    <tr>
+
+        <td class="fonte12" width="33%" style="text-align: right;">{DATE j/m/Y H:i:s}</td>
+        
+        
+    </tr>
+</table>
+');
+//$stylesheet = file_get_contents('../css/sb-admin-2.min.css');
+
+//$mpdf->WriteHTML($stylesheet, 2);
+
+
+
 $html = ob_get_contents();
 ob_end_clean();
-
-
-$mpdf = new \Mpdf\Mpdf();
-	//$stylesheet = file_get_contents('../vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css');
-
-	//$mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-
 
 
 $mpdf->WriteHTML($html);

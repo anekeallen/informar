@@ -39,11 +39,6 @@ $query = $pdo->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and
 
 $res6 = $query->fetchAll(PDO::FETCH_ASSOC);
 
-
-
-
-
-
 //Pega idfasenota para add o id certo da fase da nota, assim sabendo se eh 1ºtrimestre, 2º ou 3º...
 $query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and NumeroFase = '$numero_fase' and IdSerie = '$serie'");
 $res1 = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -65,33 +60,6 @@ if (@count($res2) != 0) {
 
 	echo 'Salvo com Sucesso!';
 
-	// Salvar aulas do trimestre
-
-	$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' and NumeroFase = '$numero_fase' and id_disciplina = '$disciplina' order by id asc ");
-	$res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-	$total_aulas = count($res);
-
-
-	$pdo->query("UPDATE tbfasenotaaluno SET  QuantAulasDadas = '$total_aulas' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$idfasenota'");
-
-	//salvar faltas dos trimestres
-
-	$query = $pdo->query("SELECT * FROM chamadas where turma = '$turma' and periodo = '$periodo' and NumeroFase = '$numero_fase' and aluno = '$aluno' and presenca = 'F'");
-	$res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-	$total_faltas = count($res);
-
-	$query_2 = $pdo->query("SELECT * FROM tbturma where IdTurma = '$turma' ");
-	$res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
-	$serie = $res_2[0]['IdSerie'];
-
-
-	$query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$serie' and NumeroFase = '$numero_fase'");
-	$res4 = $query->fetchAll(PDO::FETCH_ASSOC);
-	$id_fase = $res4[0]['IdFaseNota'];
-
-	$pdo->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase' and IdAluno = '$aluno'");
 
 
 	if(($numero_fase == 3) and ($res6 != 0)){
@@ -106,6 +74,34 @@ if (@count($res2) != 0) {
 
 
 }
+
+	// Salvar aulas do trimestre
+$total_faltas = 0;
+
+$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo' and NumeroFase = '$numero_fase' and id_disciplina = '$disciplina'");
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$total_aulas = count($res);
+
+$pdo->query("UPDATE tbfasenotaaluno SET  QuantAulasDadas = '$total_aulas' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$idfasenota'");
+
+
+for ($i=0; $i < count($res); $i++) { 
+	foreach ($res[$i] as $key => $value) {
+	}
+	$id_aula = $res[$i]['id'];
+
+	$query1 = $pdo->query("SELECT * FROM chamadas where turma = '$turma' and periodo = '$periodo' and NumeroFase = '$numero_fase' and aluno = '$aluno' and presenca = 'F' and aula = '$id_aula'");
+	$res1 = $query1->fetchAll(PDO::FETCH_ASSOC);
+
+	$total_faltas = $total_faltas + count($res1);
+	
+
+}
+	//salvar faltas dos trimestres FALTA DEFINIR O ERRO DAS FALTAS	
+
+
+$pdo->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$idfasenota' and IdAluno = '$aluno'");
 
 //Atualizar situação do aluno na disciplina
 $query6 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdTurma = '$turma' and IdAluno = '$aluno' and IdDisciplina = '$disciplina'");

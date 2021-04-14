@@ -24,9 +24,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
         <thead>
-          <tr>
+          <tr class="bg-primary text-white">
             <th scope="col">Série</th>
             <th scope="col">Curso</th>
             <th scope="col">Próxima Série</th>

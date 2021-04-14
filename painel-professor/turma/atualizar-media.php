@@ -229,28 +229,33 @@ $query = $pdo1->query("SELECT * FROM aulas where turma = '$turma' and periodo = 
 $res2 = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_aulas_geral = count($res2);
 
+
 $query = $pdo1->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$id_serie' and NumeroFase = 8");
 $res4 = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_fase_final = $res4[0]['IdFaseNota'];
 
 $pdo1->query("UPDATE tbfasenotaaluno SET  QuantAulasDadas = '$total_aulas_geral' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase_final'");
 
+
 //Atualizar total de faltas na media final
-$query = $pdo1->query("SELECT * FROM chamadas where turma = '$turma' and periodo = '$periodo'  and aluno = '$aluno' and presenca = 'F'");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_faltas = 0;
+for ($i=0; $i < count($res2); $i++) { 
+  foreach ($res2[$i] as $key => $value) {
+  }
+  $id_aula = $res2[$i]['id'];
 
-$total_faltas_final = count($res);
+  $query1 = $pdo1->query("SELECT * FROM chamadas where turma = '$turma' and periodo = '$periodo' and aluno = '$aluno' and presenca = 'F' and aula = '$id_aula'");
+  $res1 = $query1->fetchAll(PDO::FETCH_ASSOC);
 
-$query_2 = $pdo1->query("SELECT * FROM tbturma where IdTurma = '$turma' ");
-$res_2 = $query_2->fetchAll(PDO::FETCH_ASSOC);
-$serie = $res_2[0]['IdSerie'];
+  $total_faltas = $total_faltas + count($res1);
+  
 
+}
 
-$query = $pdo1->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$serie' and NumeroFase = 8");
-$res4 = $query->fetchAll(PDO::FETCH_ASSOC);
-$id_fase = $res4[0]['IdFaseNota'];
+  //salvar faltas dos trimestres FALTA DEFINIR O ERRO DAS FALTAS  
 
-$pdo1->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas_final' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase' and IdAluno = '$aluno'");
+$pdo1->query("UPDATE tbfasenotaaluno SET  Faltas = '$total_faltas' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase_final' and IdAluno = '$aluno'");
+
 
 
 ?>

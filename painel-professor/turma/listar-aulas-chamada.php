@@ -17,8 +17,8 @@ if (count($res) == 0) {
 }
 
 echo " <small>
-<table class='table table-bordered'>
-<thead>
+<table class='table table-hover'>
+<thead class='table-danger'>
 <tr>
 <th scope='col'>Aula</th>
 <th scope='col'>Nome</th>
@@ -51,7 +51,7 @@ for ($i=0; $i < count($res); $i++) {
 
 	
 
-	echo "<tr>
+	echo "<tr class='table-light'>
     <td>".($i+1)."</td>
     <td>".$nome."</td>
     <td>".$data_venc."</td>

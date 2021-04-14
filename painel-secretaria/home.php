@@ -49,9 +49,7 @@ $query = $pdo->query("SELECT * FROM turmas");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $totalTurmas = @count($res);
 
-$query = $pdo->query("SELECT * FROM disciplinas");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$totalDisc = @count($res);
+
 
 
 

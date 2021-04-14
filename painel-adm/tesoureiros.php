@@ -24,9 +24,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
+                    <tr class="bg-primary text-white">
                         <th >Nome</th>
                         <th class="classe-nova">Email</th>
                         <th class="classe-nova ">Telefone</th>
@@ -423,7 +423,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
     <script type="text/javascript">
         $(document).ready(function () {
             $('#dataTable').dataTable({
-                "ordering": false,
+                "ordering": true,
                 "stateSave": true,
                 "stateDuration": 60 * 60 * 24,
                 "autoWidth": false

@@ -17,9 +17,9 @@ if (count($res) == 0) {
 }
 
 echo " <small>
-<table class='table table-bordered'>
+<table class='table  table-hover'>
 <thead>
-<tr>
+<tr class='table-info'>
 <th scope='col'>Aula</th>
 <th scope='col'>Nome</th>
 <th scope='col'>Data</th>

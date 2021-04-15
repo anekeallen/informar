@@ -846,13 +846,17 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                     <td>
                       <a target="_blank" title="Gerar Contrato" href="../rel/contrato_matricula.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-primary ml-3"></i></span></a>
 
-                      <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-secondary ml-2"></i></span></a>
+                      <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-secondary ml-2"></i></span></a>
 
                       <a target="_blank" title="Gerar Ficha Individual" href="../rel/ficha_individual_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a>
+
+
                       
                       <?php if ($situacao == 'Aprovado') { ?>
 
                         <a target="_blank" title="Gerar Declaração de Aprovação" href="../rel/declaracao_aprovacao_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a> 
+
+                         <a target="_blank" title="Gerar Declaração de Transferência" href="../rel/declaracao_transferencia_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a>
                         
                       <?php } ?>
                       

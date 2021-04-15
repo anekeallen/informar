@@ -98,6 +98,11 @@ $turno = @$res_r[0]['TurnoPrincipal'];
 $dataInicial = @$res_r[0]['DataInicial'];
 $dataFinal = @$res_r[0]['DataFinal'];
 
+$query_r4 = $pdo->query("SELECT * FROM tbperiodo where IdPeriodo = '".$id_periodo."' ");
+$res_r4 = $query_r4->fetchAll(PDO::FETCH_ASSOC);
+
+$periodo = $res_r4[0]['SiglaPeriodo'];
+
 
 
 
@@ -121,6 +126,7 @@ $res_r2 = $query_r2->fetchAll(PDO::FETCH_ASSOC);
 
 $nome_serie = $res_r2[0]['NomeSerie'];
 $id_curso = $res_r2[0]['IdCurso'];
+$id_serie_prox = $res_r2[0]['IdProximaSerie'];
 
 $query_r3 = $pdo->query("SELECT * FROM tbcurso where IdCurso = '".$id_curso."' ");
 $res_r3 = $query_r3->fetchAll(PDO::FETCH_ASSOC);
@@ -128,6 +134,22 @@ $res_r3 = $query_r3->fetchAll(PDO::FETCH_ASSOC);
 $nome_curso = $res_r3[0]['NomeCurso'];
 $matutino = $res_r3[0]['horarioManha'];
 $vespertino = $res_r3[0]['horarioTarde'];
+
+$query_r2 = $pdo->query("SELECT * FROM tbserie where IdSerie = '".$id_serie_prox."' ");
+$res_r2 = $query_r2->fetchAll(PDO::FETCH_ASSOC);
+
+$nome_serie_prox = $res_r2[0]['NomeSerie'];
+$id_curso_prox = $res_r2[0]['IdCurso'];
+
+$query_r3 = $pdo->query("SELECT * FROM tbcurso where IdCurso = '".$id_curso_prox."' ");
+$res_r3 = $query_r3->fetchAll(PDO::FETCH_ASSOC);
+
+$nome_curso_prox = $res_r3[0]['NomeCurso'];
+
+//calcular o proximo ano
+$periodo_int = intval($periodo);
+$periodo_prox = $periodo_int + 1;
+
 
 
 
@@ -138,7 +160,7 @@ $vespertino = $res_r3[0]['horarioTarde'];
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Declaração de Estudo</title>
+	<title>Declaração de Transferência</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 	<style>
@@ -307,25 +329,12 @@ $vespertino = $res_r3[0]['horarioTarde'];
 
 	<div class="container">
 
-		<div class="">
-			<div class="esquerda">	
-				<big> Matrícula Nº <?php echo $id ?>  </big>
-			</div>
-			<div class="direita" align="right">	
-				<big> <small> Data: <?php echo $data_hoje; ?></small> </big>
-			</div>
-		</div>
-
-
-		<hr>
-
-		<br><br>
-		<p class="titulo" align="center"><b>DECLARAÇÃO DE ESTUDO</b></p>
+		<p class="titulo" align="center"><b>DECLARAÇÃO DE TRANSFERÊNCIA</b></p>
 		<br><br>
 
-		<p>Declaramos para os devidos fins que se fizerem necessários, que o (a) aluno (a) <?php echo $nome2 ?>, filho (a) do Sr(a) <?php echo $nome_responsavel ?>, encontra-se regularmente matriculado (a) em nosso Estabelecimento de Ensino onde cursa o <?php echo $nome_serie; ?> do <?php echo $nome_curso ?>.</p>
+		<p>Declaramos, para os devidos fins, que o (a) aluno (a) <?php echo $nome2 ?>, filho (a) do Sr(a) <?php echo $nome_responsavel ?>, foi aprovado (a) no ano letivo de <?php echo $periodo ?>, com direito a ser matriculado (a) no (a) <?php echo $nome_serie_prox ?> do <?php echo $nome_curso_prox ?>, no ano letivo de <?php echo $periodo_prox ?>.</p>
 
-		<p>Informamos ainda que o (a) aluno (a) tem frequentado regularmente as aulas no horário das <?php if($turno == 'M') { echo $matutino;}elseif($turno == 'T'){echo $vespertino;} ?>.</p><br>
+		<p>Declaramos ainda que os documentos serão expedidos, por esta secretaria, no prazo fixado pela Resolução 36/74 do Conselho Estadual de Educação (Art. 5º;parágrafo 1º e 2º) dentro de 45 dias a partir desta data.</p><br>
 		<p>Sem mais, </p>
 
 		<br><br>
@@ -365,7 +374,7 @@ $mpdf = new \Mpdf\Mpdf();
 
 $mpdf->WriteHTML($html);
 
-$mpdf->Output("declaracao_estudo_".$nome2.".pdf", "I");
+$mpdf->Output("declaracao_transferencia_".$nome2.".pdf", "I");
 exit;
 
  ?>

@@ -381,7 +381,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
             <div class="table-responsive">
               <table class="table table-sm table-hover" id="dataTable-notas-gerais" width="100%" cellspacing="0">
                 <thead class="table-primary">
-                  <tr>
+                  <tr class="text-dark">
                     <th class=""><small><b>Nome</b></small></th>
 
                     <th class="text-nowrap"><small><b>1º TRIM</b></small></th>
@@ -680,9 +680,9 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-hover" id="dataTable-alunos" width="100%" cellspacing="0">
+              <table class="table table-hover table-sm" id="dataTable-alunos" width="100%" cellspacing="0">
                 <thead class="table-primary">
-                  <tr>
+                  <tr class="text-dark">
                     <th><small><b>Nome</b></small></th>
 
                     <th><small><b>Situação</b></small></th>
@@ -694,21 +694,21 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                     <?php endif ?>
                     <!-- Algumas Colunas so irão aparecer para determinado numero da fase --> 
                     <?php if ($numerofase == 3): ?>
-                     <th><small><b>Média Trimestral</b></small> </th>
-                     <th><small><b> Média Parcial</small></b> </th>
+                     <th class="text-nowrap"><small><b>Média Trimestral</b></small> </th>
+                     <th class="text-nowrap"><small><b> Média Parcial</small></b> </th>
 
                    <?php endif ?>
                    <!-- Algumas Colunas so irão aparecer para determinado numero da fase --> 
                    <?php if ($numerofase == 5): ?>
-                    <th><small><b>Média Parcial</b></small></th>
-                    <th><small><b>Nota REC</b></small></th>
-                    <th><small><b>Média Anual</b></small></th>
+                    <th class="text-nowrap"><small><b>Média Parcial</b></small></th>
+                    <th class="text-nowrap"><small><b>Nota REC</b></small></th>
+                    <th class="text-nowrap"><small><b>Média Anual</b></small></th>
                   <?php endif ?>
                   <!-- Algumas Colunas so irão aparecer para determinado numero da fase --> 
                   <?php if ($numerofase == 7): ?>
-                    <th><small><b>Média Parcial</b></small></th>
-                    <th><small><b>Prova Final</b></small></th>
-                    <th><small><b>Média Final</b></small></th>
+                    <th class="text-nowrap"><small><b>Média Parcial</b></small></th>
+                    <th class="text-nowrap"><small><b>Prova Final</b></small></th>
+                    <th class="text-nowrap"><small><b>Média Final</b></small></th>
                   <?php endif ?>
 
 
@@ -1414,7 +1414,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
             <div class="table-responsive">
               <table class="table table-hover" id="dataTable2" width="100%" cellspacing="0">
                 <thead class="table-danger">
-                  <tr>
+                  <tr class="text-dark">
                     <th>Nome</th>
                     
                     <th>Email</th>

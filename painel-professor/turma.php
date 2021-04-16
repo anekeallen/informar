@@ -1474,13 +1474,13 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
                     <td><img src="../img/alunos/<?php echo $foto ?>" width="50"></td>
 
 
-                    <td>
+                    <td class="text-nowrap">
                      <a href="index.php?pag=<?php echo $pag ?>&funcao=presenca&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>&numero_fase=<?php echo $_GET['numero_fase'] ?>&id_disciplina=<?php echo $_GET['id_disciplina'] ?>" class='text-success mr-1' title='Presente'><i class='far fa-check-circle'></i></a>
 
                      <a href="index.php?pag=<?php echo $pag ?>&funcao=falta&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>&numero_fase=<?php echo $_GET['numero_fase'] ?>&id_disciplina=<?php echo $_GET['id_disciplina'] ?>" class='text-danger mr-1' title='Falta'><i class="fas fa-times-circle"></i></a>
 
 
-                     <a href="index.php?pag=<?php echo $pag ?>&funcao=justificado&id_aluno=<?php echo $id_aluno ?>&id_aula=<?php echo $_GET['id_aula'] ?>&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>&numero_fase=<?php echo $_GET['numero_fase'] ?>&id_disciplina=<?php echo $_GET['id_disciplina'] ?>" class='text-info mr-1' title='Justificar Falta'><i class='fas fa-question-circle fa-1x'></i></a>
+                    
 
                      <?php if($presenca != ""){ ?>
                       - <span class="<?php echo $classe_chamada ?>"><?php echo $presenca ?></span>
@@ -1566,7 +1566,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "presenca") {
     $pdo->query("INSERT INTO chamadas SET turma = '$id_turma_chamada', aluno =  '$id_aluno_chamada', aula = '$id_aula_chamada', presenca = 'P', data = curDate(), periodo = '$id_periodo_chamada', NumeroFase = '$numerofase_chamada'");
   }
 
-require('turma/atualizar-faltas.php');
+  require('turma/atualizar-faltas.php');
 
 
 
@@ -1598,7 +1598,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
 
   }
 
-require('turma/atualizar-faltas.php');
+  require('turma/atualizar-faltas.php');
 
   echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada&id_disciplina=$disciplina_chamada&numero_fase=$numerofase_chamada';</script>";
 
@@ -1606,7 +1606,7 @@ require('turma/atualizar-faltas.php');
 }
 
 
-
+/*
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
   $id_turma_chamada = $_GET['id'];
@@ -1628,7 +1628,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
   echo "<script>window.location='index.php?pag=$pag&funcao=fazerchamada&id=$id_turma_chamada&id_periodo=$id_periodo_chamada&id_aula=$id_aula_chamada&id_disciplina=$disciplina_chamada&numero_fase=$numerofase_chamada';</script>";
 
 
-}
+} */
 
 
 ?>
@@ -2164,15 +2164,19 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
              //window.location.reload();
              atualizarMedia(iddisciplina, idaluno, numerofase );
 
-           }
+           }else{
+            $('#mensagem-notas').addClass('text-danger')
+            $('#mensagem-notas').text(mensagem);
+
+          }
 
 
 
-         },
+        },
 
-         cache: false,
-         contentType: false,
-         processData: false,
+        cache: false,
+        contentType: false,
+        processData: false,
             xhr: function () {  // Custom XMLHttpRequest
               var myXhr = $.ajaxSettings.xhr();
                 if (myXhr.upload) { // Avalia se tem suporte a propriedade upload

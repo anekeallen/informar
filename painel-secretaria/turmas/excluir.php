@@ -19,6 +19,8 @@ $pdo->query("DELETE FROM tbturma WHERE IdTurma = '$id'");
 
 $pdo->query("DELETE FROM aulas WHERE turma = '$id'");
 
+$pdo->query("DELETE FROM chamadas WHERE turma = '$id'");
+
 $pdo->query("DELETE FROM tbfasenotaaluno where IdTurma = '$id' ");
 
 

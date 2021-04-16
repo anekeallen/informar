@@ -33,6 +33,24 @@ $id_fase = $res4[0]['IdFaseNota'];
 
 $pdo->query("UPDATE tbfasenotaaluno SET  QuantAulasDadas = '$total_aulas' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase'");
 
+//atualizar total de aulas da fase final
+$query = $pdo->query("SELECT * FROM tbfasenota where IdPeriodo = '$periodo' and IdSerie = '$serie' and NumeroFase = 8");
+$res4 = $query->fetchAll(PDO::FETCH_ASSOC);
+$id_fase_final = $res4[0]['IdFaseNota'];
+
+$query = $pdo->query("SELECT * FROM tbfasenotaaluno where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase_final'");
+
+$res_final = $query->fetchAll(PDO::FETCH_ASSOC);
+
+if (count($res_final) > 0) {
+	//Atualizar total de aulas na fase da media final
+	$query = $pdo->query("SELECT * FROM aulas where turma = '$turma' and periodo = '$periodo'   and id_disciplina = '$disciplina' order by id asc ");
+	$res2 = $query->fetchAll(PDO::FETCH_ASSOC);
+	$total_aulas_geral = count($res2);
+
+	$pdo->query("UPDATE tbfasenotaaluno SET  QuantAulasDadas = '$total_aulas_geral' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase_final'");
+}
+
 echo 'Excluído com Sucesso!';
 
 ?>

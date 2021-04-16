@@ -831,20 +831,34 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                   $res_r44 = $query_r44->fetchAll(PDO::FETCH_ASSOC);
                   $situacao = @$res_r44[0]['SituacaoAlunoTurma'];
 
+                  if($situacao == 'Aprovado'){
+                    $classe_table = 'table-success';
+                    $classe_sit = 'text-success';
+                  }elseif ($situacao == 'Progressão parcial' or $situacao == 'Cancelado') {
+                    $classe_table = 'table-warning';
+                    $classe_sit = 'text-warning';
+                  }elseif ($situacao == 'Reprovado') {
+                    $classe_table = 'table-danger';
+                    $classe_sit = 'text-danger';
+                  }else{
+                    $classe_table = 'table-primary';
+                    $classe_sit = 'text-dark';
+                  }
+
                   ?>
 
 
-                  <tr class="table-light">
+                  <tr class="<?php echo $classe_table ?> text-dark">
                     <td><?php echo @$nome_serie ?></td>
                     <td class="classe-nova"><?php echo @$nome_turma ?></td> 
                     <td class="classe-nova classe-nova-tel"><?php echo @$turno ?></td>
                     <td class="text-center"><?php echo $ano ?></td>
-                    <td><?php echo $situacao ?></td>
+                    <td class="<?php echo $classe_sit ?>"><?php echo $situacao ?></td>
 
 
 
                     <td>
-                      <a target="_blank" title="Gerar Contrato" href="../rel/contrato_matricula.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-primary ml-3"></i></span></a>
+                    
 
                       <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-secondary ml-2"></i></span></a>
 

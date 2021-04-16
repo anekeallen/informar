@@ -113,6 +113,16 @@ if (($id_fase_atual != $idfasenota) ) {
 }
 
 
+// Atualizar situacao do aluno na turma
+$query = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdTurma = '$turma' and IdAluno = '$aluno' and (SituacaoAtual='Cursando' or SituacaoAtual like 'Recuperação%')");
+$res2 = $query->fetchAll(PDO::FETCH_ASSOC);
+$total_disciplinas_cursando = count($res2);
+
+if ($total_disciplinas_cursando == 0) {
+	require('atualizar-situacao-turma.php');
+}
+
+
 
 
 

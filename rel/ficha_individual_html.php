@@ -373,6 +373,19 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 			float:right;
 		}
 
+		.esquerda-elemento2{
+			display:inline;
+			width:60%;
+			float:left;
+
+		}
+
+		.direita-elemento2{
+			display:inline;
+			width:40%;
+			float:right;
+		}
+
 		#t01 table, th, td {
 			border: 0.1mm solid black;
 			border-collapse: collapse;
@@ -489,11 +502,11 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 		<hr>
 
-		<div class="esquerda-elemento negrito fonte12">
+		<div class="esquerda-elemento2 negrito fonte12">
 			<?php echo $nome_curso ?> / <?php echo $nome_serie ?> / <?php echo $sigla_periodo ?> / <?php echo $nome_turma ?>
 
 		</div>
-		<div class="direita-elemento negrito fonte12" align="right">
+		<div class="direita-elemento2 negrito fonte12" align="right">
 			Situação Final: <?php echo $situacao_turma ?>
 		</div>
 		<table id="t01" style="width:100%">

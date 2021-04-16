@@ -403,71 +403,102 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
   </div>
 </div>
 
-<!--MODAL PARA MATRICULAR ALUNO -->
-<div class="modal" id="modal-matricula" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
+<!--MODAL PARA EXCLUIR Matricula -->
+<div class="modal" id="modal-excluir-matricula" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Matricular Aluno</h5>
+        <h5 class="modal-title">Excluir Matrícula</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
 
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th >Nome do Aluno</th>
-                    <th class="classe-nova">Data de Nascimento</th>
-                    
-                    <th class="classe-nova classe-nova-tel">Telefone do Responsável</th>
-                    <th class="">Foto</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
+        <span class="text-danger">
+          <p>Deseja realmente excluir a matrícula desse aluno? Todos os dados do aluno serão excluídos dessa turma, como notas, faltas etc.</p></span>
 
-                <tbody>
+          <small><div align="center" id="mensagem_excluir-matricula" class=""></small>
 
-                 <?php 
+          </div>
 
-                 $query = $pdo->query("SELECT * FROM tbaluno order by IdAluno desc ");
-                 $res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-                 for ($i=0; $i < count($res); $i++) { 
-                  foreach ($res[$i] as $key => $value) {
-                  }
-
-                  $nome = $res[$i]['NomeAluno'];
-                  $foto = $res[$i]['foto'];
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn-cancelar-excluir-matricula">Cancelar</button>
 
 
-                  $dataNascimento = date('d/m/Y',  strtotime($res[$i]['DataNascimento'])); 
+          <button type="button" id="btn-excluir-matricula" name="btn-excluir-matricula" class="btn btn-danger">Excluir</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA MATRICULAR ALUNO -->
+  <div class="modal" id="modal-matricula" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Matricular Aluno</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+
+            <div class="card-body">
+              <div class="table-responsive ">
+                <table class="table table-hover table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                  <thead>
+                    <tr class="bg-primary text-nowrap text-white">
+                      <th >Nome do Aluno</th>
+                      <th class="classe-nova">Data de Nascimento</th>
+
+                      <th class="classe-nova classe-nova-tel">Tel do Responsável</th>
+
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                   <?php 
+
+                   $query = $pdo->query("SELECT * FROM tbaluno order by IdAluno desc ");
+                   $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                   for ($i=0; $i < count($res); $i++) { 
+                    foreach ($res[$i] as $key => $value) {
+                    }
+
+                    $nome = $res[$i]['NomeAluno'];
+                    $foto = $res[$i]['foto'];
+
+
+                    $dataNascimento = date('d/m/Y',  strtotime($res[$i]['DataNascimento'])); 
 
 
 
-                  $id_aluno = $res[$i]['IdAluno'];
-                  $id_responsavel = $res[$i]['IdResponsavel'];
+                    $id_aluno = $res[$i]['IdAluno'];
+                    $id_responsavel = $res[$i]['IdResponsavel'];
 
-                  $query = $pdo->query("SELECT * FROM tbresponsavel where IdResponsavel = '$id_responsavel' ");
-                  $res_r = $query->fetchAll(PDO::FETCH_ASSOC);
+                    $query = $pdo->query("SELECT * FROM tbresponsavel where IdResponsavel = '$id_responsavel' ");
+                    $res_r = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                  $nome_responsavel = $res_r[0]['NomeResponsavel'];
-                  $celular = $res_r[0]['Celular'];
-
-
-                  ?>
+                    $nome_responsavel = $res_r[0]['NomeResponsavel'];
+                    $celular = $res_r[0]['Celular'];
 
 
-                  <tr>
-                    <td><?php echo @$nome ?></td>
-                    <td class="classe-nova"><?php echo @$dataNascimento ?></td> 
-                    <td class="classe-nova classe-nova-tel"><?php echo $celular ?></td>
-                    <td class="text-center"><a href="index.php?pag=<?php echo @$pag ?>&funcao=foto&id=<?php echo @$id ?>"><img width="30" src="../img/alunos/<?php echo $foto ?>"><a></td>
+                    ?>
+
+
+                    <tr class="table-light">
+                      <td><?php echo @$nome ?></td>
+                      <td class="classe-nova"><?php echo @$dataNascimento ?></td> 
+                      <td class="classe-nova classe-nova-tel"><?php echo $celular ?></td>
+
 
 
 
@@ -489,10 +520,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
             </div>
           </div>
         </div>
-        
+
 
       </div>
-      
+
     </div>
   </div>
 </div>
@@ -758,9 +789,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
           <small>
-           <table class="table table-bordered">
+           <table class="table table-hover">
             <thead>
-              <tr>
+              <tr class="bg-primary text-white">
                 <th scope="col">Aluno</th>
                 <th scope="col">Situação do Aluno</th>
                 <th scope="col">Ação</th>
@@ -788,27 +819,45 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                   $situacao = $res_r2[0]['SituacaoAlunoTurma'];
 
+                  if($situacao == 'Aprovado'){
+                    $classe_table = 'table-success';
+                    $classe_sit = 'text-success';
+                  }elseif ($situacao == 'Progressão parcial' or $situacao == 'Cancelado' or $situacao == 'Transferido' or $situacao == 'Desistente') {
+                    $classe_table = 'table-warning';
+                    $classe_sit = 'text-warning';
+                  }elseif ($situacao == 'Reprovado') {
+                    $classe_table = 'table-danger';
+                    $classe_sit = 'text-danger';
+                  }else{
+                    $classe_table = 'table-light';
+                    $classe_sit = 'text-dark';
+                  }
+
 
 
                   ?>
 
-                  <tr>
-                    <td><?php echo @$nome_aluno ?></td>
+                  <tr class="<?php echo $classe_table ?> text-dark">
+                    <td class=""><?php echo @$nome_aluno ?></td>
 
-                    <td><?php echo @$situacao ?></td>
-
-
-                    <td><span><small>
-
-                      <?php if ($situacao != "Aprovado"): ?>
+                    <td class="<?php echo $classe_sit ?>"><?php echo @$situacao ?></td>
 
 
-                        <a title="Excluir Matrícula" href="index.php?pag=<?php echo $pag ?>&funcao=excluir_matricula&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-user-times text-danger ml-3"></i>
+                    <td><span>
+
+                      <a title="Aluno Transferido" href="index.php?pag=<?php echo $pag ?>&funcao=transferir&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-walking text-info"></i>
+                      </a>
 
 
-                        </a>
-                      <?php endif ?>
-                    </small></span>
+
+                      <a title="Cancelar Matrícula" href="index.php?pag=<?php echo $pag ?>&funcao=cancelar_matricula&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-user-times text-warning ml-2"></i>
+                      </a>
+
+                      <a title="Excluir Matricula" href="index.php?pag=<?php echo $pag ?>&funcao=excluir_matricula&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="fas fa-trash-alt text-danger ml-2"></i>
+                      </a>
+
+
+                    </span>
                   </td>
 
                 </tr>
@@ -836,10 +885,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 </div>
 
 <div class="modal" id="modal-professores" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Cadastrar professores nas disciplinas</h5>
+        <h5 class="modal-title">Cadastrar Professores nas Disciplinas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -873,10 +922,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
 
           <small>
-           <table class="table table-bordered">
+           <table class="table table-hover table-sm">
             <form method="post" id="form-prof">
-              <thead>
-                <tr>
+              <thead class="bg-primary text-white">
+                <tr class="text-center">
                   <th scope="col">Disciplinas</th>
                   <th scope="col">Escolher Professor</th>
 
@@ -901,13 +950,13 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                     ?>
 
-                    <input type="hidden" id="id_disc"  name="id_disc[]" value="<?php echo @$id_disciplinas ?>">
-                    <tr>
+                    <input type="hidden"  name="id_disc[]" value="<?php echo @$id_disciplinas ?>">
+                    <tr class="table-primary text-dark">
 
-                      <td><?php echo @$nome_disciplina ?></td>
+                      <td class="text-nowrap "><?php echo @$nome_disciplina ?></td>
 
                       <td>
-                        <select name="id_profe[]" class="form-control" id="">
+                        <select name="id_profe[]" class="form-control form-control-sm">
                           <option selected value="">Selecione o Professor</option>
                           <?php 
                           $query = $pdo->query("SELECT * FROM tbprofessordisciplina where IdDisciplina = '$id_disciplinas' ");
@@ -1044,14 +1093,50 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
         $id_aluno2 = $_GET['id_aluno'];
         $id_turma2 = $_GET['id_turma'];
 
-        $res = $pdo->query("DELETE FROM tbalunoturma WHERE IdAluno = '$id_aluno2' and IdTurma = '$id_turma2'");
-
-        $res = $pdo->query("DELETE FROM tbsituacaoalunodisciplina WHERE IdAluno = '$id_aluno2' and IdTurma = '$id_turma2'");
+        echo "<script>$('#modal-excluir-matricula').modal('show');</script>";
 
 
-        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma2&id_aluno=$id_aluno&funcao=matriculados';</script>";
 
-      } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "professores") {
+
+      // echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma2&id_aluno=$id_aluno2&funcao=matriculados';</script>";
+
+      } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "transferir") {
+        $id_aluno3 = $_GET['id_aluno'];
+        $id_turma3 = $_GET['id_turma'];
+
+        $query = $pdo->query("SELECT * FROM tbsituacaoalunoturma where SituacaoAlunoTurma = 'Transferido'");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $id_situacao_turma = $res[0]['IdSituacaoAlunoTurma'];
+
+        $pdo->query("UPDATE tbalunoturma SET IdSituacaoAlunoTurma = '$id_situacao_turma' where IdTurma = '$id_turma3' and IdAluno = '$id_aluno3'");
+
+        $pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Transferido' WHERE IdAluno = '$id_aluno3' and IdTurma = '$id_turma3'");
+
+
+        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma3&id_aluno=$id_aluno3&funcao=matriculados';</script>";
+
+      } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "cancelar_matricula") {
+        $id_aluno4 = $_GET['id_aluno'];
+        $id_turma4 = $_GET['id_turma'];
+
+        $query = $pdo->query("SELECT * FROM tbsituacaoalunoturma where SituacaoAlunoTurma = 'Cancelado'");
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $id_situacao_turma = $res[0]['IdSituacaoAlunoTurma'];
+
+        $pdo->query("UPDATE tbalunoturma SET IdSituacaoAlunoTurma = '$id_situacao_turma' where IdTurma = '$id_turma4' and IdAluno = '$id_aluno4'");
+
+        $pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Cancelado' WHERE IdAluno = '$id_aluno4' and IdTurma = '$id_turma4'");
+
+
+        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma4&id_aluno=$id_aluno4&funcao=matriculados';</script>";
+
+      } 
+
+
+
+      if (@$_GET["funcao"] != null && @$_GET["funcao"] == "professores") {
         echo "<script>$('#modal-professores').modal('show');</script>";
       }
 
@@ -1185,6 +1270,50 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
                 $('#mensagem_excluir').addClass('text-danger')
                 $('#mensagem_excluir').text(mensagem)
+
+
+
+              },
+
+            })
+          })
+        })
+      </script>
+
+      <!--AJAX PARA EXCLUSÃO DOS DADOS -->
+      <script type="text/javascript">
+        $(document).ready(function () {
+          var pag = "<?=$pag?>";
+          var turma = "<?=$_GET['id_turma']?>";
+          var aluno = "<?=$_GET['id_aluno']?>";
+
+
+
+          $('#btn-excluir-matricula').click(function (event) {
+            event.preventDefault();
+
+            console.log(aluno)
+
+            $.ajax({
+              url: pag + "/excluir-matricula.php",
+              method: "post",
+              data: {turma, aluno},
+              dataType: "text",
+              success: function (mensagem) {
+
+                if (mensagem.trim() === 'Excluído com Sucesso!!') {
+
+
+                  $('#btn-cancelar-excluir-matricula').click();
+                  window.location = 'index.php?pag='+pag+'&id_turma='+turma+'&id_aluno='+aluno+'&funcao=matriculados';
+
+                }else{
+
+                  $('#mensagem_excluir-matricula').addClass('text-danger')
+                  $('#mensagem_excluir-matricula').text(mensagem)
+                }
+
+                
 
 
 

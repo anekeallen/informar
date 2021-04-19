@@ -13,6 +13,10 @@ $serie = $_POST['serie'];
 
 $numero_fase = $_POST['fase'];
 
+if ($nota1 == "" or $nota2 == "" or $nota3 == "") {
+	echo "Insira notas válidas!";
+	exit;
+}
 
 
 if($nota1 > $nota_maxima1){

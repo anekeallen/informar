@@ -1053,8 +1053,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
       $query_r = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma ' and IdAluno = '$id_aluno'");
       $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
+      $t = count($res_r);
+
       if (@count($res_r) == 0) {
-        $res = $pdo->query("INSERT INTO tbalunoturma SET IdTurma = '$id_turma', IdAluno = '$id_aluno', DataSituacaoAtivo = curDate(),  IdSituacaoAlunoTurma = 1, IdResponsavelFinanceiro = '$id_resp' ");
+        $res = $pdo->query("INSERT INTO tbalunoturma SET IdTurma = '$id_turma', IdAluno = '$id_aluno', DataSituacaoAtivo = curDate(), IdSituacaoAlunoTurma = 1, IdResponsavelFinanceiro = '$id_resp' ");
 
         //Select para pegar id da serie e do periodo
         $query = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma'");
@@ -1079,11 +1081,17 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
           $pdo->query("INSERT INTO tbsituacaoalunodisciplina SET IdTurma = '$id_turma', IdAluno ='$id_aluno', SituacaoAtual ='Cursando', IdFaseNotaAtual = '$id_fase_nota', IdDisciplina = '$id_disciplina2'");
 
-        }
+        }    
 
-        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
+      } else{
+        echo "<script>alert('Aluno já matriculado na turma!')</script>";
+      
 
-      } }
+      }
+
+       echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
+
+    }
 
       if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
         echo "<script>$('#modal-matriculados').modal('show');</script>";

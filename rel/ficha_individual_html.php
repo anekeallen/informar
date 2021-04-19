@@ -491,7 +491,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 		<div class="esquerda-elemento fonte12">
 			Aluno: <?php echo $nome2 ?><br>
-			Filiação: <br>
+			Filiação: <?php echo $pai2 ?> e <?php echo $mae2 ?><br>
 			Naturalidade: <?php echo $naturalidade2 ?> - <?php echo $naturalidadeUF2 ?><br>
 		</div>
 		<div class="direita-elemento fonte12" align="left">
@@ -608,9 +608,9 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 				$res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
 
 				$situacao = @$res_r1[0]['SituacaoAtual'];
-				if ($situacao == 'A') {
+				if ($situacao == 'A' or $situacao == 'Aprovado Prova Final' or $situacao == 'Aprovado por REC') {
 					$situacao = 'Aprovado';
-				}elseif ($situacao == 'R') {
+				}elseif ($situacao == 'R' or $situacao == 'Reprovado Prova Final') {
 					$situacao = 'Reprovado';
 				}elseif ($situacao == 'C') {
 					$situacao = 'Cursando';

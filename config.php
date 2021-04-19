@@ -1,7 +1,7 @@
 <?php  
 
 $nome_escola = "Centro Educacional Informar";
-$url = "http://localhost/informar/";
+$url = "http://informar.test/";
 $endereco_escola = "Av. Moema Tinoco da Cunha Lima, 1861 - Pajuçara, Natal/RN";
 $telefone_escola = "(84) 3663-2516";
 $cep_escola = "59133-090";

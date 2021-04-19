@@ -10,7 +10,10 @@ $numero_fase = $_POST['fase_rec'];
 
 
 
-
+if($nota_rec == ""){
+	echo "Insira uma nota válida!";
+	exit();
+}
 
 if($nota_rec > $maximo_nota_rec){
 	echo 'A nota não pode ser maior que ' . $maximo_nota_rec. '!';

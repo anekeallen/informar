@@ -795,6 +795,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                 <th scope="col">Aluno</th>
                 <th scope="col">Situação do Aluno</th>
                 <th scope="col">Ação</th>
+                <th scope="col">Relatórios</th>
 
               </thead>
               <tbody>
@@ -833,6 +834,11 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                     $classe_sit = 'text-dark';
                   }
 
+                  $query = $pdo->query("SELECT * FROM tbalunoturma where IdAluno = '$id_aluno' order by IdAlunoTurma desc ");
+                  $res24 = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                  $id_m = $res24[0]['IdAlunoTurma'];
+
 
 
                   ?>
@@ -860,9 +866,24 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                     </span>
                   </td>
 
+                  <td>
+                    
+
+                      <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-secondary ml-2"></i></span></a>
+
+                      <a target="_blank" title="Gerar Ficha Individual" href="../rel/ficha_individual_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a>
+
+
+                      
+                      <?php if ($situacao == 'Aprovado') { ?>
+
+                        <a target="_blank" title="Gerar Declaração de Aprovação" href="../rel/declaracao_aprovacao_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a> 
+
+                         <a target="_blank" title="Gerar Declaração de Transferência" href="../rel/declaracao_transferencia_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a>
+
                 </tr>
 
-              <?php } ?>
+              <?php } } ?>
 
             </tbody>
           </table>
@@ -1053,8 +1074,10 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
       $query_r = $pdo->query("SELECT * FROM tbalunoturma where IdTurma = '$id_turma ' and IdAluno = '$id_aluno'");
       $res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
+      $t = count($res_r);
+
       if (@count($res_r) == 0) {
-        $res = $pdo->query("INSERT INTO tbalunoturma SET IdTurma = '$id_turma', IdAluno = '$id_aluno', DataSituacaoAtivo = curDate(),  IdSituacaoAlunoTurma = 1, IdResponsavelFinanceiro = '$id_resp' ");
+        $res = $pdo->query("INSERT INTO tbalunoturma SET IdTurma = '$id_turma', IdAluno = '$id_aluno', DataSituacaoAtivo = curDate(), IdSituacaoAlunoTurma = 1, IdResponsavelFinanceiro = '$id_resp' ");
 
         //Select para pegar id da serie e do periodo
         $query = $pdo->query("SELECT * FROM tbturma where IdTurma = '$id_turma'");
@@ -1079,11 +1102,17 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
           $pdo->query("INSERT INTO tbsituacaoalunodisciplina SET IdTurma = '$id_turma', IdAluno ='$id_aluno', SituacaoAtual ='Cursando', IdFaseNotaAtual = '$id_fase_nota', IdDisciplina = '$id_disciplina2'");
 
-        }
+        }    
 
-        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
+      } else{
+        echo "<script>alert('Aluno já matriculado na turma!')</script>";
+      
 
-      } }
+      }
+
+       echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
+
+    }
 
       if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
         echo "<script>$('#modal-matriculados').modal('show');</script>";

@@ -220,7 +220,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
             <div class="form-group">
               <label for="ano">Ano Letivo</label>
               <select required name="ano" class="form-control" id="ano">
-                <?php if ($id_periodo2 =="") {?>
+                <?php if ($id_periodo2 == "") {?>
                   <option value="" selected>Selecione o ano letivo</option>
 
                   
@@ -252,7 +252,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
             <div class="form-group">
               <label for="sala">Sala</label>
               <select name="sala" class="form-control" id="sala">
-                <?php if ($id_sala2 =="") {?>
+                <?php if ($id_sala2 == 0) {?>
                   <option value="" selected>Selecione a Sala</option>
 
                   
@@ -639,7 +639,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
             <div class="form-group">
               <label for="sala">Sala</label>
               <select disabled  class="form-control">
-                <?php if ($id_sala3 =="") {?>
+                <?php if ($id_sala3 == 0) {?>
                   <option value="" selected>Selecione a Sala</option>
 
                   
@@ -869,9 +869,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                   <td>
                     
 
-                      <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-secondary ml-2"></i></span></a>
+                      <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-info ml-2"></i></span></a>
 
-                      <a target="_blank" title="Gerar Ficha Individual" href="../rel/ficha_individual_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a>
+                      <a target="_blank" title="Gerar Ficha Individual" href="../rel/ficha_individual_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-primary ml-2"></i></span></a>
 
 
                       
@@ -879,7 +879,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                         <a target="_blank" title="Gerar Declaração de Aprovação" href="../rel/declaracao_aprovacao_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a> 
 
-                         <a target="_blank" title="Gerar Declaração de Transferência" href="../rel/declaracao_transferencia_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a>
+                         <a target="_blank" title="Gerar Declaração de Transferência" href="../rel/declaracao_transferencia_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-danger ml-2"></i></span></a>
 
                 </tr>
 

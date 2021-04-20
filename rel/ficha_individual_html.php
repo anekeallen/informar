@@ -1094,7 +1094,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 
 
-	
+
 		<p align="center">
 			______________________________________________________
 			<br>
@@ -1114,42 +1114,47 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 <?php  
 
 
+try {
+	$mpdf = new \Mpdf\Mpdf([
+		'margin_top' => 10,
+		'margin_left' => 10,
+		'margin_right' => 10,
+		'margin_bottom' => 0,
+		'margin_header' => 9,
+		'margin_footer' => 12
 
-$mpdf = new \Mpdf\Mpdf([
-	'margin_top' => 10,
-	'margin_left' => 10,
-	'margin_right' => 10,
-	'margin_bottom' => 0,
-	'margin_header' => 9,
-    'margin_footer' => 12
+	]);
+	$mpdf->SetHTMLFooter('
+		<hr>
+		<table class="table-footer" width="100%">
+
+		<tr>
+
+		<td class="fonte12" width="33%" style="text-align: right;">{DATE j/m/Y H:i:s}</td>
+
+
+		</tr>
+		</table>
+		');
+
+
+	$html = ob_get_contents();
+	ob_end_clean();
+
+	$mpdf->debug = true;
+
+	$mpdf->WriteHTML($html);
+
+	$mpdf->Output("fichaindividual_".$nome2.".pdf", "I");
+	exit;
 	
-]);
-$mpdf->SetHTMLFooter('
-<hr>
-<table class="table-footer" width="100%">
+} catch (\Mpdf\MpdfException $e) {
 
-    <tr>
-
-        <td class="fonte12" width="33%" style="text-align: right;">{DATE j/m/Y H:i:s}</td>
-        
-        
-    </tr>
-</table>
-');
-//$stylesheet = file_get_contents('../css/sb-admin-2.min.css');
-
-//$mpdf->WriteHTML($stylesheet, 2);
+	echo $e->getMessage();
+	
+}
 
 
-
-$html = ob_get_contents();
-ob_end_clean();
-
-
-$mpdf->WriteHTML($html);
-
-$mpdf->Output("fichaindividual_".$nome2.".pdf", "I");
-exit;
 
 
 ?>

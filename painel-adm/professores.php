@@ -1000,6 +1000,7 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "remover-disciplinas") {
                     //$('#cpf').val('');
                     $('#btn-fechar').click();
                     window.location = "index.php?pag="+pag;
+                   // $('#mensagem').text(mensagem)
 
                 } else {
 

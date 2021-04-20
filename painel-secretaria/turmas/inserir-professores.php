@@ -10,6 +10,8 @@ foreach (@$_POST['id_disc'] as $key => $value) {
 	
 	$id_professor = @$_POST['id_profe'][$key];
 
+	$id_professor = isset($_REQUEST['id_profe'][$key])? intval($_REQUEST['id_profe'][$key]): "";
+
 	$query = $pdo->query("SELECT * FROM tbturmaprofessor where IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina' ");
 	$res2 = $query->fetchAll(PDO::FETCH_ASSOC);
 

@@ -9,7 +9,7 @@ $id_periodo = $_GET['id_periodo'];
 
 
 
-$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usu'  order by IdAluno asc ");
+$query = $pdo->query("SELECT * FROM tbaluno where CPF = '$cpf_usu'  order by IdAluno asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_aluno = $res[0]['IdAluno'];
 

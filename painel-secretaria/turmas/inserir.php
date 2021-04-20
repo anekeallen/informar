@@ -39,16 +39,16 @@ if($turno == ""){
 	exit();
 }
 
-//VERIFICAR SE O REGISTRO JÁ EXISTE NO BANCO
-if($antigo != $sigla_turma){
-	$query = $pdo->query("SELECT * FROM tbturma where SiglaTurma = '$sigla_turma' ");
-	$res = $query->fetchAll(PDO::FETCH_ASSOC);
-	$total_reg = @count($res);
-	if($total_reg > 0){
-		echo 'A turma já está Cadastrada!';
-		exit();
-	}
+if($data_inicio == ""){
+	$data_inicio = null;
 }
+if($data_final == ""){
+	$data_final = null;
+}
+
+$id_sala = isset($_REQUEST['sala'])? intval($_REQUEST['sala']): 0;
+//VERIFICAR SE O REGISTRO JÁ EXISTE NO BANCO
+
 
 
 

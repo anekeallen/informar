@@ -27,11 +27,24 @@ $cep = $_POST['cep-cat'];
 $telefone_fixo = $_POST['telefone_res-cat'];
 
 
-
-
-
 $id_endereco = $_POST['id_endereco'];
 $antigo = $_POST['antigo'];
+
+$id_profissao = isset($_REQUEST['profissao-cat'])? intval($_REQUEST['profissao-cat']): null;
+$uf_endereco = isset($_REQUEST['uf_endereco-cat'])? strval($_REQUEST['uf_endereco-cat']): null;
+$id_endereco = isset($_REQUEST['id_endereco'])? intval($_REQUEST['id_endereco']): 0;
+$telefone_fixo = isset($_REQUEST['telefone_res-cat'])? strval($_REQUEST['telefone_res-cat']): null;
+$rg = isset($_REQUEST['rg-cat'])? strval($_REQUEST['rg-cat']): null;
+
+$logradouro = isset($_REQUEST['logradouro-cat'])? strval($_REQUEST['logradouro-cat']): null;
+$complemento = isset($_REQUEST['complemento-cat'])? strval($_REQUEST['complemento-cat']): null;
+$bairro = isset($_REQUEST['bairro-cat'])? strval($_REQUEST['bairro-cat']): null;
+$cidade = isset($_REQUEST['cidade-cat'])? strval($_REQUEST['cidade-cat']): null;
+$cep = isset($_REQUEST['cep-cat'])? strval($_REQUEST['cep-cat']): null;
+$local_trabalho = isset($_REQUEST['local_trabalho-cat'])? strval($_REQUEST['local_trabalho-cat']): null;
+$email = isset($_REQUEST['email-cat'])? strval($_REQUEST['email-cat']): null;
+$telefone_trabalho = isset($_REQUEST['telefone_trab-cat'])? strval($_REQUEST['telefone_trab-cat']): null;
+
 
 $id = $_POST['txtid2'];
 

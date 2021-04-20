@@ -15,6 +15,9 @@ $pdo->query("DELETE FROM tbfasenota WHERE IdPeriodo = '$id'");
 
 $pdo->query("DELETE FROM tbperiodo WHERE IdPeriodo = '$id'");
 
+$pdo->query("DELETE FROM tbgradecurricular WHERE IdPeriodo = '$id'");
+
+
 
 echo 'Excluído com Sucesso!!';
 

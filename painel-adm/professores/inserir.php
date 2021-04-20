@@ -8,7 +8,6 @@ $email = $_POST['email-cat'];
 
 $data = $_POST['data-cat'];
 
-
 $sexo = $_POST['sexo-cat'];
 $rg = $_POST['rg-cat'];
 $rg_emissor = $_POST['rg_emissor-cat'];
@@ -31,6 +30,26 @@ $antigo2 = $_POST['antigo2'];
 $id = $_POST['txtid2'];
 $id_endereco = $_POST['id_endereco'];
 
+$uf_endereco = isset($_REQUEST['uf_endereco-cat'])? strval($_REQUEST['uf_endereco-cat']): null;
+$id_endereco = isset($_REQUEST['id_endereco'])? intval($_REQUEST['id_endereco']): 0;
+$telefone_fixo = isset($_REQUEST['telefone_fixo-cat'])? strval($_REQUEST['telefone_fixo-cat']): null;
+$rg = isset($_REQUEST['rg-cat'])? strval($_REQUEST['rg-cat']): null;
+$rg_emissor = isset($_REQUEST['rg_emissor-cat'])? strval($_REQUEST['rg_emissor-cat']): null;
+//$rg_data = isset($_REQUEST['rg_data-cat'])? strval($_REQUEST['rg_data-cat']): null;
+$logradouro = isset($_REQUEST['logradouro-cat'])? strval($_REQUEST['logradouro-cat']): null;
+$complemento = isset($_REQUEST['complemento-cat'])? strval($_REQUEST['complemento-cat']): null;
+$bairro = isset($_REQUEST['bairro-cat'])? strval($_REQUEST['bairro-cat']): null;
+$cidade = isset($_REQUEST['cidade-cat'])? strval($_REQUEST['cidade-cat']): null;
+$cep = isset($_REQUEST['cep-cat'])? strval($_REQUEST['cep-cat']): null;
+
+
+
+if($rg_data == ""){
+	
+	$rg_data = NULL;
+}
+
+
 if($nome == ""){
 	echo 'O Nome é Obrigatório!';
 	exit();
@@ -43,10 +62,6 @@ if($email == ""){
 
 if($cpf == ""){
 	echo 'O CPF é Obrigatório!';
-	exit();
-}
-if($email == ""){
-	echo 'O Email é Obrigatório!';
 	exit();
 }
 
@@ -123,7 +138,7 @@ move_uploaded_file($imagem_temp, $caminho);
 	exit();
 }
 
-if ($id_endereco == "") {
+if ($id_endereco == 0) {
 	$res2 = $pdo->prepare("INSERT INTO tbendereco SET Logradouro = :logradouro, Bairro = :bairro, Complemento =:complemento, Cidade = :cidade, UF = :uf_endereco, CEP =:cep, Fone =:fone, Inet_DataAlteracao = curDate()");
 
 	$res2->bindValue(":logradouro", "$logradouro");
@@ -164,7 +179,7 @@ $res_usu = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
 if($id == ""){
-	$res = $pdo->prepare("INSERT INTO tbprofessor SET NomeProfessor = :nome, CPF = :cpf, Email = :email, Celular = :celular, Fone = :telefone, Sexo = :sexo, DataNascimento = :data, RG = :rg, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade, GpaDataHoraAlteracao = NOW(), RG_OrgaoEmissor = :RG_OrgaoEmissor, RG_DataEmissao =:RG_DataEmissao, IdEndereco = '$id_endereco', foto = '$imagem'");
+	$res = $pdo->prepare("INSERT INTO tbprofessor SET NomeProfessor = :nome, CPF = :cpf, Email = :email, Celular = :celular, Fone = :telefone, Sexo = :sexo, DataNascimento = :data, RG = :rg, NaturalidadeUF = :naturalidadeUF, NaturalidadeCidade = :naturalidadeCidade, Nacionalidade = :nacionalidade, GpaDataHoraAlteracao = NOW(), RG_OrgaoEmissor = :RG_OrgaoEmissor, RG_DataEmissao =:RG_DataEmissao, IdEndereco = '$id_endereco', foto = '$imagem', IdPai = null, IdMae = null");
 
 	$res2 = $pdo->prepare("INSERT INTO usuarios SET nome = :nome, cpf = :cpf, email = :email, senha = :senha, nivel = :nivel");	
 	$res2->bindValue(":senha", '123');

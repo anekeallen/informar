@@ -282,7 +282,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
             </div>
             <div class="row">
               <div class="form-group col-md-6">
-                <label >Email (email do responsável)</label>
+                <label >Email</label>
                 <input required value="<?php echo @$email2 ?>" type="text" class="form-control" id="email-cat" name="email-cat" placeholder="Email">
               </div>
               <div class="form-group col-md-6">
@@ -296,7 +296,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
               <div class="form-group col-md-4 ">
                 <label for="cpf-cat" >CPF</label>
-                <input value="<?php echo @$cpf2 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
+                <input required value="<?php echo @$cpf2 ?>" type="text" class="form-control" id="cpf-cat" name="cpf-cat" placeholder="CPF">
               </div>
               <div class="form-group col-md-4 ">
                 <label >RG</label>
@@ -310,24 +310,24 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
             <div class="row">
 
               <div class="form-group col-md-3 ">
-                <label for="cpf-cat" >Número do Registro</label>
-                <input value="<?php echo @$registro2 ?>" required type="text" class="form-control" id="registro-cat" name="registro-cat" placeholder="Número do Registro">
+                <label for="registro-cat" >Número do Registro</label>
+                <input value="<?php echo @$registro2 ?>" type="text" class="form-control" id="registro-cat" name="registro-cat" placeholder="Número do Registro">
               </div>
               <div class="form-group col-md-2 ">
                 <label >Cartório</label>
-                <input required value="<?php echo @$cartorio2 ?>" type="text" class="form-control" id="cartorio-cat" name="cartorio-cat" placeholder="Cartório">
+                <input value="<?php echo @$cartorio2 ?>" type="text" class="form-control" id="cartorio-cat" name="cartorio-cat" placeholder="Cartório">
               </div>
               <div class="form-group col-md-2 ">
                 <label >Livro</label>
-                <input required value="<?php echo @$livro2 ?>" type="text" class="form-control" id="livro-cat" name="livro-cat" placeholder="Livro">
+                <input value="<?php echo @$livro2 ?>" type="text" class="form-control" id="livro-cat" name="livro-cat" placeholder="Livro">
               </div>
               <div class="form-group col-md-2 ">
                 <label >Folha</label>
-                <input required value="<?php echo @$folha2 ?>" type="text" class="form-control" id="folha-cat" name="folha-cat" placeholder="Folha">
+                <input value="<?php echo @$folha2 ?>" type="text" class="form-control" id="folha-cat" name="folha-cat" placeholder="Folha">
               </div>
               <div class="form-group col-md-3 ">
                 <label >Data de Registro</label>
-                <input required value="<?php echo @$dataRegistro2 ?>" type="date" class="form-control" id="dataRegistro-cat" name="dataRegistro-cat">
+                <input value="<?php echo @$dataRegistro2 ?>" type="date" class="form-control" id="dataRegistro-cat" name="dataRegistro-cat">
               </div>
 
             </div>
@@ -420,7 +420,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
 
         <input value="<?php echo @$_GET['id'] ?>" type="hidden" name="txtid2" id="txtid2">
-        <input value="<?php echo @$registro2 ?>" type="hidden" name="antigo" id="antigo">
+        <input value="<?php echo @$cpf2 ?>" type="hidden" name="antigo" id="antigo">
         <input value="<?php echo @$email2 ?>" type="hidden" name="antigo1" id="antigo1">
 
 
@@ -860,9 +860,9 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
                     <td>
                     
 
-                      <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-secondary ml-2"></i></span></a>
+                      <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-info ml-2"></i></span></a>
 
-                      <a target="_blank" title="Gerar Ficha Individual" href="../rel/ficha_individual_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a>
+                      <a target="_blank" title="Gerar Ficha Individual" href="../rel/ficha_individual_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-primary ml-2"></i></span></a>
 
 
                       
@@ -870,7 +870,7 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretari
 
                         <a target="_blank" title="Gerar Declaração de Aprovação" href="../rel/declaracao_aprovacao_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a> 
 
-                         <a target="_blank" title="Gerar Declaração de Transferência" href="../rel/declaracao_transferencia_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a>
+                         <a target="_blank" title="Gerar Declaração de Transferência" href="../rel/declaracao_transferencia_html.php?id=<?php echo $id_m ?>"><i class="far fa-clipboard text-danger ml-2"></i></span></a>
                         
                       <?php } ?>
                       

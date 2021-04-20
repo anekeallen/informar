@@ -28,11 +28,6 @@ foreach (@$_POST['id_disci'] as $key => $value) {
 		$res = $pdo->prepare("INSERT INTO tbprofessordisciplina SET IdProfessor = :id_professor, IdDisciplina = :id_disciplina");
 
 	}
-
-
-
-
-
 	
 
 	$res->bindValue(":id_professor", $id_professor);

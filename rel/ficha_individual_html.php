@@ -1113,6 +1113,8 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 <?php  
 
+$html = ob_get_contents();
+ob_end_clean();
 
 try {
 	$mpdf = new \Mpdf\Mpdf([
@@ -1138,10 +1140,9 @@ try {
 		');
 
 
-	$html = ob_get_contents();
-	ob_end_clean();
+	
 
-	$mpdf->debug = true;
+	
 
 	$mpdf->WriteHTML($html);
 

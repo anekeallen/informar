@@ -8,7 +8,7 @@ if(@$_SESSION['nivel_usuario'] == null || @$_SESSION['nivel_usuario'] != 'aluno'
 
 require_once("../conexao.php"); 
 
-$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_aluno' ");
+$query = $pdo->query("SELECT * FROM tbaluno where CPF = '$cpf_aluno' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_aluno = $res[0]['IdAluno'];
 
@@ -139,7 +139,7 @@ $aulasMes = @count($res);
 
 	<?php 
 
-	$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_aluno' ");
+	$query = $pdo->query("SELECT * FROM tbaluno where CPF = '$cpf_aluno' ");
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$id_aluno = $res[0]['IdAluno'];
 

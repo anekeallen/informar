@@ -44,5 +44,3 @@ if($total_reg > 0){
 	echo "<script language='javascript'> window.location='index.php' </script>";	
 }
 
-
-?>

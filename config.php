@@ -1,7 +1,7 @@
 <?php  
 
 $nome_escola = "Centro Educacional Informar";
-$url = "http://informar.test/";
+$url = "http://devallen.com.br/";
 $endereco_escola = "Av. Moema Tinoco da Cunha Lima, 1861 - Pajuçara, Natal/RN";
 $telefone_escola = "(84) 3663-2516";
 $cep_escola = "59133-090";
@@ -11,17 +11,18 @@ $rodape_relatorios = "Desenvolvido por DevAllen";
 $cnpj_escola = '03.178.155/0001-00';
 $cidade_escola = 'Natal/RN'; 
 
+/*
 //Variaveis do Banco de dados Local
 $servidor = 'localhost';
 $usuario = 'root';
 $senha = '';
-$banco = 'informar';
+$banco = 'informar';*/
 
-/*Variaveis do Banco de dados Hospedados
+//Variaveis do Banco de dados Hospedados
 $servidor = 'localhost';
 $usuario = 'devall47_aneke';
 $senha = 'AAmm031323';
-$banco = 'devall47_informar'; */
+$banco = 'devall47_informar'; 
 
 
 //VARIAVEIS GLOBAIS
@@ -64,5 +65,5 @@ $total_disciplina_progressao = 1;
 
 
 
-?>
+
 

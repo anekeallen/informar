@@ -8,8 +8,14 @@ if($email == ""){
     exit();
 }
 
-$res = $pdo->query("SELECT * FROM usuarios where email = '$email' "); 
-$dados = $res->fetchAll(PDO::FETCH_ASSOC);
+$query = $pdo->prepare("SELECT * FROM usuarios where email = :email "); 
+
+
+$query->bindValue(":email", $email);
+$query->execute();
+
+$dados = $query->fetchAll(PDO::FETCH_ASSOC);
+
 if(@count($dados) > 0){
     $senha = $dados[0]['senha'];
     $login = $dados[0]['email'];
@@ -23,7 +29,6 @@ if(@count($dados) > 0){
     echo 'Seu login e senha foram enviados para seu Email!';
 
 }else{
-	echo 'Email não Cadastrado!';
+	echo 'Email não cadastrado!';
 }
 
- ?>

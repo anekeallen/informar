@@ -37,7 +37,7 @@ if ($total_disciplinas == $total_disciplinas_aprovadas) {
 
 		$pdo->query("UPDATE tbalunoturma SET IdSituacaoAlunoTurma = '$id_situacao_turma' where IdTurma = '$turma' and IdAluno = '$aluno'");
 
-	}else{ //Caso ele tenha reprovado em mais disciplinas que o permitido ele é reprovado na 		turma
+	}else{ //Caso ele tenha reprovado em mais disciplinas que o permitido, ele é reprovado na turma
 
 		$query = $pdo->query("SELECT * FROM tbsituacaoalunoturma where SituacaoAlunoTurma = 'Reprovado'");
 		$res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -51,4 +51,6 @@ if ($total_disciplinas == $total_disciplinas_aprovadas) {
 
 
 }
+
+require('atualizar-historico.php');
 

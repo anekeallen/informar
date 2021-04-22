@@ -127,12 +127,3 @@ if ($total_disciplinas_cursando == 0) {
 }
 
 
-
-
-
-
-
-
-
-?>
-

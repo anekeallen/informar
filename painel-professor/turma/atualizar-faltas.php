@@ -74,7 +74,3 @@ if (count($res_final) > 0) {
 }
 
 
-
-
-
-?>

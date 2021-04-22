@@ -49,13 +49,5 @@ $id_fase = $res4[0]['IdFaseNota'];
 $pdo->query("UPDATE tbfasenotaaluno SET  QuantAulasDadas = '$total_aulas' where IdTurma = '$turma' and IdDisciplina = '$disciplina' and IdFaseNota = '$id_fase'");
 
 
-
-
-
-
-
-
-
 echo 'Salvo com Sucesso!';
 
-?>

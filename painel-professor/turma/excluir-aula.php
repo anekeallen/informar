@@ -52,5 +52,3 @@ if (count($res_final) > 0) {
 }
 
 echo 'Excluído com Sucesso!';
-
-?>

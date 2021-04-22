@@ -100,8 +100,3 @@ if ($total_disciplinas_cursando == 0) {
 	require('atualizar-situacao-turma.php');
 }
 
-
-
-
-
-?>

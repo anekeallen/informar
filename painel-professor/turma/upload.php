@@ -33,5 +33,3 @@ $res->execute();
 
 
 echo 'Salvo com Sucesso!';
-
-?>

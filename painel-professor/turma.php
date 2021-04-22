@@ -100,6 +100,7 @@ $encoding = mb_internal_encoding(); // ou UTF-8, ISO-8859-1...
 </small>
 
 <hr>
+ 
 
 
 
@@ -1606,6 +1607,8 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "falta") {
 }
 
 
+
+
 /*
 if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
@@ -1632,6 +1635,11 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "justificado") {
 
 
 ?>
+
+<a type="button" title="Ver disciplinas" href="index.php?pag=disciplinas&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class="btn btn-primary mb-3">Voltar</a>
+
+
+
 
 <!--AJAX PARA LISTAR OS DADOS -->
 <script type="text/javascript">

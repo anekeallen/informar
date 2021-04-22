@@ -146,42 +146,35 @@ if($totalPorcentagemSoma < $media_porcentagem_presenca){
 $encoding = mb_internal_encoding();
 
 ?>
+<div class="container p-0 m-0">
 
-<h6><b><?php echo mb_strtoupper($nome_disciplina, $encoding) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?></b>
-  <?php if($total_pontos_curso >= $media_pontos_minimo_aprovacao){
-
-    ?>
-    <a title="Retirar Certificado" href="../rel/certificado.php?id_turma=<?php echo $id_turma ?>&id_aluno=<?php echo $id_aluno ?>" target="_blank"> 
-      <img src="../img/ico-certificado.png" width="30px">
-    </a>
-
-  <?php } ?>
-
-</h6>
+<h6><b><?php echo mb_strtoupper($nome_disciplina, $encoding) ?> / <?php echo strtoupper($nome_disc) ?> <?php echo $nome_turma ?></b></h6>
 <hr>
 
 <small>
-  <div class="mb-3">
+  <div class="row">
 
-   <span class="mr-3"><i><b>Disciplina Concluída </b> <?php echo $concluido ?></i></span>
-   <span class="mr-3"><i><b>Dias de Aula </b> <?php echo $dia ?></i></span>
-   <span class="mr-3"><i><b>Horário Aula </b> <?php echo $horario ?></i></span>
-   <span class="mr-3"><i><b>Ano Início </b> <?php echo $ano ?></i></span>
-   <span class="mr-3"><i><b>Data da Conclusão </b> <?php echo $data_finalF ?></i></span>
+   <div class=" col-md-3 text-nowrap "><i><b>Disciplina Concluída </b> <?php echo $concluido ?></i></div>
+   <div class=" col-md-2 text-nowrap "><i><b>Dias de Aula </b> <?php echo $dia ?></i></div>
+   <div class=" col-md-2 text-nowrap "><i><b>Horário Aula </b> <?php echo $horario ?></i></div>
+   <div class="col-md-2 text-nowrap"><i><b>Ano Início </b> <?php echo $ano ?></i></div>
+   <div class=" col-md-3 text-nowrap "><i><b>Data da Conclusão </b> <?php echo $data_finalF ?></i></div>
  </div>
 </small>
 
 <hr>
 
 <small>
-  <div class="mb-3">
-   <span class="mr-3"><img src="../img/professores/<?php echo $imagem_prof ?>" width="70px"></i></span>
-   <span class="mr-3"><i><b>Professor:</b> <?php echo $nome_prof ?></i></span>
-   <span class="mr-3"><i><b>Email Professor: </b> <?php echo $email_prof ?></i></span>
+  <div class="row">
+   <span class="col-md-1 "><img src="../img/professores/<?php echo $imagem_prof ?>" width="70px"></i></span>
+   <span class="col-md-5 "><i><b>Professor:</b> <?php echo $nome_prof ?></i></span>
+   <span class="col-md-5 "><i><b>Email Professor: </b> <?php echo $email_prof ?></i></span>
 
 
  </div>
 </small>
+
+</div>
 <hr>
 
 
@@ -471,18 +464,7 @@ $encoding = mb_internal_encoding();
 
       <?php } ?>
 
-      <?php if(@$_GET['boletim'] != ""){ ?>
-        <div class="row">
-          <div class="col-md-6">
-            <a href="../rel/ficha_individual_html.php?id=<?php echo $id_matricula ?>" target="_blank" title="Gerar Boletim">
-              <i class='fas fa-clipboard text-primary mr-1'></i>Boletim Geral </a>
-            </div>
-
-            <div class="col-md-6" align="right">
-              <span class="<?php echo $classe_media_nota ?>" ><?php echo $total_notas_curso ?> Pontos no Total</span>
-            </div>
-          </div>
-        <?php } ?>
+      
 
       </div>
 
@@ -655,7 +637,7 @@ $encoding = mb_internal_encoding();
     <div class="row">
 
       <div class="col-6">
-    <a href="../rel/ficha_individual_html.php?id=<?php echo $id_matricula ?>" target="_blank" title="Gerar Ficha Individual">
+    <a href="../rel/ficha_individual_html.php?id_turma=<?php echo $id_turma ?>&id_aluno=<?php echo $id_aluno?>" target="_blank" title="Gerar Ficha Individual">
       <i class='fas fa-clipboard text-primary mr-1'></i>Ficha Individual </a>
     </div>
 
@@ -891,7 +873,11 @@ $encoding = mb_internal_encoding();
 
 </div>
 </div>
+
+<a type="button" title="Ver disciplinas" href="index.php?pag=disciplinas&id=<?php echo $_GET['id'] ?>&id_periodo=<?php echo $_GET['id_periodo'] ?>" class="btn btn-primary mb-3">Voltar</a>
 </div>
+
+
 
 
 
@@ -915,6 +901,8 @@ if (@$_GET["funcao"] != null && @$_GET["funcao"] == "notas") {
 
 
 ?>
+
+
 
 
 

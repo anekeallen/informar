@@ -6,7 +6,7 @@ $cpf_usuario = @$_SESSION['cpf_usuario'];
 
 
 
-$query = $pdo->query("SELECT * FROM tbaluno where RegistroNascimentoNumero = '$cpf_usuario' order by IdAluno asc ");
+$query = $pdo->query("SELECT * FROM tbaluno where CPF = '$cpf_usuario' order by IdAluno asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $id_aluno = $res[0]['IdAluno'];
 

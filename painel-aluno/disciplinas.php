@@ -160,3 +160,5 @@ if($data_final < date('Y-m-d')){
 	<?php } ?>
 
 </div>
+
+<a type="button" title="Ver disciplinas" href="index.php" class="btn btn-primary mb-3">Voltar</a>

@@ -7,7 +7,8 @@ ob_start();
 
 
 
-$id = $_GET['id'];
+$id_aluno = $_GET['id_aluno'];
+$id_turma = $_GET['id_turma'];
 
 
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
@@ -21,11 +22,11 @@ $data_hoje2 = mb_strtoupper(utf8_encode(strftime('%F', strtotime('today'))),$enc
 $data_hojeF = implode('/', array_reverse(explode('-', $data_hoje2)));
 
 //DADOS DA MATRICULAS
-$query_orc = $pdo->query("SELECT * FROM tbalunoturma where IdAlunoTurma = '$id' ");
+$query_orc = $pdo->query("SELECT * FROM tbalunoturma where IdAluno = '$id_aluno' and IdTurma = '$id_turma' ");
 $res_orc = $query_orc->fetchAll(PDO::FETCH_ASSOC);
 
-$id_turma = @$res_orc[0]['IdTurma'];
-$id_aluno = @$res_orc[0]['IdAluno'];
+//$id_turma = @$res_orc[0]['IdTurma'];
+//$id_aluno = @$res_orc[0]['IdAluno'];
 $id_aluno_turma = @$res_orc[0]['IdAlunoTurma'];
 $id_situacao = @$res_orc[0]['IdSituacaoAlunoTurma'];
 
@@ -495,7 +496,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 			Naturalidade: <?php echo $naturalidade2 ?> - <?php echo $naturalidadeUF2 ?><br>
 		</div>
 		<div class="direita-elemento fonte12" align="left">
-			Matrícula Nº <?php echo $id ?> <br>
+			Matrícula Nº <?php echo $id_aluno_turma ?> <br>
 			Data de nascimento: <?php echo $data_nascimento ?> <br>
 			Data de emissão: <?php echo $data_hojeF; ?>
 		</div>
@@ -603,6 +604,14 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 				$res_r = $query_r->fetchAll(PDO::FETCH_ASSOC);
 
 				$nome_disciplina = $res_r[0]['NomeDisciplina'];
+
+				if ($nome_curso == 'Ensino Fundamental') {
+					$carga_horaria_disciplina = $res_r[0]['CH_Fundamental1'];
+				}else{
+					$carga_horaria_disciplina = $res_r[0]['CH_Fundamental2'];
+				}
+
+				$carga_horaria_disciplinaF = number_format($carga_horaria_disciplina, 0, '.', '.');
 
 				$query_r1 = $pdo->query("SELECT * FROM tbsituacaoalunodisciplina where IdAluno = '$id_aluno' and IdTurma = '$id_turma' and IdDisciplina = '$id_disciplina'");
 				$res_r1 = $query_r1->fetchAll(PDO::FETCH_ASSOC);
@@ -987,7 +996,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 								<i><?php echo $total_faltas_final ?>f</i>
 							<?php endif ?>
 						</td>
-						<td class="td_fonte td_align-centro">Jill</td>
+						<td class="td_fonte td_align-centro"><?php echo $carga_horaria_disciplinaF ?></td>
 						<td  class="td_fonte td_align-centro"><?php echo $situacao ?></td>
 
 					</tr>
@@ -1051,7 +1060,7 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 								<i><?php echo $total_faltas_final ?>f</i>
 							<?php endif ?>
 						</td>
-						<td class="td_fonte td_align-centro">Jill</td>
+						<td class="td_fonte td_align-centro"><?php echo $carga_horaria_disciplinaF ?></td>
 						<td width="100px" class="td_fonte td_align-centro"><?php echo $situacao ?></td>
 
 					</tr>

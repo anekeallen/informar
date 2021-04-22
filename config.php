@@ -11,18 +11,17 @@ $rodape_relatorios = "Desenvolvido por DevAllen";
 $cnpj_escola = '03.178.155/0001-00';
 $cidade_escola = 'Natal/RN'; 
 
-/*
+
 //Variaveis do Banco de dados Local
 $servidor = 'localhost';
 $usuario = 'root';
 $senha = '';
-$banco = 'informar';*/
+$banco = 'informar';
 
-//Variaveis do Banco de dados Hospedados
-$servidor = 'localhost';
+/*$servidor = 'localhost';
 $usuario = 'devall47_aneke';
 $senha = 'AAmm031323';
-$banco = 'devall47_informar'; 
+$banco = 'devall47_informar'; */
 
 
 //VARIAVEIS GLOBAIS
@@ -62,8 +61,6 @@ $media_aprovacao_prova_final = 5.0; //Media para aprovacao na Prova Final
 //Define o total de disciplinas que pode ser reprovado para a progressão parcial
 
 $total_disciplina_progressao = 1;
-
-
 
 
 

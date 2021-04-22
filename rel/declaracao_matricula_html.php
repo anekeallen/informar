@@ -5,7 +5,8 @@ require_once('../vendor/autoload.php');
 
 ob_start();
 
-$id = $_GET['id'];
+$id_aluno = $_GET['id_aluno'];
+$id_turma = $_GET['id_turma'];
 
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
@@ -16,11 +17,11 @@ $data_hoje = mb_strtoupper(utf8_encode(strftime('%A, %d de %B de %Y', strtotime(
 
 
 //DADOS DA MATRICULAS
-$query_orc = $pdo->query("SELECT * FROM tbalunoturma where IdAlunoTurma = '$id' ");
+$query_orc = $pdo->query("SELECT * FROM tbalunoturma where IdAluno = '$id_aluno' and IdTurma = '$id_turma' ");
 $res_orc = $query_orc->fetchAll(PDO::FETCH_ASSOC);
 
-$id_turma = @$res_orc[0]['IdTurma'];
-$id_aluno = @$res_orc[0]['IdAluno'];
+//$id_turma = @$res_orc[0]['IdTurma'];
+//$id_aluno = @$res_orc[0]['IdAluno'];
 $id_aluno_turma = @$res_orc[0]['IdAlunoTurma'];
 //$data = $res_orc[0]['data'];
 
@@ -309,7 +310,7 @@ $vespertino = $res_r3[0]['horarioTarde'];
 
 		<div class="">
 			<div class="esquerda">	
-				<big> Matrícula Nº <?php echo $id ?>  </big>
+				<big> Matrícula Nº <?php echo $id_aluno_turma ?>  </big>
 			</div>
 			<div class="direita" align="right">	
 				<big> <small> Data: <?php echo $data_hoje; ?></small> </big>

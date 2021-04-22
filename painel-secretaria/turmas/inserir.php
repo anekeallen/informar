@@ -39,16 +39,14 @@ if($turno == ""){
 	exit();
 }
 
+$id_sala = isset($_REQUEST['sala'])? intval($_REQUEST['sala']): 0;
+
 if($data_inicio == ""){
 	$data_inicio = null;
 }
 if($data_final == ""){
 	$data_final = null;
 }
-
-$id_sala = isset($_REQUEST['sala'])? intval($_REQUEST['sala']): 0;
-//VERIFICAR SE O REGISTRO JÁ EXISTE NO BANCO
-
 
 
 

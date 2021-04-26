@@ -9,7 +9,7 @@ $email_escola = "ceinformar@yahoo.com.br";
 $email_adm = "anekeapj@gmail.com";
 $rodape_relatorios = "Desenvolvido por DevAllen";
 $cnpj_escola = '03.178.155/0001-00';
-$cidade_escola = 'Natal/RN'; 
+$cidade_escola = 'Natal / RN'; 
 
 
 //Variaveis do Banco de dados Local

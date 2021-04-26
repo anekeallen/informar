@@ -4,7 +4,7 @@ require_once("../conexao.php");
 
 @session_start();
     //verificar se o usuário está autenticado
-if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
+if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'secretaria'){
   echo "<script language='javascript'> window.location='../index.php' </script>";
 
 } 
@@ -867,23 +867,29 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                   </td>
 
                   <td>
-                    
-
-                      <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma']?>"><i class="far fa-clipboard text-info ml-2"></i></span></a>
-
-                      <a target="_blank" title="Gerar Ficha Individual" href="../rel/ficha_individual_html.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="far fa-clipboard text-primary ml-2"></i></span></a>
 
 
-                      
-                      <?php if ($situacao == 'Aprovado') { ?>
+                    <a target="_blank" title="Gerar Declaração Matrícula" href="../rel/declaracao_matricula_html.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma']?>"><i class="far fa-clipboard text-info ml-2"></i></span></a>
 
-                        <a target="_blank" title="Gerar Declaração de Aprovação" href="../rel/declaracao_aprovacao_html.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a> 
+                    <a target="_blank" title="Gerar Ficha Individual" href="../rel/ficha_individual_html.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="far fa-clipboard text-primary ml-2"></i></span></a>
 
-                         <a target="_blank" title="Gerar Declaração de Transferência" href="../rel/declaracao_transferencia_html.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="far fa-clipboard text-danger ml-2"></i></span></a>
 
-                </tr>
 
-              <?php } } ?>
+
+
+                    <?php if ($situacao == 'Aprovado') { ?>
+
+                      <a target="_blank" title="Gerar Declaração de Aprovação" href="../rel/declaracao_aprovacao_html.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="far fa-clipboard text-success ml-2"></i></span></a> 
+
+                      <a target="_blank" title="Gerar Declaração de Transferência" href="../rel/declaracao_transferencia_html.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="far fa-clipboard text-danger ml-2"></i></span></a>
+
+
+
+                    <?php }  ?>
+                    <a target="_blank" title="Gerar Histórico Escolar" href="../rel/historico.php?&id_aluno=<?php echo $id_aluno?>&id_turma=<?php echo $_GET['id_turma'] ?>"><i class="far fa-clipboard text-warning ml-2"></i></span></a>
+                  </td>
+                <?php } ?>
+              </tr>
 
             </tbody>
           </table>
@@ -1106,93 +1112,93 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
 
       } else{
         echo "<script>alert('Aluno já matriculado na turma!')</script>";
-      
+
 
       }
 
-       echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
+      echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma&id_aluno=$id_aluno&funcao=matriculados';</script>";
 
     }
 
-      if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
-        echo "<script>$('#modal-matriculados').modal('show');</script>";
-      }
+    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "matriculados") {
+      echo "<script>$('#modal-matriculados').modal('show');</script>";
+    }
 
-      if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
-        $id_aluno2 = $_GET['id_aluno'];
-        $id_turma2 = $_GET['id_turma'];
+    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "excluir_matricula") {
+      $id_aluno2 = $_GET['id_aluno'];
+      $id_turma2 = $_GET['id_turma'];
 
-        echo "<script>$('#modal-excluir-matricula').modal('show');</script>";
+      echo "<script>$('#modal-excluir-matricula').modal('show');</script>";
 
 
 
 
       // echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma2&id_aluno=$id_aluno2&funcao=matriculados';</script>";
 
-      } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "transferir") {
-        $id_aluno3 = $_GET['id_aluno'];
-        $id_turma3 = $_GET['id_turma'];
+    } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "transferir") {
+      $id_aluno3 = $_GET['id_aluno'];
+      $id_turma3 = $_GET['id_turma'];
 
-        $query = $pdo->query("SELECT * FROM tbsituacaoalunoturma where SituacaoAlunoTurma = 'Transferido'");
-        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+      $query = $pdo->query("SELECT * FROM tbsituacaoalunoturma where SituacaoAlunoTurma = 'Transferido'");
+      $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        $id_situacao_turma = $res[0]['IdSituacaoAlunoTurma'];
+      $id_situacao_turma = $res[0]['IdSituacaoAlunoTurma'];
 
-        $pdo->query("UPDATE tbalunoturma SET IdSituacaoAlunoTurma = '$id_situacao_turma' where IdTurma = '$id_turma3' and IdAluno = '$id_aluno3'");
+      $pdo->query("UPDATE tbalunoturma SET IdSituacaoAlunoTurma = '$id_situacao_turma' where IdTurma = '$id_turma3' and IdAluno = '$id_aluno3'");
 
-        $pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Transferido' WHERE IdAluno = '$id_aluno3' and IdTurma = '$id_turma3'");
-
-
-        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma3&id_aluno=$id_aluno3&funcao=matriculados';</script>";
-
-      } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "cancelar_matricula") {
-        $id_aluno4 = $_GET['id_aluno'];
-        $id_turma4 = $_GET['id_turma'];
-
-        $query = $pdo->query("SELECT * FROM tbsituacaoalunoturma where SituacaoAlunoTurma = 'Cancelado'");
-        $res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-        $id_situacao_turma = $res[0]['IdSituacaoAlunoTurma'];
-
-        $pdo->query("UPDATE tbalunoturma SET IdSituacaoAlunoTurma = '$id_situacao_turma' where IdTurma = '$id_turma4' and IdAluno = '$id_aluno4'");
-
-        $pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Cancelado' WHERE IdAluno = '$id_aluno4' and IdTurma = '$id_turma4'");
+      $pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Transferido' WHERE IdAluno = '$id_aluno3' and IdTurma = '$id_turma3'");
 
 
-        echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma4&id_aluno=$id_aluno4&funcao=matriculados';</script>";
+      echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma3&id_aluno=$id_aluno3&funcao=matriculados';</script>";
 
-      } 
+    } if (@$_GET["funcao"] != null && @$_GET["funcao"] == "cancelar_matricula") {
+      $id_aluno4 = $_GET['id_aluno'];
+      $id_turma4 = $_GET['id_turma'];
+
+      $query = $pdo->query("SELECT * FROM tbsituacaoalunoturma where SituacaoAlunoTurma = 'Cancelado'");
+      $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+      $id_situacao_turma = $res[0]['IdSituacaoAlunoTurma'];
+
+      $pdo->query("UPDATE tbalunoturma SET IdSituacaoAlunoTurma = '$id_situacao_turma' where IdTurma = '$id_turma4' and IdAluno = '$id_aluno4'");
+
+      $pdo->query("UPDATE tbsituacaoalunodisciplina SET SituacaoAtual = 'Cancelado' WHERE IdAluno = '$id_aluno4' and IdTurma = '$id_turma4'");
+
+
+      echo "<script>window.location='index.php?pag=$pag&id_turma=$id_turma4&id_aluno=$id_aluno4&funcao=matriculados';</script>";
+
+    } 
 
 
 
-      if (@$_GET["funcao"] != null && @$_GET["funcao"] == "professores") {
-        echo "<script>$('#modal-professores').modal('show');</script>";
-      }
+    if (@$_GET["funcao"] != null && @$_GET["funcao"] == "professores") {
+      echo "<script>$('#modal-professores').modal('show');</script>";
+    }
 
-      ?>
-
-
+    ?>
 
 
 
 
-      <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
-      <script type="text/javascript">
-        $("#form").submit(function () {
-          var pag = "<?=$pag?>";
-          event.preventDefault();
-          var formData = new FormData(this);
 
-          $.ajax({
-            url: pag + "/inserir.php",
-            type: 'POST',
-            data: formData,
 
-            success: function (mensagem) {
+    <!--AJAX PARA INSERÇÃO E EDIÇÃO DOS DADOS COM IMAGEM -->
+    <script type="text/javascript">
+      $("#form").submit(function () {
+        var pag = "<?=$pag?>";
+        event.preventDefault();
+        var formData = new FormData(this);
 
-              $('#mensagem').removeClass()
+        $.ajax({
+          url: pag + "/inserir.php",
+          type: 'POST',
+          data: formData,
 
-              if (mensagem.trim() == "Salvo com Sucesso!!") {
+          success: function (mensagem) {
+
+            $('#mensagem').removeClass()
+
+            if (mensagem.trim() == "Salvo com Sucesso!!") {
 
                     //$('#nome').val('');
                     //$('#cpf').val('');
@@ -1221,26 +1227,26 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 return myXhr;
               }
             });
-        });
-      </script>
+      });
+    </script>
 
-      <!--AJAX PARA INSERÇÃO de professores nas turmas -->
-      <script type="text/javascript">
-        $("#form-prof").submit(function () {
-          var pag = "<?=$pag?>";
-          event.preventDefault();
-          var formData = new FormData(this);
+    <!--AJAX PARA INSERÇÃO de professores nas turmas -->
+    <script type="text/javascript">
+      $("#form-prof").submit(function () {
+        var pag = "<?=$pag?>";
+        event.preventDefault();
+        var formData = new FormData(this);
 
-          $.ajax({
-            url: pag + "/inserir-professores.php",
-            type: 'POST',
-            data: formData,
+        $.ajax({
+          url: pag + "/inserir-professores.php",
+          type: 'POST',
+          data: formData,
 
-            success: function (mensagem) {
+          success: function (mensagem) {
 
-              $('#mensagem-prof').removeClass()
+            $('#mensagem-prof').removeClass()
 
-              if (mensagem.trim() == "Salvo com Sucesso!!") {
+            if (mensagem.trim() == "Salvo com Sucesso!!") {
 
                     //$('#nome').val('');
                     //$('#cpf').val('');
@@ -1269,150 +1275,150 @@ if(@$_SESSION['id_usuario'] == null || @$_SESSION['nivel_usuario'] != 'Admin'){
                 return myXhr;
               }
             });
-        });
-      </script>
+      });
+    </script>
 
 
 
 
 
-      <!--AJAX PARA EXCLUSÃO DOS DADOS -->
-      <script type="text/javascript">
-        $(document).ready(function () {
-          var pag = "<?=$pag?>";
-          $('#btn-deletar').click(function (event) {
-            event.preventDefault();
+    <!--AJAX PARA EXCLUSÃO DOS DADOS -->
+    <script type="text/javascript">
+      $(document).ready(function () {
+        var pag = "<?=$pag?>";
+        $('#btn-deletar').click(function (event) {
+          event.preventDefault();
 
-            $.ajax({
-              url: pag + "/excluir.php",
-              method: "post",
-              data: $('form').serialize(),
-              dataType: "text",
-              success: function (mensagem) {
+          $.ajax({
+            url: pag + "/excluir.php",
+            method: "post",
+            data: $('form').serialize(),
+            dataType: "text",
+            success: function (mensagem) {
 
-                if (mensagem.trim() === 'Excluído com Sucesso!!') {
-
-
-                  $('#btn-cancelar-excluir').click();
-                  window.location = "index.php?pag=" + pag;
-                }
-
-                $('#mensagem_excluir').addClass('text-danger')
-                $('#mensagem_excluir').text(mensagem)
+              if (mensagem.trim() === 'Excluído com Sucesso!!') {
 
 
+                $('#btn-cancelar-excluir').click();
+                window.location = "index.php?pag=" + pag;
+              }
 
-              },
+              $('#mensagem_excluir').addClass('text-danger')
+              $('#mensagem_excluir').text(mensagem)
 
-            })
+
+
+            },
+
           })
         })
-      </script>
+      })
+    </script>
 
-      <!--AJAX PARA EXCLUSÃO DOS DADOS -->
-      <script type="text/javascript">
-        $(document).ready(function () {
-          var pag = "<?=$pag?>";
-          var turma = "<?=$_GET['id_turma']?>";
-          var aluno = "<?=$_GET['id_aluno']?>";
-
-
-
-          $('#btn-excluir-matricula').click(function (event) {
-            event.preventDefault();
-
-            console.log(aluno)
-
-            $.ajax({
-              url: pag + "/excluir-matricula.php",
-              method: "post",
-              data: {turma, aluno},
-              dataType: "text",
-              success: function (mensagem) {
-
-                if (mensagem.trim() === 'Excluído com Sucesso!!') {
-
-
-                  $('#btn-cancelar-excluir-matricula').click();
-                  window.location = 'index.php?pag='+pag+'&id_turma='+turma+'&id_aluno='+aluno+'&funcao=matriculados';
-
-                }else{
-
-                  $('#mensagem_excluir-matricula').addClass('text-danger')
-                  $('#mensagem_excluir-matricula').text(mensagem)
-                }
-
-                
+    <!--AJAX PARA EXCLUSÃO DOS DADOS -->
+    <script type="text/javascript">
+      $(document).ready(function () {
+        var pag = "<?=$pag?>";
+        var turma = "<?=$_GET['id_turma']?>";
+        var aluno = "<?=$_GET['id_aluno']?>";
 
 
 
-              },
+        $('#btn-excluir-matricula').click(function (event) {
+          event.preventDefault();
 
-            })
+          console.log(aluno)
+
+          $.ajax({
+            url: pag + "/excluir-matricula.php",
+            method: "post",
+            data: {turma, aluno},
+            dataType: "text",
+            success: function (mensagem) {
+
+              if (mensagem.trim() === 'Excluído com Sucesso!!') {
+
+
+                $('#btn-cancelar-excluir-matricula').click();
+                window.location = 'index.php?pag='+pag+'&id_turma='+turma+'&id_aluno='+aluno+'&funcao=matriculados';
+
+              }else{
+
+                $('#mensagem_excluir-matricula').addClass('text-danger')
+                $('#mensagem_excluir-matricula').text(mensagem)
+              }
+
+
+
+
+
+            },
+
           })
         })
-      </script>
+      })
+    </script>
 
 
 
-      <!--SCRIPT PARA CARREGAR IMAGEM -->
-      <script type="text/javascript">
+    <!--SCRIPT PARA CARREGAR IMAGEM -->
+    <script type="text/javascript">
 
-        function carregarImg() {
+      function carregarImg() {
 
-          var target = document.getElementById('target');
-          var file = document.querySelector("input[type=file]").files[0];
-          var reader = new FileReader();
+        var target = document.getElementById('target');
+        var file = document.querySelector("input[type=file]").files[0];
+        var reader = new FileReader();
 
-          reader.onloadend = function () {
-            target.src = reader.result;
-          };
+        reader.onloadend = function () {
+          target.src = reader.result;
+        };
 
-          if (file) {
-            reader.readAsDataURL(file);
+        if (file) {
+          reader.readAsDataURL(file);
 
 
-          } else {
-            target.src = "";
-          }
+        } else {
+          target.src = "";
         }
+      }
 
-      </script>
-
-
-
+    </script>
 
 
-      <script type="text/javascript">
-        $(document).ready(function () {
-          $('#dataTable').dataTable({
-            "ordering": false,
-            "stateSave": true,
-            "stateDuration": 60 * 60 * 24,
-            "autoWidth": false
-          })
-          $('#dataTable2').dataTable({
-            "ordering": false,
-            "stateSave": true,
-            "stateDuration": 60 * 60 * 24,
-            "autoWidth": false
-          })
-
-        });
-      </script>
 
 
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
 
-      <script src="../js/mascaras.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#dataTable').dataTable({
+          "ordering": false,
+          "stateSave": true,
+          "stateDuration": 60 * 60 * 24,
+          "autoWidth": false
+        })
+        $('#dataTable2').dataTable({
+          "ordering": false,
+          "stateSave": true,
+          "stateDuration": 60 * 60 * 24,
+          "autoWidth": false
+        })
 
-      <script>
-        function maiuscula(string){
-          res = string.value.toUpperCase();
+      });
+    </script>
 
-          string.value=res;
-        }
-      </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+
+    <script src="../js/mascaras.js"></script>
+
+    <script>
+      function maiuscula(string){
+        res = string.value.toUpperCase();
+
+        string.value=res;
+      }
+    </script>
 
 
 

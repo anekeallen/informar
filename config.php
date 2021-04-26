@@ -62,5 +62,10 @@ $media_aprovacao_prova_final = 5.0; //Media para aprovacao na Prova Final
 
 $total_disciplina_progressao = 1;
 
+$carga_horaria_F1 = 800;
+$carga_horaria_F2 = 1000;
+
+$dias_letivos = 200;
+
 
 

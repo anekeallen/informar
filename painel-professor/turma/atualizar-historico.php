@@ -92,19 +92,20 @@ for ($i=0; $i < count($res22); $i++) {
 
 
 	$notafinal = $res2[0]['NotaFase'];
+	$notafinalF = number_format($notafinal, 1, ',', '.');
 	$quantFaltas = $res2[0]['Faltas'];
 
 	if (empty($res_ver)) {
 
 		
 
-		$pdo->query("INSERT INTO tbhistoriconotas SET CodigoSerie = '$codigo_serie', IdAluno = '$aluno', IdDisciplina = '$id_disciplina', NotaFinal = '$notafinal', CargaHorariaAnual = '$carga_horaria_disciplina', QuantidadeFaltasAnual = '$quantFaltas', ResultadoFinal = '$situacao_disc' , AnoConclusao = '$ano'");
+		$pdo->query("INSERT INTO tbhistoriconotas SET CodigoSerie = '$codigo_serie', IdAluno = '$aluno', IdDisciplina = '$id_disciplina', NotaFinal = '$notafinalF', CargaHorariaAnual = '$carga_horaria_disciplina', QuantidadeFaltasAnual = '$quantFaltas', ResultadoFinal = '$situacao_disc' , AnoConclusao = '$ano'");
 
 
 		
 	}else{
 
-		$pdo->query("UPDATE tbhistoriconotas SET NotaFinal = '$notafinal', CargaHorariaAnual = '$carga_horaria_disciplina', QuantidadeFaltasAnual = '$quantFaltas', ResultadoFinal = '$situacao_disc'  where CodigoSerie = '$codigo_serie' and IdAluno = '$aluno' and IdDisciplina = '$id_disciplina' and AnoConclusao = '$ano'");
+		$pdo->query("UPDATE tbhistoriconotas SET NotaFinal = '$notafinalF', CargaHorariaAnual = '$carga_horaria_disciplina', QuantidadeFaltasAnual = '$quantFaltas', ResultadoFinal = '$situacao_disc'  where CodigoSerie = '$codigo_serie' and IdAluno = '$aluno' and IdDisciplina = '$id_disciplina' and AnoConclusao = '$ano'");
 
 		
 	}

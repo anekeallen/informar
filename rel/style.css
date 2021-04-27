@@ -1,0 +1,30 @@
+table, td, th, tr, div{
+	font-family: arial, sans-serif;
+}
+
+
+#t02 tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+#t02 td {
+	
+	font-size: 7pt; 
+	padding-left: 5px;
+	padding-right: 5px;
+
+}
+
+#t02 th {
+	
+	font-size: 9pt; 
+	white-space: nowrap;
+
+}
+
+.td-center{
+	text-align: center;
+
+}
+
+

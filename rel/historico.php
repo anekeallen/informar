@@ -641,6 +641,10 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n11'");
 				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
 
+				if (!empty($res1)) {
+					$contador1 = 1;
+					# code...
+				}
 				$notafinal1 = @$res1[0]['NotaFinal'];
 
 				
@@ -668,13 +672,17 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 					<?php 
 				$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdAluno = '$id_aluno' and
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n12'");
-				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+				$res2 = $query->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($res2)) {
+					$contador2 = 1;
+					# code...
+				}
 
-				$notafinal2 = @$res1[0]['NotaFinal'];
+				$notafinal2 = @$res2[0]['NotaFinal'];
 
 				
 				
-				$faltasAnual2 = @$res1[0]['QuantidadeFaltasAnual'];
+				$faltasAnual2 = @$res2[0]['QuantidadeFaltasAnual'];
 
 				$faltas_total2 = $faltas_total2 + @$faltasAnual2;
 
@@ -698,12 +706,16 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 						<?php 
 				$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdAluno = '$id_aluno' and
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n13'");
-				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+				$res3 = $query->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($res3)) {
+					$contador3 = 1;
+					# code...
+				}
 
-				$notafinal3 = @$res1[0]['NotaFinal'];
+				$notafinal3 = @$res3[0]['NotaFinal'];
 				
 				
-				$faltasAnual3 = @$res1[0]['QuantidadeFaltasAnual'];
+				$faltasAnual3 = @$res3[0]['QuantidadeFaltasAnual'];
 
 				$faltas_total3 = $faltas_total3 + @$faltasAnual3;
 
@@ -727,12 +739,16 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 						<?php 
 				$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdAluno = '$id_aluno' and
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n14'");
-				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+				$res4 = $query->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($res4)) {
+					$contador4 = 1;
+					# code...
+				}
 
-				$notafinal4 = @$res1[0]['NotaFinal'];
+				$notafinal4 = @$res4[0]['NotaFinal'];
 				
 				
-				$faltasAnual4 = @$res1[0]['QuantidadeFaltasAnual'];
+				$faltasAnual4 = @$res4[0]['QuantidadeFaltasAnual'];
 
 				$faltas_total4 = $faltas_total4 + @$faltasAnual4;
 
@@ -756,12 +772,16 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 						<?php 
 				$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdAluno = '$id_aluno' and
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n15'");
-				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+				$res5 = $query->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($res5)) {
+					$contador5 = 1;
+					# code...
+				}
 
-				$notafinal5 = @$res1[0]['NotaFinal'];
+				$notafinal5 = @$res5[0]['NotaFinal'];
 				
 				
-				$faltasAnual5 = @$res1[0]['QuantidadeFaltasAnual'];
+				$faltasAnual5 = @$res5[0]['QuantidadeFaltasAnual'];
 
 				$faltas_total5 = $faltas_total5 + @$faltasAnual5;
 
@@ -785,13 +805,17 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 						<?php 
 				$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdAluno = '$id_aluno' and
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n16'");
-				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+				$res6 = $query->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($res6)) {
+					$contador6 = 1;
+					# code...
+				}
 
-				$notafinal6 = @$res1[0]['NotaFinal'];
+				$notafinal6 = @$res6[0]['NotaFinal'];
 
 				
 				
-				$faltasAnual6 = @$res1[0]['QuantidadeFaltasAnual'];
+				$faltasAnual6 = @$res6[0]['QuantidadeFaltasAnual'];
 
 				$faltas_total6 = $faltas_total6 + @$faltasAnual6;
 
@@ -816,12 +840,16 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 						<?php 
 				$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdAluno = '$id_aluno' and
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n17'");
-				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+				$res7 = $query->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($res7)) {
+					$contador7 = 1;
+					# code...
+				}
 
-				$notafinal7 = @$res1[0]['NotaFinal'];
+				$notafinal7 = @$res7[0]['NotaFinal'];
 				
 				
-				$faltasAnual7 = @$res1[0]['QuantidadeFaltasAnual'];
+				$faltasAnual7 = @$res7[0]['QuantidadeFaltasAnual'];
 
 				$faltas_total7 = $faltas_total7 + @$faltasAnual7;
 
@@ -846,12 +874,16 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 						<?php 
 				$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdAluno = '$id_aluno' and
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n18'");
-				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+				$res8 = $query->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($res8)) {
+					$contador8 = 1;
+					# code...
+				}
 
-				$notafinal8 = @$res1[0]['NotaFinal'];
+				$notafinal8 = @$res8[0]['NotaFinal'];
 				
 				
-				$faltasAnual8 = @$res1[0]['QuantidadeFaltasAnual'];
+				$faltasAnual8 = @$res8[0]['QuantidadeFaltasAnual'];
 
 				$faltas_total8 = $faltas_total8 + @$faltasAnual8;
 
@@ -875,12 +907,16 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 						<?php 
 				$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdAluno = '$id_aluno' and
 					IdDisciplina = '$id_disciplina' and CodigoSerie = 'n19'");
-				$res1 = $query->fetchAll(PDO::FETCH_ASSOC);
+				$res9 = $query->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($res9)) {
+					$contador9 = 1;
+					# code...
+				}
 
-				$notafinal9 = @$res1[0]['NotaFinal'];
+				$notafinal9 = @$res9[0]['NotaFinal'];
 				
 				
-				$faltasAnual9 = @$res1[0]['QuantidadeFaltasAnual'];
+				$faltasAnual9 = @$res9[0]['QuantidadeFaltasAnual'];
 
 				$faltas_total9 = $faltas_total9 + @$faltasAnual9;
 
@@ -916,15 +952,58 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 		<tr class="bg-escuro">
 			<td>Carga horária total</td>
-			<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
-			<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
-			<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
-			<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
-			<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
-			<td class="tdpro"><?php echo $carga_horaria_F2 ?></td>
-			<td class="tdpro"><?php echo $carga_horaria_F2 ?></td>
-			<td class="tdpro"><?php echo $carga_horaria_F2 ?></td>
-			<td class="tdpro"><?php echo $carga_horaria_F2 ?></td>
+			
+			
+			<?php if (!empty($contador1)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador2)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+
+			<?php if (!empty($contador3)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador4)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+
+
+
+			<?php if (!empty($contador5)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F1 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador6)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F2 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador7)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F2 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador8)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F2 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador9)): ?>
+				<td class="tdpro"><?php echo $carga_horaria_F2 ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			
 			
 
 		</tr>
@@ -1004,28 +1083,104 @@ $totalPorcentagemSomaF = number_format($totalPorcentagemSoma, 2, ',', '.');
 
 		<tr class="bg-escuro">
 			<td>Frequência total</td>
-			<td class="tdpro"><?php echo $frequencia1F ?>%</td>
-			<td class="tdpro"><?php echo $frequencia2F ?>%</td>
-			<td class="tdpro"><?php echo $frequencia3F ?>%</td>
-			<td class="tdpro"><?php echo $frequencia4F ?>%</td>
-			<td class="tdpro"><?php echo $frequencia5F ?>%</td>
-			<td class="tdpro"><?php echo $frequencia6F ?>%</td>
-			<td class="tdpro"><?php echo $frequencia7F ?>%</td>
-			<td class="tdpro"><?php echo $frequencia8F ?>%</td>
-			<td class="tdpro"><?php echo $frequencia9F ?>%</td>
+
+			<?php if (!empty($contador1)): ?>
+				<td class="tdpro"><?php echo $frequencia1F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador2)): ?>
+				<td class="tdpro"><?php echo $frequencia2F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador3)): ?>
+				<td class="tdpro"><?php echo $frequencia3F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador4)): ?>
+				<td class="tdpro"><?php echo $frequencia4F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador5)): ?>
+				<td class="tdpro"><?php echo $frequencia5F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador6)): ?>
+				<td class="tdpro"><?php echo $frequencia6F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador7)): ?>
+				<td class="tdpro"><?php echo $frequencia7F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador8)): ?>
+				<td class="tdpro"><?php echo $frequencia8F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador9)): ?>
+				<td class="tdpro"><?php echo $frequencia9F ?>%</td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			
+			
 			
 		</tr>
 	<tr class="bg-escuro">
 			<td>Dias letivos</td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
-			<td class="tdpro"><?php echo $dias_letivos ?></td>
+
+			<?php if (!empty($contador1)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador2)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador3)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador4)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador5)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador6)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador7)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador8)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
+			<?php if (!empty($contador9)): ?>
+				<td class="tdpro"><?php echo $dias_letivos ?></td>
+			<?php else: ?>
+				<td class="tdpro">---</td>
+			<?php endif ?>
 			
 		</tr>
 

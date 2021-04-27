@@ -215,7 +215,7 @@ for ($i=0; $i < count($res); $i++) {
 	$html .= '</table>
 	<span style="font-size: 9pt;">E, para constar, eu, '.$nome_usu.', Secretário(a), lavrei o presente livro que vai assinado por mim e pelo(a) Diretor(a) da Escola.</span>
 	<br><br><br>
-	<div align="center">
+	<div style="font-size: 9pt;" align="center">
 			______________________________________________________
 			<br>
 			(DIREÇÃO/SECRETARIA)
@@ -223,16 +223,11 @@ for ($i=0; $i < count($res); $i++) {
 	</div>';
 
 
+	if (($i + 1) != count($res)) {
+		$html .= '<pagebreak />';
+	}
+		
 	
-
-
-
-	$html .= '<pagebreak />';
-
-
-
-
-
 
 }
 

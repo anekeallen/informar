@@ -120,6 +120,10 @@ $menu7 = "";
                         <!-- Divider -->
                         <hr class="sidebar-divider d-none d-md-block">
 
+                        <!-- Heading -->
+                        <div class="sidebar-heading">
+                            Relatórios
+                        </div>
 
 
                         <!-- Nav Item - Charts -->
@@ -127,6 +131,13 @@ $menu7 = "";
                             <a class="nav-link" href="" data-toggle="modal" data-target="#ModalAtaMatricula">
                                 <i class="fas fa-book"></i>
                                 <span>Livro de Matrículas</span></a>
+                            </li>
+
+                              <!-- Nav Item - Charts -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="" data-toggle="modal" data-target="#ModalAtaResultados">
+                                <i class="fas fa-book"></i>
+                                <span>Atas de Resultados</span></a>
                             </li>
 
                             <!-- Sidebar Toggler (Sidebar) -->
@@ -394,58 +405,116 @@ $menu7 = "";
 
 
             <!--  Modal Rel Pagar-->
-<div class="modal fade" id="ModalAtaMatricula" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Livro de Matrículas</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-
-            <form action="../rel/livro_matricula.php" method="POST" target="_blank">
-                <div class="modal-body">
-
-                 <div class="row">
-                  
-
-                    <div class="col-md-12">
-
-                        <div class="form-group">
-                            <label >Ano Letivo</label>
-                            <select name="ano_letivo" class="form-control" id="ano_letivo">
-
-                                    <?php 
-
-                                    $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc");
-                                    $res = $query->fetchAll(PDO::FETCH_ASSOC);
-
-                                    for ($i=0; $i < @count($res); $i++) { 
-                                        foreach ($res[$i] as $key => $value) {
-                                        }
-                                        $nome_reg = $res[$i]['SiglaPeriodo'];
-                                        $id_reg = $res[$i]['IdPeriodo'];
-                                        ?>                                  
-                                        <option <?php if(@$categoria2 == $id_reg){ ?> selected <?php } ?> value="<?php echo $id_reg ?>"><?php echo $nome_reg ?></option>
-                                    <?php } ?>
-                                    
-                                </select>
+            <div class="modal fade" id="ModalAtaMatricula" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Livro de Matrículas</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
                         </div>
 
+                        <form action="../rel/livro_matricula.php" method="POST" target="_blank">
+                            <div class="modal-body">
 
-                    </div>
+                               <div class="row">
 
-                </div>     
 
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label >Ano Letivo</label>
+                                        <select name="ano_letivo" class="form-control" id="ano_letivo">
+
+                                            <?php 
+
+                                            $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc");
+                                            $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                                            for ($i=0; $i < @count($res); $i++) { 
+                                                foreach ($res[$i] as $key => $value) {
+                                                }
+                                                $nome_reg = $res[$i]['SiglaPeriodo'];
+                                                $id_reg = $res[$i]['IdPeriodo'];
+                                                ?>                                  
+                                                <option <?php if(@$categoria2 == $id_reg){ ?> selected <?php } ?> value="<?php echo $id_reg ?>"><?php echo $nome_reg ?></option>
+                                            <?php } ?>
+
+                                        </select>
+                                    </div>
+
+
+                                </div>
+
+                            </div>     
+
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="submit" class="btn btn-primary">Gerar Livro</button>
+                        </div>
+                    </form>
+
+
+                </div>
             </div>
-            <div class="modal-footer">
+        </div>
 
-                <button type="submit" class="btn btn-primary">Gerar Livro</button>
+
+            <!--  Modal Rel Pagar-->
+            <div class="modal fade" id="ModalAtaResultados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Atas de Resultados</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+
+                        <form action="../rel/atas_resultados.php" method="POST" target="_blank">
+                            <div class="modal-body">
+
+                               <div class="row">
+
+
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label >Ano Letivo</label>
+                                        <select name="ano_letivo" class="form-control" id="ano_letivo">
+
+                                            <?php 
+
+                                            $query = $pdo->query("SELECT * FROM tbperiodo order by IdPeriodo desc");
+                                            $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                                            for ($i=0; $i < @count($res); $i++) { 
+                                                foreach ($res[$i] as $key => $value) {
+                                                }
+                                                $nome_reg2 = $res[$i]['SiglaPeriodo'];
+                                                $id_reg2 = $res[$i]['IdPeriodo'];
+                                                ?>                                  
+                                                <option <?php if(@$categoria2 == $id_reg2){ ?> selected <?php } ?> value="<?php echo $id_reg2 ?>"><?php echo $nome_reg2 ?></option>
+                                            <?php } ?>
+
+                                        </select>
+                                    </div>
+
+
+                                </div>
+
+                            </div>     
+
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="submit" class="btn btn-primary">Gerar Atas</button>
+                        </div>
+                    </form>
+
+
+                </div>
             </div>
-        </form>
-
-
-    </div>
-</div>
-</div>
+        </div>

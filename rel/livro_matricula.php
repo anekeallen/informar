@@ -28,6 +28,8 @@ $mpdf = new \Mpdf\Mpdf([
 
 ]);
 
+$mpdf->SetTitle('Livro de Matrículas');
+
 
 
 
@@ -42,7 +44,7 @@ $html = '<htmlpageheader name="myHTMLHeader1">
 
 
 
-$query_r = $pdo->query("SELECT * FROM tbturma where IdPeriodo = '$id_periodo' ");
+$query_r = $pdo->query("SELECT * FROM tbturma where IdPeriodo = '$id_periodo' order by IdSerie ");
 $res = $query_r->fetchAll(PDO::FETCH_ASSOC);
 for ($i=0; $i < count($res); $i++) { 
 	foreach ($res[$i] as $key => $value) {

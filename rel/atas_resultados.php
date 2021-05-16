@@ -296,7 +296,7 @@ for ($i=0; $i < count($res); $i++) {
 
 
 
-	$html .= '</table>
+	$html .= '</table><br><br>
 	<span style="font-size: 9pt;">E, para constar, eu, '.$nome_usu.', Secretário(a), lavrei o presente livro que vai assinado por mim e pelo(a) Diretor(a) da Escola.</span>
 	<br><br><br>
 	<div style="font-size: 9pt;" align="center">

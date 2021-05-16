@@ -117,8 +117,8 @@ for ($i=0; $i < count($res); $i++) {
 
 
 		if (($j + 1) == count($res_r6)) {
-			$html .= '<th text-rotate="90">Frequência anual (%)</th>';
-			$html .= '<th style="">Situação Final</th>';
+			$html .= '<th text-rotate="90"><p>Frequência anual (%)</p></th>';
+			$html .= '<th style=""><p>Situação Final</p></th>';
 			$html .= '</tr>';
 		}
 
@@ -151,6 +151,7 @@ for ($i=0; $i < count($res); $i++) {
 
 		$query_r66 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo ='$id_periodo' order by IdDisciplina");
 		$res_r66 = $query_r66->fetchAll(PDO::FETCH_ASSOC);
+		$total_faltas = 0;
 		for ($t=0; $t < count($res_r66); $t++) { 
 			foreach ($res_r66[$t] as $key => $value) {
 			}
@@ -167,7 +168,11 @@ for ($i=0; $i < count($res); $i++) {
 				$resultado_final = @$res133[0]['ResultadoFinal'];
 				$id_disciplina = @$res133[0]['IdDisciplina'];
 
+
+
 				$faltas1 = rtrim($faltas);
+
+				$total_faltas = $total_faltas + $faltas;
 
 				$html .= '
 				<td>'.$nota.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$faltas1.'</td>
@@ -180,7 +185,11 @@ for ($i=0; $i < count($res); $i++) {
 			}
 
 			if (($t + 1) == count($res_r66)) {
-				$html .= '<td>'.$faltas.'</td>';
+
+				$frequencia_anual = 100 - (($total_faltas*100) / 1000 );
+
+				
+				$html .= '<td>'.$frequencia_anual.'</td>';
 
 				if (($resultado_final == 'A') or ($resultado_final == 'Aprovado Prova Final') or ($resultado_final == 'Aprovado por REC')) {
 					$resultado_finalF = 'Aprovado';
@@ -193,114 +202,149 @@ for ($i=0; $i < count($res); $i++) {
 				}
 
 
-				$html .= '<td>'.$resultado_finalF.'</td>';
+				$html .= '<td align= "center">'.$resultado_finalF.'</td>';
 				$html .= '</tr>';
-			}
 
+
+			}
 			
 		}
 
 
 	}
+	$html .= '<tr>
+	<td align= "center" colspan="2">CARGA HORÁRIA TOTAL</td>';
 
 
+	$query_r6 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo ='$id_periodo' order by IdDisciplina");
+	$res_r6 = $query_r6->fetchAll(PDO::FETCH_ASSOC);
 
-	
-	
+	$cargahoraria_total = 0;
 
-	
+	for ($j=0; $j < count($res_r6); $j++) { 
+		foreach ($res_r6[$j] as $key => $value) {
+		}
+		$id_disciplina = @$res_r6[$j]['IdDisciplina'];
 
-
-
-
-
-
-
-
-
-	
+		$query_disc = $pdo->query("SELECT * FROM tbdisciplina where IdDisciplina = '$id_disciplina' ");
+		$res_disc = $query_disc->fetchAll(PDO::FETCH_ASSOC);
 
 
-		//$nota = @$res1[$x]['NotaFinal'];
-		//$cargahoraria_anual = @$res1[$x]['CargaHorariaAnual'];
-		//$faltas = @$res1[$x]['QuantidadeFaltasAnual'];
-		//$resultado_final = @$res1[$x]['ResultadoFinal'];
+		if(($id_serie >= 4) && ($id_serie <= 8)){
+
+			$cargahoraria = @$res_disc[0]['CH_Fundamental1'];
 
 
-
-
-
-
-		/*$html .= '<tr>
-		<td>'.($x + 1).'</td>
-		<td>'.$nome2.'</td>
-		<td>dsds</td>
-		<td>dsds</td>
-		<td>dsds</td>
-		<td>dsds</td>
-		<td>dsds</td>
-		<td>dsds</td>
-
-		</tr>';*/
-
-		//FALTA FAZER FUNCIONAR A PARTE. ENTENDER A LOGICA PARA ADD
-
-
-
-
-
-
-
-
-		$html .= '</table>
-		<span style="font-size: 9pt;">E, para constar, eu, '.$nome_usu.', Secretário(a), lavrei o presente livro que vai assinado por mim e pelo(a) Diretor(a) da Escola.</span>
-		<br><br><br>
-		<div style="font-size: 9pt;" align="center">
-		______________________________________________________
-		<br>
-		(DIREÇÃO/SECRETARIA)
-		</div>
-		</div>';
-
-
-		if (($i + 1) != count($res)) {
-			$html .= '<pagebreak />';
+		}else{
+			$cargahoraria = @$res_disc[0]['CH_Fundamental2'];
 		}
 
+		$cargahorariaF = intval($cargahoraria);
+		$cargahoraria_total = $cargahoraria_total + $cargahorariaF;
+
+		
+
+		$html .= '<td align= "center">'.$cargahorariaF.'</td>';
+
+	}
+
+	$html .= '<td align= "center" colspan="2">'.$cargahoraria_total.'</td>';
 
 
+	$html .= '</tr>';
+
+	$html .= '<tr>
+	<td align= "center" colspan="2">TOTAL DE FALTAS</td>';
+
+	$query_r6 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo ='$id_periodo' order by IdDisciplina");
+	$res_r6 = $query_r6->fetchAll(PDO::FETCH_ASSOC);
+
+	$faltas_total_anual = 0;
+
+	for ($j=0; $j < count($res_r6); $j++) { 
+		$faltas_total = 0;
+		foreach ($res_r6[$j] as $key => $value) {
+		}
+		$id_disciplina = @$res_r6[$j]['IdDisciplina'];
+
+		$query = $pdo->query("SELECT * FROM tbhistoriconotas where IdDisciplina = '$id_disciplina' and AnoConclusao = '$sigla_periodo' and CodigoSerie = '$codigo_serie' order by IdDisciplina");
+		$res133 = $query->fetchAll(PDO::FETCH_ASSOC);
+
+		for ($y=0; $y < count($res133); $y++) { 
+			
+			foreach ($res133[$y] as $key => $value) {
+			}
+
+
+			if (isset($res133)) {
+				
+				$faltas = @$res133[$y]['QuantidadeFaltasAnual'];
+				
+				$faltas_total = $faltas_total + $faltas;
+				$faltas_total_anual = $faltas_total_anual + $faltas;
+				
+			}			
+
+
+		}
+		$html .= '<td align= "center">'.$faltas_total.'</td>';
+	}
+
+	$html .= '<td align= "center" colspan="2">'. $faltas_total_anual.'</td>';
+	$html .= '</tr>';
+
+
+
+
+	$html .= '</table>
+	<span style="font-size: 9pt;">E, para constar, eu, '.$nome_usu.', Secretário(a), lavrei o presente livro que vai assinado por mim e pelo(a) Diretor(a) da Escola.</span>
+	<br><br><br>
+	<div style="font-size: 9pt;" align="center">
+	______________________________________________________
+	<br>
+	(DIREÇÃO/SECRETARIA)
+	</div>
+	</div>';
+
+
+	if (($i + 1) != count($res)) {
+		$html .= '<pagebreak />';
 	}
 
 
 
+}
 
 
 
 
 
-	$mpdf->SetHTMLFooter('
-
-		<table class="table-footer" width="100%" style="border-top: 1px solid #000000;">
-
-		<tr>
-
-		<td width="33%" style="text-align: right;"><span style="font-size:9pt;">{DATE j/m/Y H:i} - Página {PAGENO}</span></td>
-
-
-		</tr>
-		</table>
-		');
-
-
-	$stylesheet = file_get_contents('style1.css');
-
-
-	$mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-	$mpdf->WriteHTML($html,\Mpdf\HTMLParserMode::HTML_BODY);
-
-	$mpdf->Output("livro_de_matriculas_".$sigla_periodo.".pdf", "I");
 
 
 
+$mpdf->SetHTMLFooter('
 
-	?>
+	<table class="table-footer" width="100%" style="border-top: 1px solid #000000;">
+
+	<tr>
+
+	<td width="33%" style="text-align: right;"><span style="font-size:9pt;">{DATE j/m/Y H:i} - Página {PAGENO}</span></td>
+
+
+	</tr>
+	</table>
+	');
+
+
+$stylesheet = file_get_contents('style1.css');
+
+
+$mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
+$mpdf->WriteHTML($html,\Mpdf\HTMLParserMode::HTML_BODY);
+
+$mpdf->Output("atas_de_resultados_".$sigla_periodo.".pdf", "I");
+
+
+
+
+?>

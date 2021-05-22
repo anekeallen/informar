@@ -16,7 +16,13 @@ table, td, th, tr, div{
 
 }
 
+.notas{
+	text-align: right;
+}
 
+.nome{
+	width: 10%;
+}
 
 #t02 td{
 	border: 1px solid black;
@@ -24,4 +30,18 @@ table, td, th, tr, div{
 
 }
 
+.frase td{
+	padding-top: 20px;
+}
+
+.assinatura td{
+	
+	text-align: center;
+	padding-top: 50px;
+	transform: translateX(50%);
+}
+
+.frequencia_anual{
+	text-align: center;
+}
 

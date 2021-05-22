@@ -94,7 +94,7 @@ for ($i=0; $i < count($res); $i++) {
 	$html .= '<table id="t02" style="  border-collapse: collapse; font-family: arial, sans-serif; width: 100%;">
 	
 	
-	<tr>
+	<tr class="linha1">
 	<th style="">Nº</th>
 	<th style="">Aluno</th>';
 
@@ -147,7 +147,7 @@ for ($i=0; $i < count($res); $i++) {
 
 		$html .= '
 		<td>'.($j + 1).'</td>
-		<td>'.$nome2.'</td>';
+		<td class="nome">'.$nome2.'</td>';
 
 		$query_r66 = $pdo->query("SELECT * FROM tbgradecurricular where IdSerie = '$id_serie' and IdPeriodo ='$id_periodo' order by IdDisciplina");
 		$res_r66 = $query_r66->fetchAll(PDO::FETCH_ASSOC);
@@ -175,7 +175,7 @@ for ($i=0; $i < count($res); $i++) {
 				$total_faltas = $total_faltas + $faltas;
 
 				$html .= '
-				<td>'.$nota.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$faltas1.'</td>
+				<td class="notas">'.$nota.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$faltas1.'</td>
 				';
 
 				
@@ -186,10 +186,16 @@ for ($i=0; $i < count($res); $i++) {
 
 			if (($t + 1) == count($res_r66)) {
 
-				$frequencia_anual = 100 - (($total_faltas*100) / 1000 );
+				if (isset($resultado_final)) {
+					$frequencia_anual = 100 - (($total_faltas*100) / 1000 );
+				}else{
+					$frequencia_anual="---";
+				}
 
 				
-				$html .= '<td>'.$frequencia_anual.'</td>';
+
+				
+				$html .= '<td class="frequencia_anual">'.$frequencia_anual.'</td>';
 
 				if (($resultado_final == 'A') or ($resultado_final == 'Aprovado Prova Final') or ($resultado_final == 'Aprovado por REC')) {
 					$resultado_finalF = 'Aprovado';
@@ -221,7 +227,9 @@ for ($i=0; $i < count($res); $i++) {
 
 	$cargahoraria_total = 0;
 
+
 	for ($j=0; $j < count($res_r6); $j++) { 
+
 		foreach ($res_r6[$j] as $key => $value) {
 		}
 		$id_disciplina = @$res_r6[$j]['IdDisciplina'];
@@ -291,19 +299,25 @@ for ($i=0; $i < count($res); $i++) {
 	}
 
 	$html .= '<td align= "center" colspan="2">'. $faltas_total_anual.'</td>';
-	$html .= '</tr>';
+	$html .= '</tr>
+
+	<tr class="frase" style="border:none; padding-top:50px;"><td   colspan="13"><span style="font-size: 9pt;">E, para constar, eu, '.$nome_usu.', Secretário(a), lavrei o presente livro que vai assinado por mim e pelo(a) Diretor(a) da Escola.</span></td></tr>
+
+	<tr class="assinatura" style="border:none; padding-top:50px; text-align:center;"><td   colspan="13"><div style="font-size: 9pt;" align="center">
+	______________________________________________________
+	<br>
+	(DIREÇÃO/SECRETARIA)
+	</div></td></tr>
+
+	';
 
 
 
 
 	$html .= '</table><br><br>
-	<span style="font-size: 9pt;">E, para constar, eu, '.$nome_usu.', Secretário(a), lavrei o presente livro que vai assinado por mim e pelo(a) Diretor(a) da Escola.</span>
+	
 	<br><br><br>
-	<div style="font-size: 9pt;" align="center">
-	______________________________________________________
-	<br>
-	(DIREÇÃO/SECRETARIA)
-	</div>
+	
 	</div>';
 
 
